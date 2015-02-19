@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
-    <!-- TODO -->
+    <div class="container">
+      <div wicket:enclosure="pageFeedbackPanel" class="alert">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <div wicket:id="pageFeedbackPanel"></div>
+      </div>
+      <div wicket:id="accountEditorPanel"></div>
+    </div>
   </body>
 </html>
