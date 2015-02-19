@@ -1,6 +1,9 @@
 package promolo.wicket;
 
 import org.apache.wicket.util.tester.WicketTester;
+import org.jboss.weld.environment.se.Weld;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -9,19 +12,31 @@ import org.testng.annotations.Test;
  */
 public class TestHomePage {
 
+    private final Weld weld = new Weld();
+
     private WicketTester tester;
 
+    @BeforeClass
+    public void setUpBeforeClass() {
+        this.weld.initialize();
+    }
+
+    @AfterClass
+    public void tearDownAfterClass() {
+        this.weld.shutdown();
+    }
+
     @BeforeMethod
-    public void setUp() {
-        tester = new WicketTester(new WicketApplication());
+    public void setUpBeforeMethod() {
+        this.tester = new WicketTester(new WicketApplication());
     }
 
     @Test
     public void homepageRendersSuccessfully() {
         //start and render the test page
-        tester.startPage(HomePage.class);
+        this.tester.startPage(HomePage.class);
         //assert rendered page class
-        tester.assertRenderedPage(HomePage.class);
+        this.tester.assertRenderedPage(HomePage.class);
     }
 
 }

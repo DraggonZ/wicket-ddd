@@ -41,6 +41,20 @@
   </properties>
 
   <dependencies>
+    <!-- EE API -->
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-api</artifactId>
+      <version>7.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>1.1.0.Final</version>
+      <scope>provided</scope>
+    </dependency>
+
     <!--  WICKET DEPENDENCIES -->
     <dependency>
       <groupId>org.apache.wicket</groupId>
@@ -50,6 +64,21 @@
     <dependency>
       <groupId>org.apache.wicket</groupId>
       <artifactId>wicket-extensions</artifactId>
+      <version>${wicket.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.wicket</groupId>
+      <artifactId>wicket-datetime</artifactId>
+      <version>${wicket.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.wicket</groupId>
+      <artifactId>wicket-bean-validation</artifactId>
+      <version>${wicket.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.wicket</groupId>
+      <artifactId>wicket-cdi-1.1</artifactId>
       <version>${wicket.version}</version>
     </dependency>
 
@@ -83,6 +112,12 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>1.1.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.weld.se</groupId>
+      <artifactId>weld-se-core</artifactId>
+      <version>2.2.6.Final</version>
       <scope>test</scope>
     </dependency>
 
