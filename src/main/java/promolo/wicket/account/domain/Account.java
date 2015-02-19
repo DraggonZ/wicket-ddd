@@ -4,6 +4,8 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.StringUtils;
 
+import promolo.wicket.core.domain.ConcurrencySafe;
+import promolo.wicket.core.domain.ConcurrencyViolationException;
 import promolo.wicket.core.domain.DomainObject;
 import promolo.wicket.core.domain.Validation;
 
@@ -12,7 +14,7 @@ import promolo.wicket.core.domain.Validation;
  *
  * @author Александр
  */
-public class Account extends DomainObject {
+public class Account extends DomainObject implements ConcurrencySafe {
 
     private Long version;
 
@@ -38,11 +40,6 @@ public class Account extends DomainObject {
         return this.title;
     }
 
-    @Nonnull
-    public Long version() {
-        return this.version;
-    }
-
     public void changeTitle(@Nonnull @AccountTitleConstraint String title) {
         Validation.assertNotValid(Validation.validator().validateValue(Account.class, "title", title));
         if (!StringUtils.equals(this.title, title)) {
@@ -51,8 +48,19 @@ public class Account extends DomainObject {
         }
     }
 
+    @Override
+    public long concurrencyVersion() {
+        return this.version;
+    }
+
+    @Override
+    public void failWhenConcurrencyViolation(long version) {
+        if (version != concurrencyVersion()) {
+            throw new ConcurrencyViolationException();
+        }
+    }
+
     protected Account() {
         // nop
     }
-    
 }

@@ -17,6 +17,8 @@ public class ChangeAccountTitleCommand extends ApplicationCommand {
     @AccountTitleConstraint
     private String title;
 
+    private long version;
+
     public ChangeAccountTitleCommand(String id) {
         this(id, null);
     }
@@ -36,6 +38,14 @@ public class ChangeAccountTitleCommand extends ApplicationCommand {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public long getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
     }
 
 }

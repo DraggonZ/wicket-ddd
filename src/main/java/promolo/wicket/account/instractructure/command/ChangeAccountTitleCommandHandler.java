@@ -27,6 +27,7 @@ public class ChangeAccountTitleCommandHandler {
         if (account == null) {
             throw new IllegalStateException("не найдена учетная запись " + command.getId());
         }
+        account.failWhenConcurrencyViolation(command.getVersion());
         account.changeTitle(command.getTitle());
     }
 
