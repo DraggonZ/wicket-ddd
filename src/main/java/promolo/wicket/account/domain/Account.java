@@ -14,6 +14,8 @@ import promolo.wicket.core.domain.Validation;
  */
 public class Account extends DomainObject {
 
+    private Long version;
+
     @AccountIdConstraint
     private String id;
 
@@ -36,6 +38,11 @@ public class Account extends DomainObject {
         return this.title;
     }
 
+    @Nonnull
+    public Long version() {
+        return this.version;
+    }
+
     public void changeTitle(@Nonnull @AccountTitleConstraint String title) {
         Validation.assertNotValid(Validation.validator().validateValue(Account.class, "title", title));
         if (!StringUtils.equals(this.title, title)) {
@@ -44,4 +51,8 @@ public class Account extends DomainObject {
         }
     }
 
+    protected Account() {
+        // nop
+    }
+    
 }
