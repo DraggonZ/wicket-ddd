@@ -10,6 +10,9 @@ import promolo.wicket.core.application.ApplicationCommand;
 import promolo.wicket.core.application.ApplicationCommandExecutor;
 import promolo.wicket.core.application.ApplicationCommandHandler;
 import promolo.wicket.core.application.ApplicationCommandHandlerRegistry;
+import promolo.wicket.core.domain.DomainEvent;
+import promolo.wicket.core.domain.DomainEventPublisher;
+import promolo.wicket.core.domain.DomainEventSubscriber;
 
 /**
  * TODO javadoc
@@ -33,6 +36,20 @@ public class CdiApplicationCommandExecutor implements ApplicationCommandExecutor
         if (!this.applicationCommandHandlerRegistry.isApplicationCommandHandlerExists(command)) {
             throw new IllegalStateException("не найден обработчик для команды " + command);
         }
+        DomainEventPublisher.instance().subscribe(new DomainEventSubscriber<DomainEvent>() {
+
+            @Override
+            public void handleEvent(@Nonnull DomainEvent domainEvent) {
+                // TODO - донести событие до UI
+            }
+
+            @Nonnull
+            @Override
+            public Class<DomainEvent> subscribedToEventType() {
+                return DomainEvent.class;
+            }
+
+        });
         this.applicationCommandEvent.fire(command);
     }
 
