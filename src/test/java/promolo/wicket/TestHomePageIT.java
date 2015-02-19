@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 /**
  * Simple test using the WicketTester
  */
-public class TestHomePage {
+public class TestHomePageIT {
 
     private final Weld weld = new Weld();
 
@@ -31,7 +31,7 @@ public class TestHomePage {
         this.tester = new WicketTester(new WicketApplication());
     }
 
-    @Test
+    @Test(enabled = true)
     public void homepageRendersSuccessfully() {
         //start and render the test page
         this.tester.startPage(HomePage.class);
