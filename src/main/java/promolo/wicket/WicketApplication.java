@@ -1,8 +1,11 @@
 package promolo.wicket;
 
 import org.apache.wicket.bean.validation.BeanValidationConfiguration;
+import org.apache.wicket.bootstrap.Bootstrap;
 import org.apache.wicket.cdi.CdiConfiguration;
 import org.apache.wicket.cdi.ConversationPropagation;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 
@@ -28,6 +31,14 @@ public class WicketApplication extends WebApplication {
         super.init();
         new BeanValidationConfiguration().configure(this);
         new CdiConfiguration().setPropagation(ConversationPropagation.NONE).configure(this);
+        getHeaderContributorListenerCollection().add(new IHeaderContributor() {
+
+            @Override
+            public void renderHead(IHeaderResponse response) {
+                Bootstrap.renderHeadPlain(response);
+            }
+
+        });
     }
 
 }
