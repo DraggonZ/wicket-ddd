@@ -4,6 +4,9 @@ import static promolo.wicket.core.domain.Validation.*;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 /**
  * TODO javadoc
  *
@@ -17,6 +20,11 @@ public class ApplicationCommand implements Serializable {
 
     public void validate() {
         assertNotValid(validator().validate(this));
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
 }
