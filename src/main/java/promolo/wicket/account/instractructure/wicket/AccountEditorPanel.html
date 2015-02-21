@@ -17,8 +17,11 @@
           </div>
 
           <div class="control-group">
-            <label class="control-label">Наименование</label>
+            <label class="control-label" wicket:for="title">Наименование</label>
             <div class="controls">
+              <label class="checkbox">
+                <input type="checkbox"> Сформировать автоматически на основе ФИО
+              </label>
               <input wicket:id="title" type="text" placeholder="Наименование">
             </div>
           </div>

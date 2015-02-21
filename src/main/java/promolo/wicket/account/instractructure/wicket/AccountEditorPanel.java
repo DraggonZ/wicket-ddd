@@ -40,15 +40,20 @@ public class AccountEditorPanel extends GenericPanel<String> {
         super(id, Model.of(login));
 
         Form<ChangeAccountPersonCommand> form = new Form<>("form", new CompoundPropertyModel<>(createCommand()));
+
         ErrorLevelFeedbackMessageFilter feedbackMessageFilter = new ErrorLevelFeedbackMessageFilter(FeedbackMessage.ERROR);
         FencedFeedbackPanel fencedFeedbackPanel = new FencedFeedbackPanel("feedback", form, feedbackMessageFilter);
         fencedFeedbackPanel.add(new HideEmptyFeedbackPanelBehavior());
         form.add(fencedFeedbackPanel);
+
         form.add(new Label("id"));
+
         form.add(new TextField<String>("title").add(new PropertyValidator<>()));
+
         form.add(new TextField<String>("lastName").add(new PropertyValidator<>()));
         form.add(new TextField<String>("firstName").add(new PropertyValidator<>()));
         form.add(new TextField<String>("middleName").add(new PropertyValidator<>()));
+
         form.add(new SubmitLink("save") {
 
             @Override
@@ -61,6 +66,7 @@ public class AccountEditorPanel extends GenericPanel<String> {
             }
 
         });
+
         add(form);
     }
 
