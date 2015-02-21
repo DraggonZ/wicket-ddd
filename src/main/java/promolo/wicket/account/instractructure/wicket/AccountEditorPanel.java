@@ -19,7 +19,6 @@ import org.apache.wicket.model.Model;
 import promolo.wicket.account.application.AccountApplicationService;
 import promolo.wicket.account.application.ChangeAccountPersonCommand;
 import promolo.wicket.account.domain.Account;
-import promolo.wicket.core.application.ApplicationCommandExecutor;
 import promolo.wicket.ui.component.HideEmptyFeedbackPanelBehavior;
 import promolo.wicket.ui.page.NotFoundPage;
 
@@ -28,13 +27,10 @@ import promolo.wicket.ui.page.NotFoundPage;
  *
  * @author Александр
  */
-public class AccountEditorPanel extends GenericPanel<String> {
+public class AccountEditorPanel extends GenericPanel<String> implements AccountView {
 
     @Inject
     private AccountApplicationService accountApplicationService;
-
-    @Inject
-    private ApplicationCommandExecutor applicationCommandExecutor;
 
     public AccountEditorPanel(@Nonnull String id, @Nonnull String login) {
         super(id, Model.of(login));
@@ -59,15 +55,19 @@ public class AccountEditorPanel extends GenericPanel<String> {
             @Override
             public void onSubmit() {
                 super.onSubmit();
-                Form<ChangeAccountPersonCommand> form = (Form<ChangeAccountPersonCommand>) getForm();
-                applicationCommandExecutor().execute(form.getModelObject());
-                getPage().success("Операция выполнена успешна.");
-                form.setModelObject(createCommand());
+                AccountPresenter presenter = new AccountPresenter(AccountEditorPanel.this, getModelObject());
+                presenter.onChangeAccountTitle((ChangeAccountPersonCommand) getForm().getDefaultModelObject());
             }
 
         });
 
         add(form);
+    }
+
+    @Override
+    public void accountTitleChanged() {
+        get("form").setDefaultModelObject(createCommand());
+        success("Операция выполнена успешна.");
     }
 
     @Nonnull
@@ -77,18 +77,16 @@ public class AccountEditorPanel extends GenericPanel<String> {
             getSession().error("Учетная запись с ID " + getModelObject() + "не найдена.");
             throw new RestartResponseAtInterceptPageException(new NotFoundPage());
         }
-        return new ChangeAccountPersonCommand(account.id(), account.person().title(), account.person().firstName(),
-                account.person().middleName(), account.person().lastName());
+        ChangeAccountPersonCommand command =
+                new ChangeAccountPersonCommand(account.id(), account.person().title(), account.person().firstName(),
+                        account.person().middleName(), account.person().lastName());
+        command.setVersion(account.concurrencyVersion());
+        return command;
     }
 
     @Nonnull
     private AccountApplicationService accountApplicationService() {
         return this.accountApplicationService;
-    }
-
-    @Nonnull
-    private ApplicationCommandExecutor applicationCommandExecutor() {
-        return this.applicationCommandExecutor;
     }
 
 }
