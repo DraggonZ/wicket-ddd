@@ -8,7 +8,6 @@ import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -16,13 +15,12 @@ import javax.validation.constraints.Size;
  *
  * @author Александр
  */
-@NotNull(message = "наименование учетной записи не указано")
 @Size(min = 3, max = 64, message = "допустимая минимальная длина наименования учетной записи {min}, максимальная {max}")
 @Target({ ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Constraint(validatedBy = { })
-public @interface AccountTitleConstraint {
+public @interface PersonTitleConstraint {
 
     public String message() default "";
 

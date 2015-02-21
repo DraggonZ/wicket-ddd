@@ -17,11 +17,33 @@
           </div>
 
           <div class="control-group">
-            <label class="control-label">Title</label>
+            <label class="control-label">Наименование</label>
             <div class="controls">
               <input wicket:id="title" type="text" placeholder="Наименование">
             </div>
           </div>
+
+          <fieldset>
+            <label>Персональные данные</label>
+            <div class="control-group">
+              <label class="control-label">Фамиля</label>
+              <div class="controls">
+                <input wicket:id="lastName" type="text" placeholder="Фамилия">
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">Имя</label>
+              <div class="controls">
+                <input wicket:id="firstName" type="text" placeholder="Имя">
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">Отчество</label>
+              <div class="controls">
+                <input wicket:id="middleName" type="text" placeholder="Отчество">
+              </div>
+            </div>
+          </fieldset>
 
           <div class="control-group">
             <button type="submit" class="btn" wicket:id="save">Сохранить</button>

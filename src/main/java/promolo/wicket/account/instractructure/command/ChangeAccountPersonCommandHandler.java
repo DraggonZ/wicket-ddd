@@ -5,9 +5,12 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
-import promolo.wicket.account.application.ChangeAccountTitleCommand;
+import org.apache.commons.lang3.StringUtils;
+
+import promolo.wicket.account.application.ChangeAccountPersonCommand;
 import promolo.wicket.account.domain.Account;
 import promolo.wicket.account.domain.AccountRepository;
+import promolo.wicket.account.domain.Person;
 import promolo.wicket.core.application.ApplicationCommandHandler;
 
 /**
@@ -17,18 +20,22 @@ import promolo.wicket.core.application.ApplicationCommandHandler;
  */
 @ApplicationScoped
 @Transactional(Transactional.TxType.MANDATORY)
-public class ChangeAccountTitleCommandHandler {
+public class ChangeAccountPersonCommandHandler {
 
     @Inject
     private AccountRepository accountRepository;
 
-    public void handle(@Observes @ApplicationCommandHandler ChangeAccountTitleCommand command) {
+    public void handle(@Observes @ApplicationCommandHandler ChangeAccountPersonCommand command) {
         Account account = this.accountRepository.findById(command.getId());
         if (account == null) {
             throw new IllegalStateException("не найдена учетная запись " + command.getId());
         }
         account.failWhenConcurrencyViolation(command.getVersion());
-        account.changeTitle(command.getTitle());
+        if (StringUtils.isEmpty(command.getTitle())) {
+            account.changePerson(new Person(command.getFirstName(), command.getMiddleName(), command.getLastName()));
+        } else {
+            account.changePerson(new Person(command.getTitle(), command.getFirstName(), command.getMiddleName(), command.getLastName()));
+        }
     }
 
 }

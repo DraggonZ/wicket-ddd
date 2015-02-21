@@ -1,8 +1,9 @@
 package promolo.wicket.account.domain;
 
-import javax.annotation.Nonnull;
+import java.util.Objects;
 
-import org.apache.commons.lang3.StringUtils;
+import javax.annotation.Nonnull;
+import javax.validation.constraints.NotNull;
 
 import promolo.wicket.core.domain.ConcurrencySafe;
 import promolo.wicket.core.domain.ConcurrencyViolationException;
@@ -21,12 +22,12 @@ public class Account extends DomainObject implements ConcurrencySafe {
     @AccountIdConstraint
     private String id;
 
-    @AccountTitleConstraint
-    private String title;
+    @NotNull(message = "не указаны персональные данные учетной записи")
+    private Person person;
 
-    public Account(@Nonnull String id, @Nonnull String title) {
+    public Account(@Nonnull String id, @Nonnull Person person) {
         this.id = id;
-        this.title = title;
+        this.person = person;
         Validation.assertNotValid(Validation.validator().validate(this));
     }
 
@@ -36,15 +37,15 @@ public class Account extends DomainObject implements ConcurrencySafe {
     }
 
     @Nonnull
-    public String title() {
-        return this.title;
+    public Person person() {
+        return this.person;
     }
 
-    public void changeTitle(@Nonnull @AccountTitleConstraint String title) {
-        Validation.assertNotValid(Validation.validator().validateValue(Account.class, "title", title));
-        if (!StringUtils.equals(this.title, title)) {
-            this.title = title;
-            publish(new AccountTitleChanged(id(), title()));
+    public void changePerson(@Nonnull Person person) {
+        Validation.assertNotValid(Validation.validator().validateValue(Account.class, "person", person));
+        if (!Objects.equals(this.person, person)) {
+            this.person = person;
+            publish(new AccountPersonChanged(id(), person.title(), person.firstName(), person.middleName(), person.lastName()));
         }
     }
 

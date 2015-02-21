@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import promolo.wicket.account.domain.Account;
 import promolo.wicket.account.domain.AccountRepository;
+import promolo.wicket.account.domain.Person;
 
 /**
  * TODO javadoc
@@ -22,9 +23,9 @@ public class AccountRepositoryInitializingBean {
 
     @PostConstruct
     public void initializeRepository() {
-        this.accountRepository.add(new Account("admin", "Administrator"));
-        this.accountRepository.add(new Account("user", "Just user"));
-        this.accountRepository.add(new Account("jdou", "Guest Star"));
+        this.accountRepository.add(new Account("admin", new Person("Mr. Administrator", "Иван", "Иванович", "Иванов")));
+        this.accountRepository.add(new Account("user", new Person("Сидор", "Иванович", "Берия")));
+        this.accountRepository.add(new Account("jdou", new Person("Евгений", "Петрович", "Штирлиц")));
     }
 
 }

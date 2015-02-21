@@ -1,4 +1,4 @@
-package promolo.wicket.component;
+package promolo.wicket.ui.component;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
