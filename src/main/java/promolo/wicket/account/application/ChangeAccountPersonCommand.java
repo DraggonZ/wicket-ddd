@@ -1,5 +1,7 @@
 package promolo.wicket.account.application;
 
+import org.bindgen.Bindable;
+
 import promolo.wicket.account.domain.AccountIdConstraint;
 import promolo.wicket.account.domain.PersonNameConstraint;
 import promolo.wicket.account.domain.PersonTitleConstraint;
@@ -10,6 +12,7 @@ import promolo.wicket.core.application.ApplicationCommand;
  *
  * @author Александр
  */
+@Bindable
 public class ChangeAccountPersonCommand extends ApplicationCommand {
 
     @AccountIdConstraint

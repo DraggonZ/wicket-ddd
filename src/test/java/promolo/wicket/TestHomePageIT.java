@@ -31,7 +31,7 @@ public class TestHomePageIT {
         this.tester = new WicketTester(new WicketApplication());
     }
 
-    @Test(enabled = true)
+    @Test(enabled = false)
     public void homepageRendersSuccessfully() {
         //start and render the test page
         this.tester.startPage(HomePage.class);
