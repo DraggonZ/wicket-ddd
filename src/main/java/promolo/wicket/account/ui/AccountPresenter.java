@@ -21,6 +21,8 @@ public class AccountPresenter implements Serializable {
 
     private final String accountId;
 
+    private boolean titleAutoGenerationEnabled = false;
+
     @Inject
     private ApplicationCommandExecutor applicationCommandExecutor;
 
@@ -31,8 +33,19 @@ public class AccountPresenter implements Serializable {
     }
 
     public void onChangeAccountPerson(@Nonnull ChangeAccountPersonCommand command) {
+        if (isTitleAutoGenerationEnabled()) {
+            command.setTitle(null);
+        }
         this.applicationCommandExecutor.execute(command);
         view().accountPersonChanged();
+    }
+
+    public void toggleTitleAutoGeneration() {
+        this.titleAutoGenerationEnabled = !this.titleAutoGenerationEnabled;
+    }
+
+    public boolean isTitleAutoGenerationEnabled() {
+        return this.titleAutoGenerationEnabled;
     }
 
     @Nonnull

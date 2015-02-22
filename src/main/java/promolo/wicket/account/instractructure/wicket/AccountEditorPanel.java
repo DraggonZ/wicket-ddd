@@ -5,8 +5,12 @@ import static promolo.wicket.core.ui.model.Bindgen.*;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.bean.validation.PropertyValidator;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.feedback.ErrorLevelFeedbackMessageFilter;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.FencedFeedbackPanel;
@@ -16,6 +20,7 @@ import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 
 import promolo.wicket.account.application.AccountApplicationService;
@@ -49,12 +54,47 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
         this.presenter = new AccountPresenter(this, login);
 
         this.form = new Form<>("form", new CompoundPropertyModel<>(createCommand()));
+        this.form.setOutputMarkupId(true);
+
         this.form.add(feedbackPanelFor("feedback", this.form));
+
         this.form.add(new Label("id"));
-        this.form.add(new TextField<>("title", forBinding(binding.title())).add(new PropertyValidator<>()));
+
+        this.form.add(new AjaxCheckBox("checkbox", new TitleAutoGeneratorTogglerModel()) {
+
+            @Override
+            protected void onUpdate(AjaxRequestTarget target) {
+                presenter().toggleTitleAutoGeneration();
+                target.add(AccountEditorPanel.this.form);
+            }
+
+        });
+
+        TextField<String> title = new TextField<>("title", forBinding(binding.title()));
+        title.add(new PropertyValidator<>());
+        title.add(new Behavior() {
+
+            @Override
+            public void bind(Component component) {
+                super.bind(component);
+                component.setOutputMarkupId(true);
+            }
+
+            @Override
+            public void onConfigure(Component component) {
+                super.onConfigure(component);
+                component.setEnabled(!presenter().isTitleAutoGenerationEnabled());
+            }
+
+        });
+        this.form.add(title);
+
         this.form.add(new TextField<>("lastName", forBinding(binding.lastName())).add(new PropertyValidator<>()));
+
         this.form.add(new TextField<>("firstName", forBinding(binding.firstName())).add(new PropertyValidator<>()));
+
         this.form.add(new TextField<>("middleName", forBinding(binding.middleName())).add(new PropertyValidator<>()));
+
         this.form.add(new SubmitLink("save") {
 
             @Override
@@ -104,6 +144,15 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
         FencedFeedbackPanel fencedFeedbackPanel = new FencedFeedbackPanel(id, form, feedbackMessageFilter);
         fencedFeedbackPanel.add(new HideEmptyFeedbackPanelBehavior());
         return fencedFeedbackPanel;
+    }
+
+    private final class TitleAutoGeneratorTogglerModel extends LoadableDetachableModel<Boolean> {
+
+        @Override
+        protected Boolean load() {
+            return presenter().isTitleAutoGenerationEnabled();
+        }
+
     }
 
 }
