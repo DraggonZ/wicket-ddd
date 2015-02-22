@@ -1,4 +1,4 @@
-package promolo.wicket.account.iface;
+package promolo.wicket.account.ui;
 
 import java.io.Serializable;
 
