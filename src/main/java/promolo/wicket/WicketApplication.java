@@ -46,6 +46,7 @@ public class WicketApplication extends WebApplication {
     @Override
     public void init() {
         super.init();
+        getResourceSettings().setResourcePollFrequency(null); // TODO на WildFly под Windows зависает время от времени
         new BeanValidationConfiguration().configure(this);
         new CdiConfiguration().setPropagation(ConversationPropagation.NONE).configure(this);
         getHeaderContributorListenerCollection().add(new IHeaderContributor() {

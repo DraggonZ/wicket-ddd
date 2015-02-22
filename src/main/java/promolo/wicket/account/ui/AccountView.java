@@ -11,4 +11,10 @@ public interface AccountView extends Serializable {
 
     public void accountPersonChanged();
 
+    public void accountTitleGenerated();
+
+    public void titleAutoGeneratorEnabled();
+
+    public void titleAutoGeneratorDisabled();
+    
 }

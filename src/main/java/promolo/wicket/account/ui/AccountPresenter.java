@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.apache.wicket.cdi.NonContextual;
 
 import promolo.wicket.account.application.ChangeAccountPersonCommand;
+import promolo.wicket.account.domain.PersonTitle;
 import promolo.wicket.core.application.ApplicationCommandExecutor;
 
 /**
@@ -33,15 +34,22 @@ public class AccountPresenter implements Serializable {
     }
 
     public void onChangeAccountPerson(@Nonnull ChangeAccountPersonCommand command) {
-        if (isTitleAutoGenerationEnabled()) {
-            command.setTitle(null);
-        }
         this.applicationCommandExecutor.execute(command);
         view().accountPersonChanged();
     }
 
+    public void onPersonNameUpdated(ChangeAccountPersonCommand command) {
+        command.setTitle(PersonTitle.build(command.getFirstName(), command.getMiddleName(), command.getLastName()));
+        view().accountTitleGenerated();
+    }
+
     public void toggleTitleAutoGeneration() {
         this.titleAutoGenerationEnabled = !this.titleAutoGenerationEnabled;
+        if (this.titleAutoGenerationEnabled) {
+            view().titleAutoGeneratorEnabled();
+        } else {
+            view().titleAutoGeneratorDisabled();
+        }
     }
 
     public boolean isTitleAutoGenerationEnabled() {
@@ -57,5 +65,4 @@ public class AccountPresenter implements Serializable {
     private AccountView view() {
         return this.accountView;
     }
-
 }
