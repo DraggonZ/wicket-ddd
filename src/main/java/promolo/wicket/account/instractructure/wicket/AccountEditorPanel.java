@@ -36,19 +36,21 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
 
     private final AccountPresenter presenter;
 
+    private final Form<ChangeAccountPersonCommand> form;
+
     public AccountEditorPanel(@Nonnull String id, @Nonnull String login) {
         super(id, Model.of(login));
 
         this.presenter = new AccountPresenter(this, login);
 
-        Form<ChangeAccountPersonCommand> form = new Form<>("form", new CompoundPropertyModel<>(createCommand()));
-        form.add(feedbackPanelFor("feedback", form));
-        form.add(new Label("id"));
-        form.add(new TextField<String>("title").add(new PropertyValidator<>()));
-        form.add(new TextField<String>("lastName").add(new PropertyValidator<>()));
-        form.add(new TextField<String>("firstName").add(new PropertyValidator<>()));
-        form.add(new TextField<String>("middleName").add(new PropertyValidator<>()));
-        form.add(new SubmitLink("save") {
+        this.form = new Form<>("form", new CompoundPropertyModel<>(createCommand()));
+        this.form.add(feedbackPanelFor("feedback", this.form));
+        this.form.add(new Label("id"));
+        this.form.add(new TextField<String>("title").add(new PropertyValidator<>()));
+        this.form.add(new TextField<String>("lastName").add(new PropertyValidator<>()));
+        this.form.add(new TextField<String>("firstName").add(new PropertyValidator<>()));
+        this.form.add(new TextField<String>("middleName").add(new PropertyValidator<>()));
+        this.form.add(new SubmitLink("save") {
 
             @Override
             public void onSubmit() {
@@ -57,12 +59,13 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
             }
 
         });
-        add(form);
+
+        add(this.form);
     }
 
     @Override
     public void accountPersonChanged() {
-        get("form").setDefaultModelObject(createCommand());
+        this.form.setDefaultModelObject(createCommand());
         success("Операция выполнена успешна.");
     }
 
