@@ -30,9 +30,9 @@ public class AccountPresenter implements Serializable {
         NonContextual.of(AccountPresenter.class).inject(this);
     }
 
-    public void onChangeAccountTitle(@Nonnull ChangeAccountPersonCommand command) {
+    public void onChangeAccountPerson(@Nonnull ChangeAccountPersonCommand command) {
         this.applicationCommandExecutor.execute(command);
-        this.accountView.accountTitleChanged();
+        this.accountView.accountPersonChanged();
     }
 
     @Nonnull

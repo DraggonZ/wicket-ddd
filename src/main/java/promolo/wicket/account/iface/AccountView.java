@@ -9,6 +9,6 @@ import java.io.Serializable;
  */
 public interface AccountView extends Serializable {
 
-    public void accountTitleChanged();
+    public void accountPersonChanged();
 
 }

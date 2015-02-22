@@ -53,7 +53,7 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
             @Override
             public void onSubmit() {
                 super.onSubmit();
-                presenter().onChangeAccountTitle((ChangeAccountPersonCommand) getForm().getDefaultModelObject());
+                presenter().onChangeAccountPerson((ChangeAccountPersonCommand) getForm().getDefaultModelObject());
             }
 
         });
@@ -61,7 +61,7 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
     }
 
     @Override
-    public void accountTitleChanged() {
+    public void accountPersonChanged() {
         get("form").setDefaultModelObject(createCommand());
         success("Операция выполнена успешна.");
     }
