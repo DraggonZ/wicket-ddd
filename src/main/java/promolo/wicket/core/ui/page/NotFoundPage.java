@@ -1,9 +1,9 @@
-package promolo.wicket.ui.page;
+package promolo.wicket.core.ui.page;
 
 import org.apache.wicket.feedback.FencedFeedbackPanel;
 import org.apache.wicket.markup.html.WebPage;
 
-import promolo.wicket.ui.component.HideEmptyFeedbackPanelBehavior;
+import promolo.wicket.core.ui.component.HideEmptyFeedbackPanelBehavior;
 
 /**
  * TODO javadoc

@@ -9,7 +9,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import promolo.wicket.account.application.AccountApplicationService;
 import promolo.wicket.account.instractructure.wicket.AccountEditorPanel;
-import promolo.wicket.ui.component.HideEmptyFeedbackPanelBehavior;
+import promolo.wicket.core.ui.component.HideEmptyFeedbackPanelBehavior;
 
 public class HomePage extends WebPage {
 

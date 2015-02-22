@@ -21,8 +21,8 @@ import promolo.wicket.account.application.ChangeAccountPersonCommand;
 import promolo.wicket.account.domain.Account;
 import promolo.wicket.account.ui.AccountPresenter;
 import promolo.wicket.account.ui.AccountView;
-import promolo.wicket.ui.component.HideEmptyFeedbackPanelBehavior;
-import promolo.wicket.ui.page.NotFoundPage;
+import promolo.wicket.core.ui.component.HideEmptyFeedbackPanelBehavior;
+import promolo.wicket.core.ui.page.NotFoundPage;
 
 /**
  * TODO javadoc
