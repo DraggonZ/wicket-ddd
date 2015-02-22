@@ -32,12 +32,17 @@ public class AccountPresenter implements Serializable {
 
     public void onChangeAccountPerson(@Nonnull ChangeAccountPersonCommand command) {
         this.applicationCommandExecutor.execute(command);
-        this.accountView.accountPersonChanged();
+        view().accountPersonChanged();
     }
 
     @Nonnull
     private String accountId() {
         return this.accountId;
+    }
+
+    @Nonnull
+    private AccountView view() {
+        return this.accountView;
     }
 
 }
