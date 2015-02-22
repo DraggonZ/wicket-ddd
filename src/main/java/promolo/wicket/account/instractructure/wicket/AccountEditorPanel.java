@@ -19,6 +19,8 @@ import org.apache.wicket.model.Model;
 import promolo.wicket.account.application.AccountApplicationService;
 import promolo.wicket.account.application.ChangeAccountPersonCommand;
 import promolo.wicket.account.domain.Account;
+import promolo.wicket.account.iface.AccountPresenter;
+import promolo.wicket.account.iface.AccountView;
 import promolo.wicket.ui.component.HideEmptyFeedbackPanelBehavior;
 import promolo.wicket.ui.page.NotFoundPage;
 
@@ -32,35 +34,29 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
     @Inject
     private AccountApplicationService accountApplicationService;
 
+    private final AccountPresenter presenter;
+
     public AccountEditorPanel(@Nonnull String id, @Nonnull String login) {
         super(id, Model.of(login));
 
+        this.presenter = new AccountPresenter(this, login);
+
         Form<ChangeAccountPersonCommand> form = new Form<>("form", new CompoundPropertyModel<>(createCommand()));
-
-        ErrorLevelFeedbackMessageFilter feedbackMessageFilter = new ErrorLevelFeedbackMessageFilter(FeedbackMessage.ERROR);
-        FencedFeedbackPanel fencedFeedbackPanel = new FencedFeedbackPanel("feedback", form, feedbackMessageFilter);
-        fencedFeedbackPanel.add(new HideEmptyFeedbackPanelBehavior());
-        form.add(fencedFeedbackPanel);
-
+        form.add(feedbackPanelFor("feedback", form));
         form.add(new Label("id"));
-
         form.add(new TextField<String>("title").add(new PropertyValidator<>()));
-
         form.add(new TextField<String>("lastName").add(new PropertyValidator<>()));
         form.add(new TextField<String>("firstName").add(new PropertyValidator<>()));
         form.add(new TextField<String>("middleName").add(new PropertyValidator<>()));
-
         form.add(new SubmitLink("save") {
 
             @Override
             public void onSubmit() {
                 super.onSubmit();
-                AccountPresenter presenter = new AccountPresenter(AccountEditorPanel.this, getModelObject());
-                presenter.onChangeAccountTitle((ChangeAccountPersonCommand) getForm().getDefaultModelObject());
+                presenter().onChangeAccountTitle((ChangeAccountPersonCommand) getForm().getDefaultModelObject());
             }
 
         });
-
         add(form);
     }
 
@@ -87,6 +83,19 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
     @Nonnull
     private AccountApplicationService accountApplicationService() {
         return this.accountApplicationService;
+    }
+
+    @Nonnull
+    private AccountPresenter presenter() {
+        return this.presenter;
+    }
+
+    @Nonnull
+    private static FencedFeedbackPanel feedbackPanelFor(@Nonnull String id, @Nonnull Form<?> form) {
+        ErrorLevelFeedbackMessageFilter feedbackMessageFilter = new ErrorLevelFeedbackMessageFilter(FeedbackMessage.ERROR);
+        FencedFeedbackPanel fencedFeedbackPanel = new FencedFeedbackPanel(id, form, feedbackMessageFilter);
+        fencedFeedbackPanel.add(new HideEmptyFeedbackPanelBehavior());
+        return fencedFeedbackPanel;
     }
 
 }

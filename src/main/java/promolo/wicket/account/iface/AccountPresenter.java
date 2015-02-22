@@ -1,4 +1,6 @@
-package promolo.wicket.account.instractructure.wicket;
+package promolo.wicket.account.iface;
+
+import java.io.Serializable;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -13,7 +15,7 @@ import promolo.wicket.core.application.ApplicationCommandExecutor;
  *
  * @author Александр
  */
-public class AccountPresenter {
+public class AccountPresenter implements Serializable {
 
     private final AccountView accountView;
 
