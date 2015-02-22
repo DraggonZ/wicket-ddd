@@ -1,5 +1,7 @@
 package promolo.wicket.account.instractructure.wicket;
 
+import static promolo.wicket.core.ui.model.Bindgen.*;
+
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
@@ -18,6 +20,7 @@ import org.apache.wicket.model.Model;
 
 import promolo.wicket.account.application.AccountApplicationService;
 import promolo.wicket.account.application.ChangeAccountPersonCommand;
+import promolo.wicket.account.application.ChangeAccountPersonCommandBinding;
 import promolo.wicket.account.domain.Account;
 import promolo.wicket.account.ui.AccountPresenter;
 import promolo.wicket.account.ui.AccountView;
@@ -41,15 +44,17 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
     public AccountEditorPanel(@Nonnull String id, @Nonnull String login) {
         super(id, Model.of(login));
 
+        ChangeAccountPersonCommandBinding binding = new ChangeAccountPersonCommandBinding();
+
         this.presenter = new AccountPresenter(this, login);
 
         this.form = new Form<>("form", new CompoundPropertyModel<>(createCommand()));
         this.form.add(feedbackPanelFor("feedback", this.form));
         this.form.add(new Label("id"));
-        this.form.add(new TextField<String>("title").add(new PropertyValidator<>()));
-        this.form.add(new TextField<String>("lastName").add(new PropertyValidator<>()));
-        this.form.add(new TextField<String>("firstName").add(new PropertyValidator<>()));
-        this.form.add(new TextField<String>("middleName").add(new PropertyValidator<>()));
+        this.form.add(new TextField<>("title", forBinding(binding.title())).add(new PropertyValidator<>()));
+        this.form.add(new TextField<>("lastName", forBinding(binding.lastName())).add(new PropertyValidator<>()));
+        this.form.add(new TextField<>("firstName", forBinding(binding.firstName())).add(new PropertyValidator<>()));
+        this.form.add(new TextField<>("middleName", forBinding(binding.middleName())).add(new PropertyValidator<>()));
         this.form.add(new SubmitLink("save") {
 
             @Override
