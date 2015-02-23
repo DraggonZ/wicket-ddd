@@ -18,9 +18,7 @@ public class HideEmptyFeedbackPanelBehavior extends Behavior {
     @Override
     public void bind(Component component) {
         super.bind(component);
-        if (component instanceof FeedbackPanel) {
-            component.setOutputMarkupPlaceholderTag(true);
-        } else {
+        if (!(component instanceof FeedbackPanel)) {
             throw new IllegalStateException("ожидается панель FeedbackPanel");
         }
     }

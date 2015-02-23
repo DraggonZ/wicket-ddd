@@ -1,20 +1,16 @@
 package promolo.wicket.account.ui;
 
-import java.io.Serializable;
-
 /**
  * TODO javadoc
  *
  * @author Александр
  */
-public interface AccountView extends Serializable {
+public interface AccountView {
 
     public void accountPersonChanged();
 
     public void accountTitleGenerated();
 
-    public void titleAutoGeneratorEnabled();
+    public void titleAutoGeneratorStateChanged(boolean enabled);
 
-    public void titleAutoGeneratorDisabled();
-    
 }

@@ -2,38 +2,40 @@ package promolo.wicket.account.instractructure.wicket;
 
 import static promolo.wicket.core.ui.model.Bindgen.*;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
-import javax.inject.Inject;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.ajax.AjaxChannel;
 import org.apache.wicket.ajax.AjaxRequestHandler;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxIndicatorAware;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.bean.validation.PropertyValidator;
 import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.extensions.ajax.markup.html.AjaxIndicatorAppender;
 import org.apache.wicket.feedback.ContainerFeedbackMessageFilter;
 import org.apache.wicket.feedback.FencedFeedbackPanel;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.SubmitLink;
+import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import promolo.wicket.account.application.AccountApplicationService;
 import promolo.wicket.account.application.ChangeAccountPersonCommand;
 import promolo.wicket.account.application.ChangeAccountPersonCommandBinding;
-import promolo.wicket.account.domain.Account;
 import promolo.wicket.account.ui.AccountPresenter;
 import promolo.wicket.account.ui.AccountView;
 import promolo.wicket.core.ui.component.HideEmptyFeedbackPanelBehavior;
+import promolo.wicket.core.ui.component.RefreshOnAjaxBehavior;
 import promolo.wicket.core.ui.page.NotFoundPage;
 
 /**
@@ -42,9 +44,6 @@ import promolo.wicket.core.ui.page.NotFoundPage;
  * @author Александр
  */
 public class AccountEditorPanel extends GenericPanel<String> implements AccountView {
-
-    @Inject
-    private AccountApplicationService accountApplicationService;
 
     private final AccountPresenter presenter;
 
@@ -57,28 +56,27 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
 
         this.presenter = new AccountPresenter(this, login);
 
-        this.form = new Form<>("form", new CompoundPropertyModel<>(createCommand()));
+        this.form = new AccountForm("form", new CompoundPropertyModel<>(createCommand()));
         this.form.setOutputMarkupId(true);
 
         this.form.add(feedbackPanelFor("feedback", this.form));
         this.form.add(new Label("id"));
         this.form.add(new TitleAutoGeneratorToggler("checkbox"));
 
-        TextField<String> title = new TextField<>("title", forBinding(binding.title()));
+        TextField<String> title = new TextField<>("title", modelOf(binding.title()));
         title.add(new PropertyValidator<>(), new TitleFieldEnabler());
         this.form.add(title);
 
-        this.form.add(new TextField<>("lastName", forBinding(binding.lastName())).add(new PropertyValidator<>(), new TitleAutoUpdater()));
-        this.form.add(new TextField<>("firstName", forBinding(binding.firstName())).add(new PropertyValidator<>(), new TitleAutoUpdater()));
-        this.form.add(new TextField<>("middleName", forBinding(binding.middleName()))
-                .add(new PropertyValidator<>(), new TitleAutoUpdater()));
+        this.form.add(new TextField<>("lastName", modelOf(binding.lastName())).add(new PropertyValidator<>(), new TitleAutoUpdater()));
+        this.form.add(new TextField<>("firstName", modelOf(binding.firstName())).add(new PropertyValidator<>(), new TitleAutoUpdater()));
+        this.form.add(new TextField<>("middleName", modelOf(binding.middleName())).add(new PropertyValidator<>(), new TitleAutoUpdater()));
 
-        this.form.add(new SubmitLink("save") {
+        this.form.add(new AjaxButton("save") {
 
             @Override
-            public void onSubmit() {
-                super.onSubmit();
-                presenter().onChangeAccountPerson(form().getModelObject());
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                super.onSubmit(target, form);
+                presenter().onSaveAccountChanges();
             }
 
         });
@@ -88,54 +86,49 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
 
     @Override
     public void accountPersonChanged() {
-        form().setModelObject(createCommand());
-        success("Операция выполнена успешна.");
+        success("Операция выполнена успешно.");
+        form().modelChanged();
+        ajaxUpdateForm();
     }
 
     @Override
     public void accountTitleGenerated() {
-        AjaxRequestHandler ajaxRequestHandler = getRequestCycle().find(AjaxRequestHandler.class);
-        if (ajaxRequestHandler != null) {
-            ajaxRequestHandler.add(form().get("title")); // FIXME
-        }
+        ajaxUpdateTitle();
     }
 
     @Override
-    public void titleAutoGeneratorEnabled() {
-        form().info("Наименование учетной записи будет сгенерировано автоматически");
-        updateFormViaAjax();
-    }
-
-    @Override
-    public void titleAutoGeneratorDisabled() {
-        form().warn("Наименование учетной записи необходимо указать вручную");
-        updateFormViaAjax();
+    public void titleAutoGeneratorStateChanged(boolean enabled) {
+        title().modelChanged();
+        ajaxUpdateTitle();
     }
 
     @Nonnull
     private ChangeAccountPersonCommand createCommand() {
-        Account account = accountApplicationService().findAccountById(getModelObject());
-        if (account == null) {
+        ChangeAccountPersonCommand command = presenter().refreshModel();
+        if (command == null) {
             getSession().error("Учетная запись с ID " + getModelObject() + "не найдена.");
             throw new RestartResponseAtInterceptPageException(new NotFoundPage());
         }
-        ChangeAccountPersonCommand command =
-                new ChangeAccountPersonCommand(account.id(), account.person().title(), account.person().firstName(),
-                        account.person().middleName(), account.person().lastName());
-        command.setVersion(account.concurrencyVersion());
         return command;
     }
 
-    private void updateFormViaAjax() {
-        AjaxRequestHandler ajaxRequestHandler = getRequestCycle().find(AjaxRequestHandler.class);
+    private void ajaxUpdateForm() {
+        AjaxRequestHandler ajaxRequestHandler = ajaxRequestHandler();
         if (ajaxRequestHandler != null) {
             ajaxRequestHandler.add(form());
         }
     }
 
-    @Nonnull
-    private AccountApplicationService accountApplicationService() {
-        return this.accountApplicationService;
+    private void ajaxUpdateTitle() {
+        AjaxRequestHandler ajaxRequestHandler = ajaxRequestHandler();
+        if (ajaxRequestHandler != null) {
+            ajaxRequestHandler.add(title()); // FIXME
+        }
+    }
+
+    @CheckForNull
+    private AjaxRequestHandler ajaxRequestHandler() {
+        return getRequestCycle().find(AjaxRequestHandler.class);
     }
 
     @Nonnull
@@ -149,14 +142,35 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
     }
 
     @Nonnull
-    private static FencedFeedbackPanel feedbackPanelFor(@Nonnull String id, @Nonnull Form<?> form) {
+    private FormComponent<?> title() {
+        return (FormComponent<?>) form().get("title");
+    }
+
+    @Nonnull
+    private FencedFeedbackPanel feedbackPanelFor(@Nonnull String id, @Nonnull Form<?> form) {
         IFeedbackMessageFilter feedbackMessageFilter = new ContainerFeedbackMessageFilter(form);
         FencedFeedbackPanel fencedFeedbackPanel = new FencedFeedbackPanel(id, form, feedbackMessageFilter);
-        fencedFeedbackPanel.add(new HideEmptyFeedbackPanelBehavior());
+        fencedFeedbackPanel.add(new HideEmptyFeedbackPanelBehavior(), new RefreshOnAjaxBehavior());
         return fencedFeedbackPanel;
     }
 
-    private class TitleAutoGeneratorToggler extends AjaxCheckBox {
+    private final class AccountForm extends Form<ChangeAccountPersonCommand> implements IAjaxIndicatorAware {
+
+        private final AjaxIndicatorAppender indicatorAppender = new AjaxIndicatorAppender();
+
+        public AccountForm(@Nonnull String id, @Nonnull IModel<ChangeAccountPersonCommand> model) {
+            super(id, model);
+            add(this.indicatorAppender);
+        }
+
+        @Override
+        public String getAjaxIndicatorMarkupId() {
+            return this.indicatorAppender.getMarkupId();
+        }
+
+    }
+
+    private final class TitleAutoGeneratorToggler extends AjaxCheckBox {
 
         public TitleAutoGeneratorToggler(@Nonnull String id) {
             super(id, new TitleAutoGeneratorTogglerModel());
@@ -170,11 +184,21 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
 
     }
 
-    private final class TitleAutoGeneratorTogglerModel extends LoadableDetachableModel<Boolean> {
+    private final class TitleAutoGeneratorTogglerModel implements IModel<Boolean> {
 
         @Override
-        protected Boolean load() {
+        public Boolean getObject() {
             return presenter().isTitleAutoGenerationEnabled();
+        }
+
+        @Override
+        public void setObject(Boolean object) {
+            // не используется
+        }
+
+        @Override
+        public void detach() {
+            // nop
         }
 
     }
@@ -206,13 +230,8 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
         }
 
         @Override
-        public boolean isEnabled(Component component) {
-            return presenter().isTitleAutoGenerationEnabled();
-        }
-
-        @Override
         protected void onUpdate(AjaxRequestTarget target) {
-            presenter().onPersonNameUpdated(form().getModelObject());
+            presenter().onPersonNameUpdated();
         }
 
         @Override

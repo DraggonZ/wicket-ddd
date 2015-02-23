@@ -15,15 +15,18 @@ import org.bindgen.BindingRoot;
  */
 public final class Bindgen {
 
-    public static <T> IModel<T> forBinding(@Nonnull Binding<T> binding) {
+    @Nonnull
+    public static <T> IModel<T> modelOf(@Nonnull Binding<T> binding) {
         return new BindgenComponentAssignedModel<>(binding);
     }
 
-    public static <R, T> IModel<T> forBinding(@Nonnull IModel<? extends R> root, @Nonnull BindingRoot<R, T> binding) {
+    @Nonnull
+    public static <R, T> IModel<T> modelOf(@Nonnull IModel<? extends R> root, @Nonnull BindingRoot<R, T> binding) {
         return new DefaultBindgenModel<>(root, binding);
     }
 
-    public static <R extends Serializable, T> IModel<T> forBinding(@Nonnull R root, @Nonnull BindingRoot<R, T> binding) {
+    @Nonnull
+    public static <R extends Serializable, T> IModel<T> modelOf(@Nonnull R root, @Nonnull BindingRoot<R, T> binding) {
         return new DefaultBindgenModel<>(root, binding);
     }
 
