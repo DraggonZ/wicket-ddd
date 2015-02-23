@@ -17,7 +17,7 @@ import promolo.wicket.core.domain.Validation;
  */
 public class Account extends DomainObject implements ConcurrencySafe {
 
-    private Long version;
+    private long version;
 
     @AccountIdConstraint
     private String id;
