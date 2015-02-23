@@ -6,13 +6,14 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
-import org.apache.wicket.cdi.NonContextual;
-
 import promolo.wicket.account.application.AccountApplicationService;
 import promolo.wicket.account.application.ChangeAccountPersonCommand;
 import promolo.wicket.account.domain.Account;
+import promolo.wicket.account.domain.AccountPersonChanged;
 import promolo.wicket.account.domain.PersonTitle;
 import promolo.wicket.core.application.ApplicationCommandExecutor;
+import promolo.wicket.core.domain.DomainEventPublisher;
+import promolo.wicket.core.domain.EventCatcher;
 
 /**
  * TODO javadoc
@@ -36,7 +37,6 @@ public class AccountPresenter implements Serializable {
     public AccountPresenter(@Nonnull AccountView accountView, @Nonnull String accountId) {
         this.accountView = accountView;
         this.accountId = accountId;
-        NonContextual.of(AccountPresenter.class).inject(this);
     }
 
     @Inject
@@ -51,41 +51,48 @@ public class AccountPresenter implements Serializable {
 
     @CheckForNull
     public ChangeAccountPersonCommand refreshModel() {
-        setTitleAutoGenerationEnabled(false);
+        ChangeAccountPersonCommand instance = getCommand();
+        setCommand(null);
         Account account = this.accountApplicationService.findAccountById(accountId());
-        if (account == null) {
-            setCommand(null);
-            return null;
-        } else {
-            ChangeAccountPersonCommand changeAccountPersonCommand = new ChangeAccountPersonCommand(accountId());
-            changeAccountPersonCommand.setVersion(account.concurrencyVersion());
-            changeAccountPersonCommand.setTitle(account.person().title());
-            changeAccountPersonCommand.setFirstName(account.person().firstName());
-            changeAccountPersonCommand.setMiddleName(account.person().middleName());
-            changeAccountPersonCommand.setLastName(account.person().lastName());
-            setCommand(changeAccountPersonCommand);
-            return changeAccountPersonCommand;
+        if (account != null) {
+            if (instance == null) {
+                instance = new ChangeAccountPersonCommand(accountId());
+            }
+            instance.setVersion(account.concurrencyVersion());
+            instance.setTitle(account.person().title());
+            instance.setFirstName(account.person().firstName());
+            instance.setMiddleName(account.person().middleName());
+            instance.setLastName(account.person().lastName());
+            setCommand(instance);
+        }
+        return getCommand();
+    }
+
+    public void onPersonNameUpdated() {
+        if (getCommand() != null && isTitleAutoGenerationEnabled()) {
+            autoGenerateTitle(getCommand());
+            view().accountTitleGenerated();
         }
     }
 
     public void onSaveAccountChanges() {
-        if (command() != null) {
-            this.applicationCommandExecutor.execute(command());
-            refreshModel();
-            view().accountPersonChanged();
-        }
-    }
-
-    public void onPersonNameUpdated() {
-        if (command() != null && isTitleAutoGenerationEnabled()) {
-            autoGenerateTitle(command());
-            view().accountTitleGenerated();
+        if (getCommand() != null) {
+            EventCatcher eventCatcher = EventCatcher.of(AccountPersonChanged.class);
+            DomainEventPublisher.instance().subscribe(eventCatcher);
+            this.applicationCommandExecutor.execute(getCommand());
+            if (eventCatcher.cached()) {
+                setTitleAutoGenerationEnabled(false);
+                refreshModel();
+                view().accountPersonChanged();
+            } else {
+                // TODO ни чего не изменилось
+            }
         }
     }
 
     public void toggleTitleAutoGeneration() {
         setTitleAutoGenerationEnabled(!isTitleAutoGenerationEnabled());
-        autoGenerateTitle(command());
+        autoGenerateTitle(getCommand());
         view().titleAutoGeneratorStateChanged(isTitleAutoGenerationEnabled());
     }
 
@@ -98,7 +105,8 @@ public class AccountPresenter implements Serializable {
         return this.accountId;
     }
 
-    private ChangeAccountPersonCommand command() {
+    @CheckForNull
+    /* package */ ChangeAccountPersonCommand getCommand() {
         return this.command;
     }
 

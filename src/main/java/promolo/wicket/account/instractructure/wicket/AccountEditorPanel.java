@@ -7,16 +7,15 @@ import javax.annotation.Nonnull;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.ajax.AjaxChannel;
 import org.apache.wicket.ajax.AjaxRequestHandler;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxIndicatorAware;
-import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.bean.validation.PropertyValidator;
 import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.cdi.NonContextual;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxIndicatorAppender;
 import org.apache.wicket.feedback.ContainerFeedbackMessageFilter;
 import org.apache.wicket.feedback.FencedFeedbackPanel;
@@ -55,12 +54,14 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
         ChangeAccountPersonCommandBinding binding = new ChangeAccountPersonCommandBinding();
 
         this.presenter = new AccountPresenter(this, login);
+        NonContextual.of(AccountPresenter.class).inject(this.presenter); // TODO подумать над абстракцией
 
-        this.form = new AccountForm("form", new CompoundPropertyModel<>(createCommand()));
+        this.form = new AccountForm("form", new CompoundPropertyModel<>(newCommand()));
         this.form.setOutputMarkupId(true);
 
         this.form.add(feedbackPanelFor("feedback", this.form));
-        this.form.add(new Label("id"));
+        this.form.add(new Label("id", modelOf(binding.id())), new Label("version", modelOf(binding.version())));
+
         this.form.add(new TitleAutoGeneratorToggler("checkbox"));
 
         TextField<String> title = new TextField<>("title", modelOf(binding.title()));
@@ -71,7 +72,7 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
         this.form.add(new TextField<>("firstName", modelOf(binding.firstName())).add(new PropertyValidator<>(), new TitleAutoUpdater()));
         this.form.add(new TextField<>("middleName", modelOf(binding.middleName())).add(new PropertyValidator<>(), new TitleAutoUpdater()));
 
-        this.form.add(new AjaxButton("save") {
+        this.form.add(new AjaxSubmitLink("save") {
 
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
@@ -87,23 +88,21 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
     @Override
     public void accountPersonChanged() {
         success("Операция выполнена успешно.");
-        form().modelChanged();
-        ajaxUpdateForm();
+        ajaxUpdate(form());
     }
 
     @Override
     public void accountTitleGenerated() {
-        ajaxUpdateTitle();
+        ajaxUpdate(title());
     }
 
     @Override
     public void titleAutoGeneratorStateChanged(boolean enabled) {
-        title().modelChanged();
-        ajaxUpdateTitle();
+        ajaxUpdate(title());
     }
 
     @Nonnull
-    private ChangeAccountPersonCommand createCommand() {
+    private ChangeAccountPersonCommand newCommand() {
         ChangeAccountPersonCommand command = presenter().refreshModel();
         if (command == null) {
             getSession().error("Учетная запись с ID " + getModelObject() + "не найдена.");
@@ -112,17 +111,10 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
         return command;
     }
 
-    private void ajaxUpdateForm() {
+    private void ajaxUpdate(@Nonnull Component target) {
         AjaxRequestHandler ajaxRequestHandler = ajaxRequestHandler();
         if (ajaxRequestHandler != null) {
-            ajaxRequestHandler.add(form());
-        }
-    }
-
-    private void ajaxUpdateTitle() {
-        AjaxRequestHandler ajaxRequestHandler = ajaxRequestHandler();
-        if (ajaxRequestHandler != null) {
-            ajaxRequestHandler.add(title()); // FIXME
+            ajaxRequestHandler.add(target);
         }
     }
 
@@ -179,7 +171,6 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
         @Override
         protected void onUpdate(AjaxRequestTarget target) {
             presenter().toggleTitleAutoGeneration();
-            target.add(form());
         }
 
     }
@@ -232,12 +223,6 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
         @Override
         protected void onUpdate(AjaxRequestTarget target) {
             presenter().onPersonNameUpdated();
-        }
-
-        @Override
-        protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
-            super.updateAjaxAttributes(attributes);
-            attributes.setChannel(new AjaxChannel("ChangeTitleChannel", AjaxChannel.Type.DROP));
         }
 
     }
