@@ -29,16 +29,24 @@ public class AccountPresenter implements Serializable {
 
     private ChangeAccountPersonCommand command;
 
-    @Inject
     private AccountApplicationService accountApplicationService;
 
-    @Inject
     private ApplicationCommandExecutor applicationCommandExecutor;
 
     public AccountPresenter(@Nonnull AccountView accountView, @Nonnull String accountId) {
         this.accountView = accountView;
         this.accountId = accountId;
         NonContextual.of(AccountPresenter.class).inject(this);
+    }
+
+    @Inject
+    public void setAccountApplicationService(@Nonnull AccountApplicationService accountApplicationService) {
+        this.accountApplicationService = accountApplicationService;
+    }
+
+    @Inject
+    public void setApplicationCommandExecutor(@Nonnull ApplicationCommandExecutor applicationCommandExecutor) {
+        this.applicationCommandExecutor = applicationCommandExecutor;
     }
 
     @CheckForNull
