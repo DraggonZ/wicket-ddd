@@ -38,7 +38,7 @@ public final class EventCatcher<T> implements DomainEventSubscriber<T> {
         return this.event;
     }
 
-    public boolean cached() {
+    public boolean catched() {
         return this.cached;
     }
 

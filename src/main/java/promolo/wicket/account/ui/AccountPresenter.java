@@ -80,7 +80,7 @@ public class AccountPresenter implements Serializable {
             EventCatcher eventCatcher = EventCatcher.of(AccountPersonChanged.class);
             DomainEventPublisher.instance().subscribe(eventCatcher);
             this.applicationCommandExecutor.execute(getCommand());
-            if (eventCatcher.cached()) {
+            if (eventCatcher.catched()) {
                 setTitleAutoGenerationEnabled(false);
                 refreshModel();
                 view().accountPersonChanged();
