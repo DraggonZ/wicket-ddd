@@ -5,8 +5,6 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
-import org.apache.commons.lang3.StringUtils;
-
 import promolo.wicket.account.application.ChangeAccountPersonCommand;
 import promolo.wicket.account.domain.Account;
 import promolo.wicket.account.domain.AccountRepository;
@@ -31,11 +29,7 @@ public class ChangeAccountPersonCommandHandler {
             throw new IllegalStateException("не найдена учетная запись " + command.getId());
         }
         account.failWhenConcurrencyViolation(command.getVersion());
-        if (StringUtils.isEmpty(command.getTitle())) {
-            account.changePerson(new Person(command.getFirstName(), command.getMiddleName(), command.getLastName()));
-        } else {
-            account.changePerson(new Person(command.getTitle(), command.getFirstName(), command.getMiddleName(), command.getLastName()));
-        }
+        account.changePerson(new Person(command.getTitle(), command.getFirstName(), command.getMiddleName(), command.getLastName()));
     }
 
 }

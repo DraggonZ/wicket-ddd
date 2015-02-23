@@ -3,7 +3,6 @@ package promolo.wicket.account.domain;
 import static org.apache.commons.lang3.StringUtils.*;
 
 import javax.annotation.Nonnull;
-import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -20,7 +19,6 @@ import promolo.wicket.core.domain.Validation;
  */
 public class Person extends DomainObject {
 
-    @NotNull(message = "наименование пользователя не указано")
     @PersonTitleConstraint
     private String title;
 
