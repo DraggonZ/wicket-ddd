@@ -2,9 +2,9 @@
   "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
   <head>
-    <title>Account Presenter</title>
-    <link rel="stylesheet" href="/css/bootstrap.css">
-    <link rel="stylesheet" href="/css/bootstrap-theme.css">
+    <title>Account Layout</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
     <meta charset="UTF-8">
     <style type="text/css">
       .alert > ul {
@@ -182,6 +182,7 @@
     </wicket:remove>
     <script type="text/javascript" src="js/bootstrap.js"></script>
     <script type="text/javascript">
+
       if (typeof Accounts === 'undefined') {
         var Accounts = {};
       }
@@ -200,6 +201,7 @@
         var radio = row.find('td:first input');
         radio.prop('checked', true);
       };
+
       Accounts.init('.table.accounts');
     </script>
   </body>
