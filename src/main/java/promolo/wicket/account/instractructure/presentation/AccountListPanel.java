@@ -38,8 +38,6 @@ public class AccountListPanel extends Panel {
     public AccountListPanel(String id) {
         super(id);
 
-        setVersioned(false);
-
         WebMarkupContainer tableWrapper = new WebMarkupContainer("tableWrapper");
         tableWrapper.setOutputMarkupId(true);
 

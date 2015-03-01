@@ -18,9 +18,9 @@ public class AccountLayoutPresenter implements Serializable {
     }
 
     public void onAccountRecordSelected(@Nonnull AccountRecordSelected selected) {
-        selected.toString();
+        selected.toString(); // FIXME
     }
-    
+
     @Nonnull
     private AccountLayoutView view() {
         return this.view;
