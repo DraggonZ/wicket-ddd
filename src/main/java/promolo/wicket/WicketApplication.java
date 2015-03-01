@@ -10,6 +10,9 @@ import org.apache.wicket.cdi.ConversationPropagation;
 import org.apache.wicket.core.request.handler.IPageRequestHandler;
 import org.apache.wicket.core.request.handler.PageProvider;
 import org.apache.wicket.core.request.handler.RenderPageRequestHandler;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.IRequestHandler;
@@ -43,9 +46,12 @@ public class WicketApplication extends WebApplication {
     @Override
     public void init() {
         super.init();
-        getResourceSettings().setResourcePollFrequency(null); // TODO на WildFly под Windows зависает время от времени
+
         new BeanValidationConfiguration().configure(this);
         new CdiConfiguration().setPropagation(ConversationPropagation.NONE).configure(this);
+
+        getResourceSettings().setResourcePollFrequency(null); // TODO на WildFly под Windows зависает время от времени
+        getMarkupSettings().setStripWicketTags(true);
         getRequestCycleListeners().add(new PageRequestHandlerTracker());
         getRequestCycleListeners().add(new AbstractRequestCycleListener() {
 
@@ -68,6 +74,15 @@ public class WicketApplication extends WebApplication {
             public void onDetach(RequestCycle cycle) {
                 super.onDetach(cycle);
                 WicketApplication.this.domainEventPublisherCleaner.cleanup();
+            }
+
+        });
+        getHeaderContributorListenerCollection().add(new IHeaderContributor() {
+
+            @Override
+            public void renderHead(IHeaderResponse response) {
+                response.render(JavaScriptHeaderItem.forReference(getJavaScriptLibrarySettings().getJQueryReference()));
+                response.render(JavaScriptHeaderItem.forUrl("js/bootstrap.js", "bootstrap-js"));
             }
 
         });

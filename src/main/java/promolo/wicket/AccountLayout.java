@@ -12,6 +12,9 @@ public class AccountLayout extends WebPage {
 
     public AccountLayout(PageParameters parameters) {
         super(parameters);
+        add(new BootstrapFeedbackPanel("errorFeedbackWrapper", BootstrapFeedbackKind.ERROR));
+        add(new BootstrapFeedbackPanel("warningFeedbackWrapper", BootstrapFeedbackKind.WARNING));
+        add(new BootstrapFeedbackPanel("successFeedbackWrapper", BootstrapFeedbackKind.SUCCESS));
     }
 
 }
