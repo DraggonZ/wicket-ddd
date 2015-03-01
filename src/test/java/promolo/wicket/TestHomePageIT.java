@@ -7,9 +7,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-/**
- * Simple test using the WicketTester
- */
+import promolo.wicket.account.instractructure.presentation.AccountLayout;
+
 public class TestHomePageIT {
 
     private final Weld weld = new Weld();
@@ -33,10 +32,8 @@ public class TestHomePageIT {
 
     @Test(enabled = false)
     public void homepageRendersSuccessfully() {
-        //start and render the test page
-        this.tester.startPage(HomePage.class);
-        //assert rendered page class
-        this.tester.assertRenderedPage(HomePage.class);
+        this.tester.startPage(AccountLayout.class);
+        this.tester.assertRenderedPage(AccountLayout.class);
     }
 
 }
