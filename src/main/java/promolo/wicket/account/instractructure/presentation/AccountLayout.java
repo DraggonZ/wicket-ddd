@@ -19,11 +19,13 @@ import promolo.wicket.core.ui.component.ViewEventForwardingBehavior;
  *
  * @author Александр
  */
-public class AccountLayout extends WebPage implements IAjaxIndicatorAware, AccountLayoutView {
+public class AccountLayout extends WebPage implements AccountLayoutView, IAjaxIndicatorAware {
 
     private final AjaxIndicatorAppender indicatorAppender = new AjaxIndicatorAppender();
 
     private final AccountLayoutPresenter accountLayoutPresenter = new AccountLayoutPresenter(this);
+
+    private final AccountEditorPanel accountEditorPanel = new AccountEditorPanel("accountEditorPanel");
 
     public AccountLayout(PageParameters parameters) {
         super(parameters);
@@ -40,9 +42,14 @@ public class AccountLayout extends WebPage implements IAjaxIndicatorAware, Accou
         add(new BootstrapFeedbackPanel("warningFeedbackWrapper", BootstrapFeedbackKind.WARNING));
         add(new BootstrapFeedbackPanel("successFeedbackWrapper", BootstrapFeedbackKind.SUCCESS));
 
-        add(new AccountEditorPanel("accountEditorPanel"));
+        add(this.accountEditorPanel);
         add(new AccountListPanel("accountListPanel"));
         add(new AccountControlPanel("accountControlPanel"));
+    }
+
+    @Override
+    public void showAccountEditor(@Nonnull String id) {
+        this.accountEditorPanel.editAccount(id);
     }
 
     @Override
@@ -54,5 +61,4 @@ public class AccountLayout extends WebPage implements IAjaxIndicatorAware, Accou
     private AccountLayoutPresenter accountLayoutPresenter() {
         return this.accountLayoutPresenter;
     }
-
 }

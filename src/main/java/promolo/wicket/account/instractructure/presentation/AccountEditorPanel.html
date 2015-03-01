@@ -3,7 +3,13 @@
   <head>
     <wicket:head>
       <style type="text/css">
-        form.account-edit .person .input-group-addon {
+        .account-edit .version {
+          font-size: 11px;
+          color: #aaa;
+          vertical-align: text-top;
+        }
+
+        .account-edit .person .input-group-addon {
           min-width: 100px;
           text-align: left;
         }
@@ -12,27 +18,31 @@
   </head>
   <body>
     <wicket:panel>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <div>Новая учетная запись</div>
+      <div class="account-edit panel panel-default">
+        <div class="panel-heading" wicket:id="panelTitleWrapper">
+          <span wicket:id="panelTitle"></span>
+          <span class="version" wicket:enclosure="versionLabel"> версия <span wicket:id="versionLabel"></span></span>
         </div>
         <div class="panel-body">
-          <form class="account-edit">
+          <div wicket:id="selectAccountAdviceBanner">
+            <p class="text-muted">Выберите учетную запись для редактирования из списка, либо нажмите клавишу "Добавить" для создания новой учетной записи.</p>
+          </div>
+          <form class="account-edit" wicket:id="form">
             <div>
               <fieldset class="account">
                 <legend><span class="glyphicon glyphicon-warning-sign"></span> ID</legend>
                 <div class="form-group">
                   <div class="input-group">
-                    <input type="text" class="form-control" id="id" aria-describedby="basic-id" placeholder="Идентификатор учетной записи">
-                    <span class="input-group-addon" id="basic-id">@promolo.pro</span>
+                    <input type="text" class="form-control" placeholder="Идентификатор учетной записи" wicket:id="id">
+                    <span class="input-group-addon">@promolo.pro</span>
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="input-group">
                       <span class="input-group-addon">
-                        <input type="checkbox" checked="checked">
+                        <input type="checkbox">
                       </span>
-                    <input type="text" class="form-control" placeholder="Отображаемое имя" disabled="disabled">
+                    <input type="text" class="form-control" placeholder="Отображаемое имя" wicket:id="title">
                   </div>
                 </div>
               </fieldset>
@@ -40,20 +50,20 @@
                 <legend><span class="glyphicon glyphicon-user"></span> Персональные данные</legend>
                 <div class="form-group">
                   <div class="input-group">
-                    <span class="input-group-addon" aria-describedby="lastName">Фамилия</span>
-                    <input type="text" class="form-control" id="lastName">
+                    <span class="input-group-addon">Фамилия</span>
+                    <input type="text" class="form-control" wicket:id="lastName">
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="input-group">
-                    <span class="input-group-addon" aria-describedby="firstName">Имя</span>
-                    <input type="text" class="form-control" id="firstName">
+                    <span class="input-group-addon">Имя</span>
+                    <input type="text" class="form-control" wicket:id="firstName">
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="input-group">
-                    <span class="input-group-addon" aria-describedby="middleName">Отчество</span>
-                    <input type="text" class="form-control" id="middleName">
+                    <span class="input-group-addon">Отчество</span>
+                    <input type="text" class="form-control" wicket:id="middleName">
                   </div>
                 </div>
               </fieldset>

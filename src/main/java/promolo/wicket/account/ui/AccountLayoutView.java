@@ -2,6 +2,8 @@ package promolo.wicket.account.ui;
 
 import java.io.Serializable;
 
+import javax.annotation.Nonnull;
+
 /**
  * TODO javadoc
  *
@@ -9,4 +11,6 @@ import java.io.Serializable;
  */
 public interface AccountLayoutView extends Serializable {
 
+    public void showAccountEditor(@Nonnull String id);
+    
 }

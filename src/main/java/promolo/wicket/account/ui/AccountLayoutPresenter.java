@@ -13,12 +13,15 @@ public class AccountLayoutPresenter implements Serializable {
 
     private final AccountLayoutView view;
 
+    private String selectedAccountId;
+
     public AccountLayoutPresenter(@Nonnull AccountLayoutView view) {
         this.view = view;
     }
 
     public void onAccountRecordSelected(@Nonnull AccountRecordSelected selected) {
-        selected.toString(); // FIXME
+        setSelectedAccountId(selected.accountRecord().getId());
+        view().showAccountEditor(selectedAccountId());
     }
 
     @Nonnull
@@ -27,4 +30,11 @@ public class AccountLayoutPresenter implements Serializable {
 
     }
 
+    private String selectedAccountId() {
+        return this.selectedAccountId;
+    }
+
+    private void setSelectedAccountId(String selectedAccountId) {
+        this.selectedAccountId = selectedAccountId;
+    }
 }
