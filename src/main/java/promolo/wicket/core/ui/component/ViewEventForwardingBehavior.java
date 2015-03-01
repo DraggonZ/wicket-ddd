@@ -1,4 +1,4 @@
-package promolo.wicket.account.instractructure.presentation;
+package promolo.wicket.core.ui.component;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;

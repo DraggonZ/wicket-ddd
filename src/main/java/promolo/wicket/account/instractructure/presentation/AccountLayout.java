@@ -14,6 +14,7 @@ import promolo.wicket.account.ui.AccountLayoutView;
 import promolo.wicket.account.ui.AccountRecordSelected;
 import promolo.wicket.core.ui.bootstrap.BootstrapFeedbackKind;
 import promolo.wicket.core.ui.bootstrap.BootstrapFeedbackPanel;
+import promolo.wicket.core.ui.component.ViewEventForwardingBehavior;
 
 /**
  * TODO javadoc
