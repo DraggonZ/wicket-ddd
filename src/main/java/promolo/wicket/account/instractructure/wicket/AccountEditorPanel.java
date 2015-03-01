@@ -42,6 +42,7 @@ import promolo.wicket.core.ui.page.NotFoundPage;
  *
  * @author Александр
  */
+@Deprecated
 public class AccountEditorPanel extends GenericPanel<String> implements AccountView {
 
     private final AccountPresenter presenter;
