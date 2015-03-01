@@ -18,6 +18,15 @@ public class AccountLayout extends WebPage {
         add(new BootstrapFeedbackPanel("errorFeedbackWrapper", BootstrapFeedbackKind.ERROR));
         add(new BootstrapFeedbackPanel("warningFeedbackWrapper", BootstrapFeedbackKind.WARNING));
         add(new BootstrapFeedbackPanel("successFeedbackWrapper", BootstrapFeedbackKind.SUCCESS));
+        add(new AccountEditorPanel("accountEditorPanel"));
+        add(new AccountListPanel("accountListPanel"));
+        add(new AccountControlPanel("accountControlPanel"));
     }
 
+    @Override
+    protected void onConfigure() {
+        super.onConfigure();
+        success("Тест");
+    }
+    
 }

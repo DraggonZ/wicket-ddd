@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+  <head>
+    <wicket:head>
+      <style type="text/css">
+        form.account-edit .person .input-group-addon {
+          min-width: 100px;
+          text-align: left;
+        }
+      </style>
+    </wicket:head>
+  </head>
+  <body>
+    <wicket:panel>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div>Новая учетная запись</div>
+        </div>
+        <div class="panel-body">
+          <form class="account-edit">
+            <div>
+              <fieldset class="account">
+                <legend><span class="glyphicon glyphicon-warning-sign"></span> ID</legend>
+                <div class="form-group">
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="id" aria-describedby="basic-id" placeholder="Идентификатор учетной записи">
+                    <span class="input-group-addon" id="basic-id">@promolo.pro</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                      <span class="input-group-addon">
+                        <input type="checkbox" checked="checked">
+                      </span>
+                    <input type="text" class="form-control" placeholder="Отображаемое имя" disabled="disabled">
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset class="person">
+                <legend><span class="glyphicon glyphicon-user"></span> Персональные данные</legend>
+                <div class="form-group">
+                  <div class="input-group">
+                    <span class="input-group-addon" aria-describedby="lastName">Фамилия</span>
+                    <input type="text" class="form-control" id="lastName">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <span class="input-group-addon" aria-describedby="firstName">Имя</span>
+                    <input type="text" class="form-control" id="firstName">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <span class="input-group-addon" aria-describedby="middleName">Отчество</span>
+                    <input type="text" class="form-control" id="middleName">
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+          </form>
+        </div>
+      </div>
+    </wicket:panel>
+  </body>
+</html>
