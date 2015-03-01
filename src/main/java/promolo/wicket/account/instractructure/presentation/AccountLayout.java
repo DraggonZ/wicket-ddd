@@ -1,11 +1,15 @@
 package promolo.wicket.account.instractructure.presentation;
 
+import javax.annotation.Nonnull;
+
 import org.apache.wicket.ajax.IAjaxIndicatorAware;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxIndicatorAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import promolo.wicket.account.ui.AccountLayoutPresenter;
+import promolo.wicket.account.ui.AccountLayoutView;
 import promolo.wicket.core.ui.bootstrap.BootstrapFeedbackKind;
 import promolo.wicket.core.ui.bootstrap.BootstrapFeedbackPanel;
 
@@ -14,9 +18,11 @@ import promolo.wicket.core.ui.bootstrap.BootstrapFeedbackPanel;
  *
  * @author Александр
  */
-public class AccountLayout extends WebPage implements IAjaxIndicatorAware {
+public class AccountLayout extends WebPage implements IAjaxIndicatorAware, AccountLayoutView {
 
     private final AjaxIndicatorAppender indicatorAppender = new AjaxIndicatorAppender();
+
+    private final AccountLayoutPresenter accountLayoutPresenter = new AccountLayoutPresenter(this);
 
     public AccountLayout(PageParameters parameters) {
         super(parameters);
@@ -35,14 +41,20 @@ public class AccountLayout extends WebPage implements IAjaxIndicatorAware {
     }
 
     @Override
+    public String getAjaxIndicatorMarkupId() {
+        return this.indicatorAppender.getMarkupId();
+    }
+
+    @Override
     protected void onConfigure() {
         super.onConfigure();
         success("Тест");
     }
 
-    @Override
-    public String getAjaxIndicatorMarkupId() {
-        return this.indicatorAppender.getMarkupId();
+    @Nonnull
+    private AccountLayoutPresenter accountLayoutPresenter() {
+        return this.accountLayoutPresenter;
+
     }
 
 }
