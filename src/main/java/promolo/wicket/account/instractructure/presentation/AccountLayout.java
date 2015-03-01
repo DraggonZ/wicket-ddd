@@ -12,6 +12,7 @@ import promolo.wicket.account.ui.AccountLayoutPresenter;
 import promolo.wicket.account.ui.AccountLayoutView;
 import promolo.wicket.core.ui.bootstrap.BootstrapFeedbackKind;
 import promolo.wicket.core.ui.bootstrap.BootstrapFeedbackPanel;
+import promolo.wicket.core.ui.component.RefreshOnAjaxBehavior;
 import promolo.wicket.core.ui.component.ViewEventForwardingBehavior;
 
 /**
@@ -38,9 +39,9 @@ public class AccountLayout extends WebPage implements AccountLayoutView, IAjaxIn
         ajaxBusyIndicator.add(this.indicatorAppender);
         add(ajaxBusyIndicator);
 
-        add(new BootstrapFeedbackPanel("errorFeedbackWrapper", BootstrapFeedbackKind.ERROR));
-        add(new BootstrapFeedbackPanel("warningFeedbackWrapper", BootstrapFeedbackKind.WARNING));
-        add(new BootstrapFeedbackPanel("successFeedbackWrapper", BootstrapFeedbackKind.SUCCESS));
+        add(new BootstrapFeedbackPanel("errorFeedbackWrapper", BootstrapFeedbackKind.ERROR).add(RefreshOnAjaxBehavior.INSTANCE));
+        add(new BootstrapFeedbackPanel("warningFeedbackWrapper", BootstrapFeedbackKind.WARNING).add(RefreshOnAjaxBehavior.INSTANCE));
+        add(new BootstrapFeedbackPanel("successFeedbackWrapper", BootstrapFeedbackKind.SUCCESS).add(RefreshOnAjaxBehavior.INSTANCE));
 
         add(this.accountEditorPanel);
         add(new AccountListPanel("accountListPanel"));

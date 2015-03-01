@@ -11,6 +11,8 @@ import org.apache.wicket.behavior.Behavior;
  */
 public class HideEmptyComponent extends Behavior {
 
+    public static final HideEmptyComponent INSTANCE = new HideEmptyComponent();
+
     public HideEmptyComponent() {
         super();
     }

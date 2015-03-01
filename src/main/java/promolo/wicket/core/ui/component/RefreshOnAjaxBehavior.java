@@ -13,6 +13,8 @@ import org.apache.wicket.event.IEvent;
  */
 public class RefreshOnAjaxBehavior extends Behavior implements IAjaxRegionMarkupIdProvider {
 
+    public static final RefreshOnAjaxBehavior INSTANCE = new RefreshOnAjaxBehavior();
+
     public RefreshOnAjaxBehavior() {
         super();
     }

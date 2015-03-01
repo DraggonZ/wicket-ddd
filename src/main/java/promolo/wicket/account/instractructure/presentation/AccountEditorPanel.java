@@ -5,6 +5,8 @@ import javax.inject.Inject;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestHandler;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.bean.validation.PropertyValidator;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -41,8 +43,8 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> {
 
         WebMarkupContainer panelTitleWrapper = new WebMarkupContainer("panelTitleWrapper");
         panelTitleWrapper.setOutputMarkupId(true);
-        panelTitleWrapper.add(new Label("panelTitle", new PanelTitleModel()).add(new HideEmptyComponent()));
-        panelTitleWrapper.add(new Label("versionLabel", new VersionModel()).add(new HideEmptyComponent()));
+        panelTitleWrapper.add(new Label("panelTitle", new PanelTitleModel()).add(HideEmptyComponent.INSTANCE));
+        panelTitleWrapper.add(new Label("versionLabel", new VersionModel()).add(HideEmptyComponent.INSTANCE));
         add(panelTitleWrapper);
 
         WebMarkupContainer selectAccountAdviceBanner = new WebMarkupContainer("selectAccountAdviceBanner");
@@ -51,7 +53,8 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> {
 
         AccountEditModelBinding binding = new AccountEditModelBinding();
         Form<AccountEditModel> form = new Form<>("form", new CompoundPropertyModel<>(getModel()));
-        form.add(new HideEmptyComponent());
+        form.setOutputMarkupId(true);
+        form.add(HideEmptyComponent.INSTANCE);
 
         TextField<String> idTextField = new TextField<>("id", Bindgen.modelOf(binding.id()));
         idTextField.add(new PropertyValidator<String>(), new DisableForExistingAccount());
@@ -72,6 +75,22 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> {
         TextField<String> lastNameTextField = new TextField<>("lastName", Bindgen.modelOf(binding.lastName()));
         lastNameTextField.add(new PropertyValidator<String>());
         form.add(lastNameTextField);
+
+        form.add(new AjaxSubmitLink("save") {
+
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                super.onSubmit(target, form);
+                // TODO
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                super.onError(target, form);
+                target.add(form);
+            }
+
+        });
 
         add(form);
     }
