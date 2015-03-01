@@ -29,6 +29,8 @@ public class AccountLayout extends WebPage implements IAjaxIndicatorAware, Accou
     public AccountLayout(PageParameters parameters) {
         super(parameters);
 
+        add(new ViewEventForwardingBehavior(accountLayoutPresenter()));
+
         WebMarkupContainer ajaxBusyIndicator = new WebMarkupContainer("ajaxBusyIndicator");
         ajaxBusyIndicator.add(this.indicatorAppender);
         add(ajaxBusyIndicator);
