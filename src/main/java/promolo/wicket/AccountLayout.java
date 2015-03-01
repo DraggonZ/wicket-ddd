@@ -3,6 +3,9 @@ package promolo.wicket;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import promolo.wicket.core.ui.bootstrap.BootstrapFeedbackKind;
+import promolo.wicket.core.ui.bootstrap.BootstrapFeedbackPanel;
+
 /**
  * TODO javadoc
  *

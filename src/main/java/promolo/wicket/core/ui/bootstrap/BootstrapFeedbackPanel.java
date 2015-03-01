@@ -1,4 +1,4 @@
-package promolo.wicket;
+package promolo.wicket.core.ui.bootstrap;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
