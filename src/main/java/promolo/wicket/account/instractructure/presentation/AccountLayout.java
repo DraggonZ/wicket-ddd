@@ -3,7 +3,6 @@ package promolo.wicket.account.instractructure.presentation;
 import javax.annotation.Nonnull;
 
 import org.apache.wicket.ajax.IAjaxIndicatorAware;
-import org.apache.wicket.event.IEvent;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxIndicatorAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
@@ -11,7 +10,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import promolo.wicket.account.ui.AccountLayoutPresenter;
 import promolo.wicket.account.ui.AccountLayoutView;
-import promolo.wicket.account.ui.AccountRecordSelected;
 import promolo.wicket.core.ui.bootstrap.BootstrapFeedbackKind;
 import promolo.wicket.core.ui.bootstrap.BootstrapFeedbackPanel;
 import promolo.wicket.core.ui.component.ViewEventForwardingBehavior;
@@ -50,18 +48,9 @@ public class AccountLayout extends WebPage implements IAjaxIndicatorAware, Accou
         return this.indicatorAppender.getMarkupId();
     }
 
-    @Override
-    public void onEvent(IEvent<?> event) {
-        super.onEvent(event);
-        if (event.getPayload() instanceof AccountRecordSelected) {
-            event.getPayload().toString();
-        }
-    }
-
     @Nonnull
     private AccountLayoutPresenter accountLayoutPresenter() {
         return this.accountLayoutPresenter;
-
     }
 
 }
