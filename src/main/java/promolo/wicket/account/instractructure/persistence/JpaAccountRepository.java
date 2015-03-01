@@ -1,9 +1,12 @@
 package promolo.wicket.account.instractructure.persistence;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import promolo.wicket.account.domain.Account;
 import promolo.wicket.account.domain.AccountRepository;
@@ -27,6 +30,13 @@ public class JpaAccountRepository implements AccountRepository {
     @Override
     public Account findById(@Nonnull String id) {
         return this.entityManager.find(Account.class, id);
+    }
+
+    @Nonnull
+    @Override
+    public List<Account> listAll() {
+        TypedQuery<Account> query = this.entityManager.createQuery("from Account order by id asc", Account.class);
+        return query.getResultList();
     }
 
 }

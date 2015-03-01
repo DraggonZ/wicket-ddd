@@ -91,7 +91,8 @@ public class Person extends DomainObject {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("title", this.title).append("firstName", this.firstName)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("getTitle", this.title)
+                .append("firstName", this.firstName)
                 .append("middleName", this.middleName).append("lastName", this.lastName).toString();
     }
 

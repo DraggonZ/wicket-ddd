@@ -1,5 +1,7 @@
 package promolo.wicket.account.domain;
 
+import java.util.List;
+
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
@@ -14,5 +16,8 @@ public interface AccountRepository {
 
     @CheckForNull
     public Account findById(@Nonnull String id);
+
+    @Nonnull
+    public List<Account> listAll();
 
 }

@@ -136,7 +136,7 @@ public class AccountEditorPanel extends GenericPanel<String> implements AccountV
 
     @Nonnull
     private FormComponent<?> title() {
-        return (FormComponent<?>) form().get("title");
+        return (FormComponent<?>) form().get("getTitle");
     }
 
     @Nonnull

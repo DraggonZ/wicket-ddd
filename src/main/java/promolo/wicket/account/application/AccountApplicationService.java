@@ -2,20 +2,18 @@ package promolo.wicket.account.application;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 
 import promolo.wicket.account.domain.Account;
 import promolo.wicket.account.domain.AccountRepository;
+import promolo.wicket.core.application.stereotype.ApplicationComponent;
 
 /**
  * TODO javadoc
  *
  * @author Александр
  */
-@ApplicationScoped
-@Transactional
+@ApplicationComponent
 public class AccountApplicationService {
 
     @Inject

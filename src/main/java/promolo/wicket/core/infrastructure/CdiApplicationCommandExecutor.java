@@ -1,15 +1,14 @@
 package promolo.wicket.core.infrastructure;
 
 import javax.annotation.Nonnull;
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 
 import promolo.wicket.core.application.ApplicationCommand;
 import promolo.wicket.core.application.ApplicationCommandExecutor;
 import promolo.wicket.core.application.ApplicationCommandHandler;
 import promolo.wicket.core.application.ApplicationCommandHandlerRegistry;
+import promolo.wicket.core.application.stereotype.ApplicationComponent;
 import promolo.wicket.core.domain.DomainEvent;
 import promolo.wicket.core.domain.DomainEventPublisher;
 import promolo.wicket.core.domain.DomainEventSubscriber;
@@ -19,8 +18,7 @@ import promolo.wicket.core.domain.DomainEventSubscriber;
  *
  * @author Александр
  */
-@ApplicationScoped
-@Transactional
+@ApplicationComponent
 public class CdiApplicationCommandExecutor implements ApplicationCommandExecutor {
 
     @Inject
