@@ -4,11 +4,15 @@ import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxChannel;
 import org.apache.wicket.ajax.AjaxRequestHandler;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.bean.validation.PropertyValidator;
 import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -22,6 +26,7 @@ import promolo.wicket.account.application.AccountApplicationService;
 import promolo.wicket.account.domain.Account;
 import promolo.wicket.account.ui.AccountEditModel;
 import promolo.wicket.account.ui.AccountEditModelBinding;
+import promolo.wicket.account.ui.AccountEditModelChanged;
 import promolo.wicket.core.ui.component.HideEmptyComponent;
 import promolo.wicket.core.ui.model.Bindgen;
 
@@ -31,6 +36,8 @@ import promolo.wicket.core.ui.model.Bindgen;
  * @author Александр
  */
 public class AccountEditorPanel extends GenericPanel<AccountEditModel> {
+
+    private static final AjaxChannel SUBMIT_AJAX_CHANNEL = new AjaxChannel("AccountEditorChannel", AjaxChannel.Type.ACTIVE);
 
     @Inject
     private AccountApplicationService accountApplicationService;
@@ -65,15 +72,15 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> {
         form.add(titleTextField);
 
         TextField<String> firstNameTextField = new TextField<>("firstName", Bindgen.modelOf(binding.firstName()));
-        firstNameTextField.add(new PropertyValidator<String>());
+        firstNameTextField.add(new PropertyValidator<String>(), new NameFieldUpdatedHandler());
         form.add(firstNameTextField);
 
         TextField<String> middleNameTextField = new TextField<>("middleName", Bindgen.modelOf(binding.middleName()));
-        middleNameTextField.add(new PropertyValidator<String>());
+        middleNameTextField.add(new PropertyValidator<String>(), new NameFieldUpdatedHandler());
         form.add(middleNameTextField);
 
         TextField<String> lastNameTextField = new TextField<>("lastName", Bindgen.modelOf(binding.lastName()));
-        lastNameTextField.add(new PropertyValidator<String>());
+        lastNameTextField.add(new PropertyValidator<String>(), new NameFieldUpdatedHandler());
         form.add(lastNameTextField);
 
         form.add(new AjaxSubmitLink("save") {
@@ -81,13 +88,20 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
-                // TODO
+                // TODO выполнить сохранение
+                send(getPage(), Broadcast.BREADTH, new AccountEditModelChanged(getModelObject()));
             }
 
             @Override
             protected void onError(AjaxRequestTarget target, Form<?> form) {
                 super.onError(target, form);
                 target.add(form);
+            }
+
+            @Override
+            protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+                super.updateAjaxAttributes(attributes);
+                attributes.setChannel(SUBMIT_AJAX_CHANNEL);
             }
 
         });
@@ -163,6 +177,19 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> {
         public void onConfigure(Component component) {
             super.onConfigure(component);
             component.setEnabled(getModelObject().getId() == null);
+        }
+
+    }
+
+    private final class NameFieldUpdatedHandler extends AjaxFormComponentUpdatingBehavior {
+
+        public NameFieldUpdatedHandler() {
+            super("onchange");
+        }
+
+        @Override
+        protected void onUpdate(AjaxRequestTarget target) {
+            // TODO нотификация Presenter
         }
 
     }

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.wicket.ajax.AjaxChannel;
+import org.apache.wicket.ajax.AjaxRequestHandler;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
@@ -73,6 +74,13 @@ public class AccountListPanel extends Panel {
         radioGroup.add(listView);
 
         add(tableWrapper);
+    }
+
+    public void refreshList() {
+        AjaxRequestHandler ajaxRequestHandler = getRequestCycle().find(AjaxRequestHandler.class);
+        if (ajaxRequestHandler != null) {
+            ajaxRequestHandler.add(get("tableWrapper"));
+        }
     }
 
     private final class AccountRecordListModel extends LoadableDetachableModel<List<AccountRecord>> {

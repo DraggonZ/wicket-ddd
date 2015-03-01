@@ -12,5 +12,7 @@ import javax.annotation.Nonnull;
 public interface AccountLayoutView extends Serializable {
 
     public void showAccountEditor(@Nonnull String id);
+
+    public void updateAccountList();
     
 }

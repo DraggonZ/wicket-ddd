@@ -28,6 +28,8 @@ public class AccountLayout extends WebPage implements AccountLayoutView, IAjaxIn
 
     private final AccountEditorPanel accountEditorPanel = new AccountEditorPanel("accountEditorPanel");
 
+    private final AccountListPanel accountListPanel = new AccountListPanel("accountListPanel");
+
     public AccountLayout(PageParameters parameters) {
         super(parameters);
 
@@ -44,13 +46,18 @@ public class AccountLayout extends WebPage implements AccountLayoutView, IAjaxIn
         add(new BootstrapFeedbackPanel("successFeedbackWrapper", BootstrapFeedbackKind.SUCCESS).add(RefreshOnAjaxBehavior.INSTANCE));
 
         add(this.accountEditorPanel);
-        add(new AccountListPanel("accountListPanel"));
+        add(this.accountListPanel);
         add(new AccountControlPanel("accountControlPanel"));
     }
 
     @Override
     public void showAccountEditor(@Nonnull String id) {
         this.accountEditorPanel.editAccount(id);
+    }
+
+    @Override
+    public void updateAccountList() {
+        this.accountListPanel.refreshList();
     }
 
     @Override

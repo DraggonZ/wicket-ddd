@@ -19,15 +19,18 @@ public class AccountLayoutPresenter implements Serializable {
         this.view = view;
     }
 
-    public void onAccountRecordSelected(@Nonnull AccountRecordSelected selected) {
-        setSelectedAccountId(selected.accountRecord().getId());
+    public void onAccountRecordSelected(@Nonnull AccountRecordSelected event) {
+        setSelectedAccountId(event.accountRecord().getId());
         view().showAccountEditor(selectedAccountId());
+    }
+
+    public void onAccountEditModelChanged(@Nonnull AccountEditModelChanged event) {
+        view().updateAccountList();
     }
 
     @Nonnull
     private AccountLayoutView view() {
         return this.view;
-
     }
 
     private String selectedAccountId() {
