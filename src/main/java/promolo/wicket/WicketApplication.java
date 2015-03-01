@@ -18,6 +18,7 @@ import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
 import org.apache.wicket.request.cycle.PageRequestHandlerTracker;
 import org.apache.wicket.request.cycle.RequestCycle;
 
+import promolo.wicket.account.instractructure.presentation.AccountLayout;
 import promolo.wicket.core.domain.ConcurrencyViolationException;
 
 /**

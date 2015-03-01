@@ -1,4 +1,4 @@
-package promolo.wicket;
+package promolo.wicket.account.instractructure.presentation;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
