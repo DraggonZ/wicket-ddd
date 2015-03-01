@@ -30,6 +30,8 @@ public class AccountLayout extends WebPage implements AccountLayoutView, IAjaxIn
 
     private final AccountListPanel accountListPanel = new AccountListPanel("accountListPanel");
 
+    private final AccountControlPanel accountControlPanel = new AccountControlPanel("accountControlPanel");
+
     public AccountLayout(PageParameters parameters) {
         super(parameters);
 
@@ -47,7 +49,7 @@ public class AccountLayout extends WebPage implements AccountLayoutView, IAjaxIn
 
         add(this.accountEditorPanel);
         add(this.accountListPanel);
-        add(new AccountControlPanel("accountControlPanel"));
+        add(this.accountControlPanel);
     }
 
     @Override
@@ -57,7 +59,12 @@ public class AccountLayout extends WebPage implements AccountLayoutView, IAjaxIn
 
     @Override
     public void updateAccountList() {
-        this.accountListPanel.refreshList();
+        this.accountListPanel.refresh();
+    }
+
+    @Override
+    public void updateControlPanel(String selectedAccountId) {
+        this.accountControlPanel.refresh(selectedAccountId);
     }
 
     @Override

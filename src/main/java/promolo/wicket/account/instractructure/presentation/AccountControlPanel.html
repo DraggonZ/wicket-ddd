@@ -2,8 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
   <body>
     <wicket:panel>
-      <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить</button>
-      <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Удалить</button>
+      <button type="button" class="btn btn-default" wicket:id="add">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить
+      </button>
+      <button type="button" class="btn btn-danger" wicket:id="remove">
+        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Удалить
+      </button>
     </wicket:panel>
   </body>
 </html>

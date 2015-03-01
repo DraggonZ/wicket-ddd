@@ -76,7 +76,7 @@ public class AccountListPanel extends Panel {
         add(tableWrapper);
     }
 
-    public void refreshList() {
+    public void refresh() {
         AjaxRequestHandler ajaxRequestHandler = getRequestCycle().find(AjaxRequestHandler.class);
         if (ajaxRequestHandler != null) {
             ajaxRequestHandler.add(get("tableWrapper"));
