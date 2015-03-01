@@ -29,7 +29,7 @@ public class ViewEventForwardingBehavior extends Behavior {
     public final void onEvent(Component component, IEvent<?> event) {
         super.onEvent(component, event);
         if (canBeForwarded(event)) {
-            forwardTo(event.getPayload(), this.eventSink);
+            forwardTo(this.eventSink, event.getPayload());
         }
     }
 
@@ -43,7 +43,7 @@ public class ViewEventForwardingBehavior extends Behavior {
     }
 
     // TODO реализация - не оптимальная, нужно использовать кэш методов-обработчиков
-    private static void forwardTo(@Nonnull Object payload, @Nonnull Object eventSink) {
+    private static void forwardTo(@Nonnull Object eventSink, @Nonnull Object payload) {
         Class<?> presenterClass = eventSink.getClass();
         Class<?> eventClass = payload.getClass();
         String methodName = "on" + eventClass.getSimpleName();
