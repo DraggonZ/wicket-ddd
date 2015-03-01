@@ -1,5 +1,7 @@
 package promolo.wicket.account.ui;
 
+import java.io.Serializable;
+
 import javax.annotation.Nonnull;
 
 /**
@@ -7,7 +9,7 @@ import javax.annotation.Nonnull;
  *
  * @author Александр
  */
-public class AccountLayoutPresenter {
+public class AccountLayoutPresenter implements Serializable {
 
     private final AccountLayoutView view;
 
@@ -15,6 +17,10 @@ public class AccountLayoutPresenter {
         this.view = view;
     }
 
+    public void onAccountRecordSelected(@Nonnull AccountRecordSelected selected) {
+        selected.toString();
+    }
+    
     @Nonnull
     private AccountLayoutView view() {
         return this.view;

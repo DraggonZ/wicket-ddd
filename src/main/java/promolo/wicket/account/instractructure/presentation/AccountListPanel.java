@@ -8,6 +8,7 @@ import org.apache.wicket.ajax.AjaxChannel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
+import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Radio;
@@ -20,6 +21,7 @@ import org.apache.wicket.model.Model;
 
 import promolo.wicket.account.ui.AccountRecord;
 import promolo.wicket.account.ui.AccountRecordModel;
+import promolo.wicket.account.ui.AccountRecordSelected;
 
 /**
  * TODO javadoc
@@ -52,7 +54,8 @@ public class AccountListPanel extends Panel {
 
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
-                // TODO
+                AccountRecord accountRecord = (AccountRecord) getComponent().getDefaultModelObject();
+                send(getPage(), Broadcast.BREADTH, new AccountRecordSelected(accountRecord));
             }
 
         });
