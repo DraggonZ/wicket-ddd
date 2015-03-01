@@ -1,7 +1,5 @@
 package promolo.wicket;
 
-import javax.inject.Inject;
-
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.wicket.Session;
 import org.apache.wicket.bean.validation.BeanValidationConfiguration;
@@ -21,7 +19,6 @@ import org.apache.wicket.request.cycle.PageRequestHandlerTracker;
 import org.apache.wicket.request.cycle.RequestCycle;
 
 import promolo.wicket.core.domain.ConcurrencyViolationException;
-import promolo.wicket.core.domain.DomainEventPublisherCleaner;
 
 /**
  * Application object for your web application.
@@ -29,15 +26,12 @@ import promolo.wicket.core.domain.DomainEventPublisherCleaner;
  */
 public class WicketApplication extends WebApplication {
 
-    @Inject
-    private DomainEventPublisherCleaner domainEventPublisherCleaner;
-
     /**
      * @see org.apache.wicket.Application#getHomePage()
      */
     @Override
     public Class<? extends WebPage> getHomePage() {
-        return HomePage.class;
+        return AccountLayout.class;
     }
 
     /**
@@ -68,12 +62,6 @@ public class WicketApplication extends WebApplication {
                     }
                 }
                 return null;
-            }
-
-            @Override
-            public void onDetach(RequestCycle cycle) {
-                super.onDetach(cycle);
-                WicketApplication.this.domainEventPublisherCleaner.cleanup();
             }
 
         });
