@@ -58,7 +58,7 @@ public class AccountLayout extends WebPage implements AccountLayoutView, IAjaxIn
     }
 
     @Override
-    public void showAccountEditor(@Nonnull String id) {
+    public void showAccountEditor(String id) {
         this.accountEditorPanel.editAccount(id);
     }
 
@@ -73,8 +73,8 @@ public class AccountLayout extends WebPage implements AccountLayoutView, IAjaxIn
     }
 
     @Override
-    public void updateControlPanel(String selectedAccountId) {
-        this.accountControlPanel.refresh(selectedAccountId);
+    public void updateControlPanel(String id) {
+        this.accountControlPanel.track(id);
     }
 
     @Override

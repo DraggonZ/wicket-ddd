@@ -39,4 +39,9 @@ public class JpaAccountRepository implements AccountRepository {
         return query.getResultList();
     }
 
+    @Override
+    public void remove(@Nonnull Account account) {
+        this.entityManager.remove(account);
+    }
+    
 }

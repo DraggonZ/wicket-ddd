@@ -139,8 +139,8 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> {
         }
     }
 
-    public void editAccount(@Nonnull String id) {
-        Account account = accountApplicationService().findAccountById(id);
+    public void editAccount(String id) {
+        Account account = (id == null ? null : accountApplicationService().findAccountById(id));
         setModelObject(account == null ? null : new AccountEditModel(account));
         AjaxRequestHandler ajaxRequestHandler = getRequestCycle().find(AjaxRequestHandler.class);
         if (ajaxRequestHandler != null) {

@@ -20,4 +20,6 @@ public interface AccountRepository {
     @Nonnull
     public List<Account> listAll();
 
+    public void remove(@Nonnull Account account);
+    
 }
