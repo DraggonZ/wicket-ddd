@@ -15,8 +15,9 @@ public interface AccountLayoutView extends Serializable {
 
     public void showAccountEditor(@Nonnull String id);
 
+    public void updateAccountSelector(String id);
+
     public void updateAccountList();
 
     public void updateControlPanel(String selectedAccountId);
-
 }

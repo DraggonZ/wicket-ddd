@@ -29,6 +29,7 @@ public class Account extends DomainObject implements ConcurrencySafe {
         this.id = id;
         this.person = person;
         Validation.assertNotValid(Validation.validator().validate(this));
+        publish(new AccountCreated(id, person.title(), person.firstName(), person.middleName(), person.lastName()));
     }
 
     @Nonnull

@@ -17,6 +17,7 @@ import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 
@@ -36,13 +37,15 @@ public class AccountListPanel extends Panel {
     @Inject
     private AccountRecordModel accountRecordModel;
 
+    private final IModel<String> selectedAccountId = new Model<>();
+
     public AccountListPanel(String id) {
         super(id);
 
         WebMarkupContainer tableWrapper = new WebMarkupContainer("tableWrapper");
         tableWrapper.setOutputMarkupId(true);
 
-        RadioGroup<AccountRecord> radioGroup = new RadioGroup<>("selectionGroup", new Model<AccountRecord>());
+        RadioGroup<AccountRecord> radioGroup = new RadioGroup<>("selectionGroup", new SelectedAccountRecordModel());
         radioGroup.add(new AjaxFormChoiceComponentUpdatingBehavior() {
 
             @Override
@@ -70,17 +73,38 @@ public class AccountListPanel extends Panel {
             }
 
         };
-        listView.setReuseItems(true);
+        // listView.setReuseItems(true);
         radioGroup.add(listView);
 
         add(tableWrapper);
     }
 
-    public void refresh() {
+    public void updateSelector(String id) {
+        this.selectedAccountId.setObject(id);
         AjaxRequestHandler ajaxRequestHandler = getRequestCycle().find(AjaxRequestHandler.class);
         if (ajaxRequestHandler != null) {
             ajaxRequestHandler.add(get("tableWrapper"));
         }
+    }
+
+    public void refreshList() {
+        AjaxRequestHandler ajaxRequestHandler = getRequestCycle().find(AjaxRequestHandler.class);
+        if (ajaxRequestHandler != null) {
+            ajaxRequestHandler.add(get("tableWrapper"));
+        }
+    }
+
+    private final class SelectedAccountRecordModel extends LoadableDetachableModel<AccountRecord> {
+
+        public SelectedAccountRecordModel() {
+            super();
+        }
+
+        @Override
+        protected AccountRecord load() {
+            return AccountListPanel.this.accountRecordModel.findById(AccountListPanel.this.selectedAccountId.getObject());
+        }
+
     }
 
     private final class AccountRecordListModel extends LoadableDetachableModel<List<AccountRecord>> {

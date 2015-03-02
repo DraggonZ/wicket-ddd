@@ -3,8 +3,11 @@ package promolo.wicket.account.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
+
+import org.apache.commons.lang3.StringUtils;
 
 import promolo.wicket.account.domain.Account;
 import promolo.wicket.account.domain.AccountRepository;
@@ -29,6 +32,17 @@ public class AccountRecordModel {
             records.add(new AccountRecord(account));
         }
         return records;
+    }
+
+    @CheckForNull
+    public AccountRecord findById(String id) {
+        if (StringUtils.isNotEmpty(id)) {
+            Account account = this.accountRepository.findById(id);
+            if (account != null) {
+                return new AccountRecord(account);
+            }
+        }
+        return null;
     }
 
 }

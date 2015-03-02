@@ -23,10 +23,13 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 
 import promolo.wicket.account.application.AccountApplicationService;
+import promolo.wicket.account.application.ChangeAccountPersonCommand;
+import promolo.wicket.account.application.CreateAccountCommand;
 import promolo.wicket.account.domain.Account;
 import promolo.wicket.account.ui.AccountEditModel;
 import promolo.wicket.account.ui.AccountEditModelBinding;
 import promolo.wicket.account.ui.AccountEditModelChanged;
+import promolo.wicket.core.application.ApplicationCommandExecutor;
 import promolo.wicket.core.ui.component.HideEmptyComponent;
 import promolo.wicket.core.ui.model.Bindgen;
 
@@ -38,6 +41,9 @@ import promolo.wicket.core.ui.model.Bindgen;
 public class AccountEditorPanel extends GenericPanel<AccountEditModel> {
 
     private static final AjaxChannel SUBMIT_AJAX_CHANNEL = new AjaxChannel("AccountEditorChannel", AjaxChannel.Type.ACTIVE);
+
+    @Inject
+    private ApplicationCommandExecutor applicationCommandExecutor;
 
     @Inject
     private AccountApplicationService accountApplicationService;
@@ -88,8 +94,24 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
-                // TODO выполнить сохранение
-                send(getPage(), Broadcast.BREADTH, new AccountEditModelChanged(getModelObject()));
+                AccountEditModel accountEditModel = getModelObject();
+                if (accountEditModel.getVersion() == null) {
+                    CreateAccountCommand command = new CreateAccountCommand(accountEditModel.getId());
+                    command.setTitle(accountEditModel.getTitle());
+                    command.setFirstName(accountEditModel.getFirstName());
+                    command.setMiddleName(accountEditModel.getMiddleName());
+                    command.setLastName(accountEditModel.getLastName());
+                    AccountEditorPanel.this.applicationCommandExecutor.execute(command);
+                } else {
+                    ChangeAccountPersonCommand command = new ChangeAccountPersonCommand(accountEditModel.getId());
+                    command.setVersion(accountEditModel.getVersion());
+                    command.setTitle(accountEditModel.getTitle());
+                    command.setFirstName(accountEditModel.getFirstName());
+                    command.setMiddleName(accountEditModel.getMiddleName());
+                    command.setLastName(accountEditModel.getLastName());
+                    AccountEditorPanel.this.applicationCommandExecutor.execute(command);
+                }
+                send(getPage(), Broadcast.BREADTH, new AccountEditModelChanged(accountEditModel));
             }
 
             @Override

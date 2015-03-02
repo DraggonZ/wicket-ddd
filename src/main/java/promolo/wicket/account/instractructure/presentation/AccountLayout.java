@@ -63,8 +63,13 @@ public class AccountLayout extends WebPage implements AccountLayoutView, IAjaxIn
     }
 
     @Override
+    public void updateAccountSelector(String id) {
+        this.accountListPanel.updateSelector(id);
+    }
+
+    @Override
     public void updateAccountList() {
-        this.accountListPanel.refresh();
+        this.accountListPanel.refreshList();
     }
 
     @Override
@@ -81,4 +86,5 @@ public class AccountLayout extends WebPage implements AccountLayoutView, IAjaxIn
     private AccountLayoutPresenter accountLayoutPresenter() {
         return this.accountLayoutPresenter;
     }
+
 }

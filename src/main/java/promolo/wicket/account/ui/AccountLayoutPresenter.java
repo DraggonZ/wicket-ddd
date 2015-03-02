@@ -13,16 +13,15 @@ public class AccountLayoutPresenter implements Serializable {
 
     private final AccountLayoutView view;
 
-    private String selectedAccountId;
-
     public AccountLayoutPresenter(@Nonnull AccountLayoutView view) {
         this.view = view;
     }
 
     public void onAccountRecordSelected(@Nonnull AccountRecordSelected event) {
-        setSelectedAccountId(event.accountRecord().getId());
-        view().showAccountEditor(selectedAccountId());
-        view().updateControlPanel(selectedAccountId());
+        String id = event.accountRecord().getId();
+        view().updateAccountSelector(id);
+        view().showAccountEditor(id);
+        view().updateControlPanel(id);
     }
 
     public void onNewAccountRequested(@Nonnull NewAccountRequested event) {
@@ -30,6 +29,11 @@ public class AccountLayoutPresenter implements Serializable {
     }
 
     public void onAccountEditModelChanged(@Nonnull AccountEditModelChanged event) {
+        String id = event.accountEditModel().getId();
+        if (event.accountEditModel().getVersion() == null) {
+            view().updateAccountSelector(id);
+        }
+        view().showAccountEditor(id);
         view().updateAccountList();
     }
 
@@ -38,11 +42,4 @@ public class AccountLayoutPresenter implements Serializable {
         return this.view;
     }
 
-    private String selectedAccountId() {
-        return this.selectedAccountId;
-    }
-
-    private void setSelectedAccountId(String selectedAccountId) {
-        this.selectedAccountId = selectedAccountId;
-    }
 }
