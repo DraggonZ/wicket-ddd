@@ -11,10 +11,12 @@ import javax.annotation.Nonnull;
  */
 public interface AccountLayoutView extends Serializable {
 
+    public void newAccountEditor();
+
     public void showAccountEditor(@Nonnull String id);
 
     public void updateAccountList();
 
     public void updateControlPanel(String selectedAccountId);
-    
+
 }

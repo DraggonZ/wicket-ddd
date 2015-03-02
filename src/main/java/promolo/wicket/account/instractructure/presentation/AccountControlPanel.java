@@ -3,9 +3,11 @@ package promolo.wicket.account.instractructure.presentation;
 import org.apache.wicket.ajax.AjaxRequestHandler;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 
+import promolo.wicket.account.ui.NewAccountRequested;
 import promolo.wicket.core.ui.component.DisableEmptyComponent;
 
 /**
@@ -23,7 +25,7 @@ public class AccountControlPanel extends Panel {
 
             @Override
             public void onClick(AjaxRequestTarget target) {
-                // TODO
+                send(getPage(), Broadcast.BREADTH, new NewAccountRequested());
             }
 
         };

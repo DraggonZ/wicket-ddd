@@ -25,6 +25,10 @@ public class AccountLayoutPresenter implements Serializable {
         view().updateControlPanel(selectedAccountId());
     }
 
+    public void onNewAccountRequested(@Nonnull NewAccountRequested event) {
+        view().newAccountEditor();
+    }
+
     public void onAccountEditModelChanged(@Nonnull AccountEditModelChanged event) {
         view().updateAccountList();
     }

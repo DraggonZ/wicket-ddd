@@ -109,6 +109,14 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> {
         add(form);
     }
 
+    public void newAccount() {
+        setModelObject(new AccountEditModel());
+        AjaxRequestHandler ajaxRequestHandler = getRequestCycle().find(AjaxRequestHandler.class);
+        if (ajaxRequestHandler != null) {
+            ajaxRequestHandler.add(this);
+        }
+    }
+
     public void editAccount(@Nonnull String id) {
         Account account = accountApplicationService().findAccountById(id);
         setModelObject(account == null ? null : new AccountEditModel(account));

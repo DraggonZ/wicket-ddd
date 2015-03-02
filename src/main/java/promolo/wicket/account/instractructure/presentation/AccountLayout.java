@@ -53,6 +53,11 @@ public class AccountLayout extends WebPage implements AccountLayoutView, IAjaxIn
     }
 
     @Override
+    public void newAccountEditor() {
+        this.accountEditorPanel.newAccount();
+    }
+
+    @Override
     public void showAccountEditor(@Nonnull String id) {
         this.accountEditorPanel.editAccount(id);
     }
