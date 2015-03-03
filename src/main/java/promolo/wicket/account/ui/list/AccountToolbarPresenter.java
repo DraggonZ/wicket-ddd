@@ -20,17 +20,17 @@ import promolo.wicket.core.domain.EventCatcher;
  *
  * @author Александр
  */
-public class AccountListToolbarPresenter implements Serializable {
+public class AccountToolbarPresenter implements Serializable {
 
     @Inject
     private transient ApplicationCommandExecutor applicationCommandExecutor;
 
-    private final AccountListToolbarView accountListToolbarView;
+    private final AccountToolbarView accountToolbarView;
 
     private AccountRow selectedItem;
 
-    public AccountListToolbarPresenter(@Nonnull AccountListToolbarView accountListToolbarView) {
-        this.accountListToolbarView = accountListToolbarView;
+    public AccountToolbarPresenter(@Nonnull AccountToolbarView accountToolbarView) {
+        this.accountToolbarView = accountToolbarView;
     }
 
     @CheckForNull
@@ -62,8 +62,8 @@ public class AccountListToolbarPresenter implements Serializable {
     }
 
     @Nonnull
-    private AccountListToolbarView view() {
-        return this.accountListToolbarView;
+    private AccountToolbarView view() {
+        return this.accountToolbarView;
     }
 
     private void inject() {

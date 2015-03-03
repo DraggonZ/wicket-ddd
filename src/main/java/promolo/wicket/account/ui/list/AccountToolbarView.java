@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
  *
  * @author Александр
  */
-public interface AccountListToolbarView extends Serializable {
+public interface AccountToolbarView extends Serializable {
 
     public void updateControlPanel();
 

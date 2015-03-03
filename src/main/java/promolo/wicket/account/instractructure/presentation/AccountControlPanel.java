@@ -10,9 +10,9 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 
 import promolo.wicket.account.ui.editor.AddAccount;
-import promolo.wicket.account.ui.list.AccountListToolbarPresenter;
-import promolo.wicket.account.ui.list.AccountListToolbarView;
 import promolo.wicket.account.ui.list.AccountRow;
+import promolo.wicket.account.ui.list.AccountToolbarPresenter;
+import promolo.wicket.account.ui.list.AccountToolbarView;
 import promolo.wicket.account.ui.list.RemoveAccount;
 import promolo.wicket.core.ui.component.DisableEmptyComponent;
 import promolo.wicket.core.ui.component.ViewEventForwardingBehavior;
@@ -22,9 +22,9 @@ import promolo.wicket.core.ui.component.ViewEventForwardingBehavior;
  *
  * @author Александр
  */
-public class AccountControlPanel extends Panel implements AccountListToolbarView {
+public class AccountControlPanel extends Panel implements AccountToolbarView {
 
-    private final AccountListToolbarPresenter presenter = new AccountListToolbarPresenter(this);
+    private final AccountToolbarPresenter presenter = new AccountToolbarPresenter(this);
 
     public AccountControlPanel(String id) {
         super(id);
@@ -66,7 +66,7 @@ public class AccountControlPanel extends Panel implements AccountListToolbarView
     }
 
     @Nonnull
-    private AccountListToolbarPresenter presenter() {
+    private AccountToolbarPresenter presenter() {
         return this.presenter;
     }
 
