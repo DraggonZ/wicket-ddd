@@ -1,5 +1,7 @@
 package promolo.wicket.core.ui.component;
 
+import javax.annotation.Nonnull;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestHandler;
 import org.apache.wicket.ajax.IAjaxRegionMarkupIdProvider;
@@ -30,14 +32,19 @@ public class RefreshOnAjaxBehavior extends Behavior implements IAjaxRegionMarkup
     @Override
     public void onEvent(Component component, IEvent<?> event) {
         super.onEvent(component, event);
-        if (event.getPayload() instanceof AjaxRequestHandler) {
+        if (event.getPayload() instanceof AjaxRequestHandler && acceptEvent(component, event)) {
             ((AjaxRequestHandler) event.getPayload()).add(component);
+            event.dontBroadcastDeeper();
         }
     }
 
     @Override
     public String getAjaxRegionMarkupId(Component component) {
         return null;
+    }
+
+    protected boolean acceptEvent(@Nonnull Component component, @Nonnull IEvent<?> event) {
+        return true;
     }
 
 }

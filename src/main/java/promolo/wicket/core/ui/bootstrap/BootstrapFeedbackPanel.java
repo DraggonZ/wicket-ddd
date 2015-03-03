@@ -15,19 +15,25 @@ import org.apache.wicket.markup.html.panel.Panel;
  */
 public class BootstrapFeedbackPanel extends Panel {
 
+    private final FencedFeedbackPanel feedbackPanel;
+
     public BootstrapFeedbackPanel(String id, BootstrapFeedbackKind bootstrapFeedbackKind) {
         super(id);
         setOutputMarkupPlaceholderTag(true);
 
-        FencedFeedbackPanel feedbackPanel = new FencedFeedbackPanel("feedbackPanel", null, bootstrapFeedbackKind);
-        feedbackPanel.setRenderBodyOnly(true);
+        this.feedbackPanel = new FencedFeedbackPanel("feedbackPanel", null, bootstrapFeedbackKind);
+        this.feedbackPanel.setRenderBodyOnly(true);
 
         WebMarkupContainer alertBlock = new WebMarkupContainer("alertBlock");
         alertBlock.add(new AlertClass(bootstrapFeedbackKind));
-        alertBlock.add(feedbackPanel);
+        alertBlock.add(this.feedbackPanel);
 
-        add(new HideEmptyFeedback(feedbackPanel));
+        add(new HideEmptyFeedback(this.feedbackPanel));
         add(alertBlock);
+    }
+
+    public final boolean anyMessage() {
+        return this.feedbackPanel.anyMessage();
     }
 
     private static final class HideEmptyFeedback extends Behavior {

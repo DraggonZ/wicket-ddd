@@ -1,6 +1,10 @@
 package promolo.wicket.account.instractructure.presentation;
 
+import javax.annotation.Nonnull;
+
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.IAjaxIndicatorAware;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxIndicatorAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
@@ -28,9 +32,9 @@ public class AccountLayout extends WebPage implements IAjaxIndicatorAware {
         ajaxBusyIndicator.add(this.indicatorAppender);
         add(ajaxBusyIndicator);
 
-        add(new BootstrapFeedbackPanel("errorFeedbackWrapper", BootstrapFeedbackKind.ERROR).add(RefreshOnAjaxBehavior.INSTANCE));
-        add(new BootstrapFeedbackPanel("warningFeedbackWrapper", BootstrapFeedbackKind.WARNING).add(RefreshOnAjaxBehavior.INSTANCE));
-        add(new BootstrapFeedbackPanel("successFeedbackWrapper", BootstrapFeedbackKind.SUCCESS).add(RefreshOnAjaxBehavior.INSTANCE));
+        add(new BootstrapFeedbackPanel("errorFeedbackWrapper", BootstrapFeedbackKind.ERROR).add(RefreshIfAnyMessage.INSTANCE));
+        add(new BootstrapFeedbackPanel("warningFeedbackWrapper", BootstrapFeedbackKind.WARNING).add(RefreshIfAnyMessage.INSTANCE));
+        add(new BootstrapFeedbackPanel("successFeedbackWrapper", BootstrapFeedbackKind.SUCCESS).add(RefreshIfAnyMessage.INSTANCE));
 
         add(new AccountEditorPanel("accountEditorPanel"));
         add(new AccountListPanel("accountListPanel"));
@@ -40,6 +44,21 @@ public class AccountLayout extends WebPage implements IAjaxIndicatorAware {
     @Override
     public String getAjaxIndicatorMarkupId() {
         return this.indicatorAppender.getMarkupId();
+    }
+
+    private static final class RefreshIfAnyMessage extends RefreshOnAjaxBehavior {
+
+        public static final RefreshIfAnyMessage INSTANCE = new RefreshIfAnyMessage();
+
+        @Override
+        protected boolean acceptEvent(@Nonnull Component component, @Nonnull IEvent<?> event) {
+            return ((BootstrapFeedbackPanel) component).anyMessage();
+        }
+
+        private RefreshIfAnyMessage() {
+            super();
+        }
+
     }
 
 }
