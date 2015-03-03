@@ -34,7 +34,7 @@ public class AccountLayout extends WebPage implements IAjaxIndicatorAware {
 
         add(new AccountEditorPanel("accountEditorPanel"));
         add(new AccountListPanel("accountListPanel"));
-        add(new AccountControlPanel("accountControlPanel"));
+        add(new AccountToolbarPanel("accountToolbarPanel"));
     }
 
     @Override

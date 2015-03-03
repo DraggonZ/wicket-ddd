@@ -22,11 +22,11 @@ import promolo.wicket.core.ui.component.ViewEventForwardingBehavior;
  *
  * @author Александр
  */
-public class AccountControlPanel extends Panel implements AccountToolbarView {
+public class AccountToolbarPanel extends Panel implements AccountToolbarView {
 
     private final AccountToolbarPresenter presenter = new AccountToolbarPresenter(this);
 
-    public AccountControlPanel(String id) {
+    public AccountToolbarPanel(String id) {
         super(id);
         setOutputMarkupId(true);
         add(new ViewEventForwardingBehavior(presenter()));
