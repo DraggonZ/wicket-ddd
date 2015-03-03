@@ -1,4 +1,4 @@
-package promolo.wicket.account.ui;
+package promolo.wicket.account.ui.list;
 
 import javax.annotation.Nonnull;
 
@@ -7,11 +7,11 @@ import javax.annotation.Nonnull;
  *
  * @author Александр
  */
-public final class AccountRemoveRequested {
+public final class RemoveAccount {
 
     private final String id;
 
-    public AccountRemoveRequested(@Nonnull String id) {
+    public RemoveAccount(@Nonnull String id) {
         this.id = id;
     }
 

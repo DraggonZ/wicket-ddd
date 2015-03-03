@@ -1,7 +1,6 @@
 package promolo.wicket.account.instractructure.presentation;
 
 import javax.annotation.Nonnull;
-import javax.inject.Inject;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxChannel;
@@ -22,15 +21,13 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 
-import promolo.wicket.account.application.AccountApplicationService;
-import promolo.wicket.account.application.ChangeAccountPersonCommand;
-import promolo.wicket.account.application.CreateAccountCommand;
-import promolo.wicket.account.domain.Account;
-import promolo.wicket.account.ui.AccountEditModel;
-import promolo.wicket.account.ui.AccountEditModelBinding;
-import promolo.wicket.account.ui.AccountEditModelChanged;
-import promolo.wicket.core.application.ApplicationCommandExecutor;
+import promolo.wicket.account.ui.editor.AccountEditorPresenter;
+import promolo.wicket.account.ui.editor.AccountEditorView;
+import promolo.wicket.account.ui.editor.AccountModel;
+import promolo.wicket.account.ui.editor.AccountModelBinding;
+import promolo.wicket.account.ui.editor.SaveAccount;
 import promolo.wicket.core.ui.component.HideEmptyComponent;
+import promolo.wicket.core.ui.component.ViewEventForwardingBehavior;
 import promolo.wicket.core.ui.model.Bindgen;
 
 /**
@@ -38,21 +35,19 @@ import promolo.wicket.core.ui.model.Bindgen;
  *
  * @author Александр
  */
-public class AccountEditorPanel extends GenericPanel<AccountEditModel> {
+public class AccountEditorPanel extends GenericPanel<AccountModel> implements AccountEditorView {
 
     private static final AjaxChannel SUBMIT_AJAX_CHANNEL = new AjaxChannel("AccountEditorChannel", AjaxChannel.Type.ACTIVE);
 
-    @Inject
-    private ApplicationCommandExecutor applicationCommandExecutor;
-
-    @Inject
-    private AccountApplicationService accountApplicationService;
+    private final AccountEditorPresenter presenter = new AccountEditorPresenter(this);
 
     public AccountEditorPanel(String id) {
-        super(id, new Model<AccountEditModel>());
+        super(id, new Model<AccountModel>());
 
         setVersioned(false);
         setOutputMarkupId(true);
+
+        add(new ViewEventForwardingBehavior(presenter()));
 
         WebMarkupContainer panelTitleWrapper = new WebMarkupContainer("panelTitleWrapper");
         panelTitleWrapper.setOutputMarkupId(true);
@@ -64,8 +59,8 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> {
         selectAccountAdviceBanner.add(new ShowSelectAccountAdvice());
         add(selectAccountAdviceBanner);
 
-        AccountEditModelBinding binding = new AccountEditModelBinding();
-        Form<AccountEditModel> form = new Form<>("form", new CompoundPropertyModel<>(getModel()));
+        AccountModelBinding binding = new AccountModelBinding();
+        Form<AccountModel> form = new Form<>("form", new CompoundPropertyModel<>(getModel()));
         form.setOutputMarkupId(true);
         form.add(HideEmptyComponent.INSTANCE);
 
@@ -94,24 +89,7 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
-                AccountEditModel accountEditModel = getModelObject();
-                if (accountEditModel.getVersion() == null) {
-                    CreateAccountCommand command = new CreateAccountCommand(accountEditModel.getId());
-                    command.setTitle(accountEditModel.getTitle());
-                    command.setFirstName(accountEditModel.getFirstName());
-                    command.setMiddleName(accountEditModel.getMiddleName());
-                    command.setLastName(accountEditModel.getLastName());
-                    AccountEditorPanel.this.applicationCommandExecutor.execute(command);
-                } else {
-                    ChangeAccountPersonCommand command = new ChangeAccountPersonCommand(accountEditModel.getId());
-                    command.setVersion(accountEditModel.getVersion());
-                    command.setTitle(accountEditModel.getTitle());
-                    command.setFirstName(accountEditModel.getFirstName());
-                    command.setMiddleName(accountEditModel.getMiddleName());
-                    command.setLastName(accountEditModel.getLastName());
-                    AccountEditorPanel.this.applicationCommandExecutor.execute(command);
-                }
-                send(getPage(), Broadcast.BREADTH, new AccountEditModelChanged(accountEditModel));
+                send(getPage(), Broadcast.BREADTH, new SaveAccount());
             }
 
             @Override
@@ -131,32 +109,28 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> {
         add(form);
     }
 
-    public void newAccount() {
-        setModelObject(new AccountEditModel());
-        AjaxRequestHandler ajaxRequestHandler = getRequestCycle().find(AjaxRequestHandler.class);
-        if (ajaxRequestHandler != null) {
-            ajaxRequestHandler.add(this);
-        }
-    }
-
-    public void editAccount(String id) {
-        Account account = (id == null ? null : accountApplicationService().findAccountById(id));
-        setModelObject(account == null ? null : new AccountEditModel(account));
-        AjaxRequestHandler ajaxRequestHandler = getRequestCycle().find(AjaxRequestHandler.class);
-        if (ajaxRequestHandler != null) {
-            ajaxRequestHandler.add(this);
-        }
+    @Override
+    public void showEditor(@Nonnull AccountModel accountModel) {
+        setModelObject(accountModel);
+        ajaxRefreshEditor();
     }
 
     @Override
-    protected void onConfigure() {
-        super.onConfigure();
-        setEnabled(getModelObject() != null);
+    public void closeEditor() {
+        setModelObject(null);
+        ajaxRefreshEditor();
+    }
+
+    private void ajaxRefreshEditor() {
+        AjaxRequestHandler ajaxRequestHandler = getRequestCycle().find(AjaxRequestHandler.class);
+        if (ajaxRequestHandler != null) {
+            ajaxRequestHandler.add(this);
+        }
     }
 
     @Nonnull
-    private AccountApplicationService accountApplicationService() {
-        return this.accountApplicationService;
+    private AccountEditorPresenter presenter() {
+        return this.presenter;
     }
 
     private final class PanelTitleModel extends AbstractReadOnlyModel<String> {
@@ -167,8 +141,8 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> {
 
         @Override
         public String getObject() {
-            AccountEditModel accountEditModel = getModelObject();
-            return (accountEditModel == null ? null : accountEditModel.getTitle());
+            AccountModel accountModel = getModelObject();
+            return (accountModel == null ? null : accountModel.getTitle());
         }
 
     }
@@ -177,8 +151,8 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> {
 
         @Override
         public Long getObject() {
-            AccountEditModel accountEditModel = getModelObject();
-            return (accountEditModel == null ? null : accountEditModel.getVersion());
+            AccountModel accountModel = getModelObject();
+            return (accountModel == null ? null : accountModel.getVersion());
         }
 
     }

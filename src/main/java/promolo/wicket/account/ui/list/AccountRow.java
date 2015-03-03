@@ -1,4 +1,4 @@
-package promolo.wicket.account.ui;
+package promolo.wicket.account.ui.list;
 
 import java.io.Serializable;
 
@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.bindgen.Bindable;
 
 import promolo.wicket.account.domain.Account;
 
@@ -15,8 +14,7 @@ import promolo.wicket.account.domain.Account;
  *
  * @author Александр
  */
-@Bindable
-public class AccountRecord implements Serializable {
+public class AccountRow implements Serializable {
 
     private String id;
 
@@ -43,7 +41,7 @@ public class AccountRecord implements Serializable {
         if (obj.getClass() != getClass()) {
             return false;
         }
-        AccountRecord rhs = (AccountRecord) obj;
+        AccountRow rhs = (AccountRow) obj;
         return new EqualsBuilder().append(this.id, rhs.id).isEquals();
     }
 
@@ -52,10 +50,9 @@ public class AccountRecord implements Serializable {
         return new HashCodeBuilder().append(this.id).toHashCode();
     }
 
-    /* package */ AccountRecord(@Nonnull Account account) {
+    /* package */ AccountRow(@Nonnull Account account) {
         this.id = account.id();
         this.title = account.person().title();
     }
 
 }
-
