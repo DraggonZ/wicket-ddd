@@ -16,6 +16,7 @@ import javax.transaction.Transactional;
  */
 @Stereotype
 @ApplicationScoped
+@HonorApplicationException
 @Transactional
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

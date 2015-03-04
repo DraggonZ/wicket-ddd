@@ -53,7 +53,10 @@ public class ViewEventForwardingBehavior extends Behavior {
         } catch (NoSuchMethodException ex) {
             // nop
         } catch (InvocationTargetException ex) {
-            throw new IllegalStateException("ошибка вызова метода " + methodName + " в классе " + presenterClass.getName(), ex);
+            if (ex.getCause() instanceof RuntimeException) {
+                throw (RuntimeException) ex.getCause();
+            }
+            throw new IllegalStateException("ошибка вызова метода " + methodName + " в классе " + presenterClass.getName(), ex.getCause());
         } catch (IllegalAccessException ex) {
             throw new IllegalStateException("метод " + methodName + " в классе " + presenterClass.getName() + " должен быть public", ex);
         }
