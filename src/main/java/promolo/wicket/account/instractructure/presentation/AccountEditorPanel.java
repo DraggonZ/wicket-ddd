@@ -111,6 +111,7 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> implement
 
     @Override
     public void showEditor(@Nonnull AccountEditModel accountEditModel) {
+        clearForm();
         setModelObject(accountEditModel);
         ajaxRefreshEditor();
     }
@@ -126,6 +127,10 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> implement
         if (ajaxRequestHandler != null) {
             ajaxRequestHandler.add(this);
         }
+    }
+
+    private void clearForm() {
+        ((Form<?>) get("form")).clearInput();
     }
 
     @Nonnull
