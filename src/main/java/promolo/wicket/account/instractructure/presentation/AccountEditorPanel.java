@@ -21,10 +21,10 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 
+import promolo.wicket.account.ui.editor.AccountEditModel;
+import promolo.wicket.account.ui.editor.AccountEditModelBinding;
 import promolo.wicket.account.ui.editor.AccountEditorPresenter;
 import promolo.wicket.account.ui.editor.AccountEditorView;
-import promolo.wicket.account.ui.editor.AccountModel;
-import promolo.wicket.account.ui.editor.AccountModelBinding;
 import promolo.wicket.account.ui.editor.SaveAccount;
 import promolo.wicket.core.ui.component.HideEmptyComponent;
 import promolo.wicket.core.ui.component.ViewEventForwardingBehavior;
@@ -35,14 +35,14 @@ import promolo.wicket.core.ui.model.Bindgen;
  *
  * @author Александр
  */
-public class AccountEditorPanel extends GenericPanel<AccountModel> implements AccountEditorView {
+public class AccountEditorPanel extends GenericPanel<AccountEditModel> implements AccountEditorView {
 
     private static final AjaxChannel SUBMIT_AJAX_CHANNEL = new AjaxChannel("AccountEditorChannel", AjaxChannel.Type.ACTIVE);
 
     private final AccountEditorPresenter presenter = new AccountEditorPresenter(this);
 
     public AccountEditorPanel(String id) {
-        super(id, new Model<AccountModel>());
+        super(id, new Model<AccountEditModel>());
 
         setVersioned(false);
         setOutputMarkupId(true);
@@ -59,8 +59,8 @@ public class AccountEditorPanel extends GenericPanel<AccountModel> implements Ac
         selectAccountAdviceBanner.add(new ShowSelectAccountAdvice());
         add(selectAccountAdviceBanner);
 
-        AccountModelBinding binding = new AccountModelBinding();
-        Form<AccountModel> form = new Form<>("form", new CompoundPropertyModel<>(getModel()));
+        AccountEditModelBinding binding = new AccountEditModelBinding();
+        Form<AccountEditModel> form = new Form<>("form", new CompoundPropertyModel<>(getModel()));
         form.setOutputMarkupId(true);
         form.add(HideEmptyComponent.INSTANCE);
 
@@ -110,8 +110,8 @@ public class AccountEditorPanel extends GenericPanel<AccountModel> implements Ac
     }
 
     @Override
-    public void showEditor(@Nonnull AccountModel accountModel) {
-        setModelObject(accountModel);
+    public void showEditor(@Nonnull AccountEditModel accountEditModel) {
+        setModelObject(accountEditModel);
         ajaxRefreshEditor();
     }
 
@@ -141,8 +141,8 @@ public class AccountEditorPanel extends GenericPanel<AccountModel> implements Ac
 
         @Override
         public String getObject() {
-            AccountModel accountModel = getModelObject();
-            return (accountModel == null ? null : accountModel.getTitle());
+            AccountEditModel accountEditModel = getModelObject();
+            return (accountEditModel == null ? null : accountEditModel.getTitle());
         }
 
     }
@@ -151,8 +151,8 @@ public class AccountEditorPanel extends GenericPanel<AccountModel> implements Ac
 
         @Override
         public Long getObject() {
-            AccountModel accountModel = getModelObject();
-            return (accountModel == null ? null : accountModel.getVersion());
+            AccountEditModel accountEditModel = getModelObject();
+            return (accountEditModel == null ? null : accountEditModel.getVersion());
         }
 
     }

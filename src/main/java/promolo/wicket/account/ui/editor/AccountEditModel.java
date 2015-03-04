@@ -17,7 +17,7 @@ import promolo.wicket.account.domain.PersonTitleConstraint;
  * @author Александр
  */
 @Bindable
-public class AccountModel implements Serializable {
+public class AccountEditModel implements Serializable {
 
     @AccountIdConstraint
     private String id;
@@ -36,11 +36,11 @@ public class AccountModel implements Serializable {
     @PersonNameConstraint
     private String lastName;
 
-    public AccountModel() {
+    public AccountEditModel() {
         // nop
     }
 
-    public AccountModel(@Nonnull Account account) {
+    public AccountEditModel(@Nonnull Account account) {
         setId(account.id());
         setVersion(account.concurrencyVersion());
         setTitle(account.person().title());

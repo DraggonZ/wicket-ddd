@@ -27,7 +27,7 @@ public class AccountEditorPresenter implements Serializable {
 
     private final AccountEditorView accountEditorView;
 
-    private AccountModel accountModel = new AccountModel();
+    private AccountEditModel accountEditModel = new AccountEditModel();
 
     @Inject
     private transient AccountApplicationService accountApplicationService;
@@ -39,36 +39,36 @@ public class AccountEditorPresenter implements Serializable {
         this.accountEditorView = accountEditorView;
     }
 
-    public AccountModel getAccountModel() {
-        return this.accountModel;
+    public AccountEditModel getAccountEditModel() {
+        return this.accountEditModel;
     }
 
     public void onAddAccount(@Nonnull AddAccount event) {
-        setAccountModel(new AccountModel());
-        view().showEditor(getAccountModel());
+        setAccountEditModel(new AccountEditModel());
+        view().showEditor(getAccountEditModel());
     }
 
     public void onRemoveAccount(@Nonnull RemoveAccount event) {
-        setAccountModel(null);
+        setAccountEditModel(null);
         view().closeEditor();
     }
 
     public void onSelectAccount(@Nonnull SelectAccount event) {
         inject();
         loadAccountEditModel(event.accountRowItem().getId());
-        if (getAccountModel() != null) {
-            view().showEditor(getAccountModel());
+        if (getAccountEditModel() != null) {
+            view().showEditor(getAccountEditModel());
         }
     }
 
     public void onSaveAccount(@Nonnull SaveAccount event) {
-        if (getAccountModel() != null) {
+        if (getAccountEditModel() != null) {
             inject();
 
             EventCatcher<DomainEvent> domainEventEventCatcher = EventCatcher.of(DomainEvent.class);
             DomainEventPublisher.instance().subscribe(domainEventEventCatcher);
 
-            AccountModel model = getAccountModel();
+            AccountEditModel model = getAccountEditModel();
             if (model.getVersion() == null) {
                 CreateAccountCommand command = new CreateAccountCommand(model.getId());
                 command.setTitle(model.getTitle());
@@ -91,17 +91,17 @@ public class AccountEditorPresenter implements Serializable {
             }
 
             loadAccountEditModel(model.getId());
-            view().showEditor(getAccountModel());
+            view().showEditor(getAccountEditModel());
         }
     }
 
     private void loadAccountEditModel(String id) {
         Account account = this.accountApplicationService.findAccountById(id);
-        setAccountModel(account == null ? null : new AccountModel(account));
+        setAccountEditModel(account == null ? null : new AccountEditModel(account));
     }
 
-    private void setAccountModel(AccountModel accountModel) {
-        this.accountModel = accountModel;
+    private void setAccountEditModel(AccountEditModel accountEditModel) {
+        this.accountEditModel = accountEditModel;
     }
 
     @Nonnull

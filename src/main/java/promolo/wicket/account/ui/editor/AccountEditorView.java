@@ -11,7 +11,7 @@ import javax.annotation.Nonnull;
  */
 public interface AccountEditorView extends Serializable {
 
-    public void showEditor(@Nonnull AccountModel accountModel);
+    public void showEditor(@Nonnull AccountEditModel accountEditModel);
 
     public void closeEditor();
 
