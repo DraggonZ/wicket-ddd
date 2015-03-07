@@ -10,12 +10,9 @@ import javax.inject.Inject;
 import org.apache.wicket.cdi.NonContextual;
 
 import promolo.wicket.account.application.RemoveAccountCommand;
-import promolo.wicket.account.domain.AccountRemoved;
 import promolo.wicket.account.ui.list.AccountRow;
 import promolo.wicket.account.ui.list.SelectAccount;
 import promolo.wicket.core.application.ApplicationCommandExecutor;
-import promolo.wicket.core.domain.DomainEventPublisher;
-import promolo.wicket.core.domain.EventCatcher;
 
 /**
  * TODO javadoc
@@ -49,14 +46,8 @@ public class AccountToolbarPresenter implements Serializable {
 
     public void onRemoveAccount(@Nonnull RemoveAccount event) {
         inject();
-        EventCatcher<AccountRemoved> accountRemovedEventCatcher = EventCatcher.of(AccountRemoved.class);
-        DomainEventPublisher.instance().subscribe(accountRemovedEventCatcher);
         this.applicationCommandExecutor.execute(new RemoveAccountCommand(getSelectedItem().getId()));
-        if (accountRemovedEventCatcher.catched()) {
-            view().notifyAccountWasRemoved(getSelectedItem());
-        }
         setSelectedItem(null);
-        view().updateControlPanel();
     }
 
     private void setSelectedItem(AccountRow selectedItem) {

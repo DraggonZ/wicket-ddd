@@ -13,7 +13,9 @@
                 <tr wicket:id="row">
                   <td><input type="radio" wicket:id="selection"></td>
                   <td><span wicket:id="id"></span></td>
-                  <td><span wicket:id="title"></span></td>
+                  <td>
+                    <span wicket:id="title"></span><span wicket:enclosure="realName" class="text-muted"> (<span wicket:id="realName"></span>)</span>
+                  </td>
                 </tr>
               </tbody>
             </table>

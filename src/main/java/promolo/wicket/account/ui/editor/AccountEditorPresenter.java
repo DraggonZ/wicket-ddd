@@ -1,6 +1,7 @@
 package promolo.wicket.account.ui.editor;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -15,9 +16,6 @@ import promolo.wicket.account.ui.list.SelectAccount;
 import promolo.wicket.account.ui.toolbar.AddAccount;
 import promolo.wicket.account.ui.toolbar.RemoveAccount;
 import promolo.wicket.core.application.ApplicationCommandExecutor;
-import promolo.wicket.core.domain.DomainEvent;
-import promolo.wicket.core.domain.DomainEventPublisher;
-import promolo.wicket.core.domain.EventCatcher;
 
 /**
  * TODO javadoc
@@ -46,29 +44,27 @@ public class AccountEditorPresenter implements Serializable {
 
     public void onAddAccount(@Nonnull AddAccount event) {
         setAccountEditModel(new AccountEditModel());
-        view().showEditor(getAccountEditModel());
+        view().openEditor();
     }
 
     public void onRemoveAccount(@Nonnull RemoveAccount event) {
-        setAccountEditModel(null);
-        view().closeEditor();
+        if (Objects.equals(event.id(), getAccountEditModel().getId())) {
+            setAccountEditModel(null);
+            view().closeEditor();
+        }
     }
 
     public void onSelectAccount(@Nonnull SelectAccount event) {
         inject();
-        loadAccountEditModel(event.accountRowItem().getId());
+        updateAccountEditModel(event.accountRowItem().getId());
         if (getAccountEditModel() != null) {
-            view().showEditor(getAccountEditModel());
+            view().openEditor();
         }
     }
 
     public void onSaveAccount(@Nonnull SaveAccount event) {
         if (getAccountEditModel() != null) {
             inject();
-
-            EventCatcher<DomainEvent> domainEventEventCatcher = EventCatcher.of(DomainEvent.class);
-            DomainEventPublisher.instance().subscribe(domainEventEventCatcher);
-
             AccountEditModel model = getAccountEditModel();
             if (model.getVersion() == null) {
                 CreateAccountCommand command = new CreateAccountCommand(model.getId());
@@ -86,17 +82,12 @@ public class AccountEditorPresenter implements Serializable {
                 command.setLastName(model.getLastName());
                 this.applicationCommandExecutor.execute(command);
             }
-
-            if (domainEventEventCatcher.catched()) {
-                // TODO notify success
-            }
-
-            loadAccountEditModel(model.getId());
-            view().showEditor(getAccountEditModel());
+            updateAccountEditModel(model.getId());
+            view().updateEditor();
         }
     }
 
-    private void loadAccountEditModel(String id) {
+    private void updateAccountEditModel(String id) {
         Account account = this.accountApplicationService.findAccountById(id);
         setAccountEditModel(account == null ? null : new AccountEditModel(account));
     }

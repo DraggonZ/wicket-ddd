@@ -1,13 +1,12 @@
 package promolo.wicket.account.ui.list;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import promolo.wicket.account.domain.Account;
+import promolo.wicket.account.domain.PersonTitle;
 
 /**
  * TODO javadoc
@@ -20,6 +19,8 @@ public class AccountRow implements Serializable {
 
     private String title;
 
+    private String realName;
+
     @Nonnull
     public String getId() {
         return this.id;
@@ -30,29 +31,19 @@ public class AccountRow implements Serializable {
         return this.title;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        if (obj.getClass() != getClass()) {
-            return false;
-        }
-        AccountRow rhs = (AccountRow) obj;
-        return new EqualsBuilder().append(this.id, rhs.id).isEquals();
+    @Nonnull
+    public String getRealName() {
+        return this.realName;
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(this.id).toHashCode();
+    public boolean isRealNameDifferFromTitle() {
+        return !Objects.equals(getTitle(), getRealName());
     }
 
     /* package */ AccountRow(@Nonnull Account account) {
         this.id = account.id();
         this.title = account.person().title();
+        this.realName = PersonTitle.build(account.person());
     }
 
 }

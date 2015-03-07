@@ -4,11 +4,13 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxChannel;
 import org.apache.wicket.ajax.AjaxRequestHandler;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -20,6 +22,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
 
 import promolo.wicket.account.domain.AccountCreated;
+import promolo.wicket.account.domain.AccountPersonChanged;
 import promolo.wicket.account.domain.AccountRemoved;
 import promolo.wicket.account.ui.list.AccountListPresenter;
 import promolo.wicket.account.ui.list.AccountListView;
@@ -45,6 +48,7 @@ public class AccountListPanel extends Panel implements AccountListView {
 
         WebMarkupContainer tableWrapper = new WebMarkupContainer("tableWrapper");
         tableWrapper.add(AjaxRefreshOnDomainEvent.of(AccountCreated.class));
+        tableWrapper.add(AjaxRefreshOnDomainEvent.of(AccountPersonChanged.class));
         tableWrapper.add(AjaxRefreshOnDomainEvent.of(AccountRemoved.class));
 
         RadioGroup<AccountRow> radioGroup = new RadioGroup<>("selectionGroup", new SelectedAccountRecordModel());
@@ -68,10 +72,12 @@ public class AccountListPanel extends Panel implements AccountListView {
         ListView<AccountRow> listView = new ListView<AccountRow>("row", new AccountRecordListModel()) {
 
             @Override
-            protected void populateItem(ListItem<AccountRow> item) {
+            protected void populateItem(final ListItem<AccountRow> item) {
+                AccountRow accountRow = item.getModelObject();
                 item.add(new Radio<>("selection", item.getModel()));
-                item.add(new Label("id", item.getModelObject().getId()));
-                item.add(new Label("title", item.getModelObject().getTitle()));
+                item.add(new Label("id", accountRow.getId()));
+                item.add(new Label("title", accountRow.getTitle()));
+                item.add(new Label("realName", accountRow.getRealName()).add(new HideRealName(accountRow)));
             }
 
         };
@@ -115,6 +121,22 @@ public class AccountListPanel extends Panel implements AccountListView {
         @Override
         protected List<AccountRow> load() {
             return presenter().getAccountListModel();
+        }
+
+    }
+
+    private final static class HideRealName extends Behavior {
+
+        private final AccountRow accountRow;
+
+        public HideRealName(AccountRow accountRow) {
+            this.accountRow = accountRow;
+        }
+
+        @Override
+        public void onConfigure(Component component) {
+            super.onConfigure(component);
+            component.setVisible(this.accountRow.isRealNameDifferFromTitle());
         }
 
     }

@@ -10,8 +10,6 @@ import javax.inject.Inject;
 
 import org.apache.wicket.cdi.NonContextual;
 
-import promolo.wicket.account.ui.toolbar.RemoveAccount;
-
 /**
  * TODO javadoc
  *
@@ -35,11 +33,6 @@ public class AccountListPresenter implements Serializable {
             setSelectedAccountRow(event.accountRowItem());
             view().updateAccountList();
         }
-    }
-
-    public void onRemoveAccount(@Nonnull RemoveAccount event) {
-        setSelectedAccountRow(null);
-        view().updateAccountList();
     }
 
     @Nonnull

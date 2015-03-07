@@ -6,9 +6,11 @@ import org.apache.wicket.ajax.AjaxRequestHandler;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.event.Broadcast;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 
+import promolo.wicket.account.domain.AccountRemoved;
 import promolo.wicket.account.ui.list.AccountRow;
 import promolo.wicket.account.ui.toolbar.AccountToolbarPresenter;
 import promolo.wicket.account.ui.toolbar.AccountToolbarView;
@@ -61,8 +63,13 @@ public class AccountToolbarPanel extends Panel implements AccountToolbarView {
     }
 
     @Override
-    public void notifyAccountWasRemoved(@Nonnull AccountRow accountRow) {
-        info("Учетная запись {" + accountRow.getId() + "} была успешно удалена.");
+    public void onEvent(IEvent<?> event) {
+        super.onEvent(event);
+        if (event.getPayload() instanceof AccountRemoved) {
+            AccountRemoved accountRemoved = (AccountRemoved) event.getPayload();
+            info("Учетная запись {" + accountRemoved.id() + "} была успешно удалена.");
+            updateControlPanel();
+        }
     }
 
     @Nonnull

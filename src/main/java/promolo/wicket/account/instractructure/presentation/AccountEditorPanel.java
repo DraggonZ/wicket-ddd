@@ -12,6 +12,7 @@ import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.bean.validation.PropertyValidator;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.event.Broadcast;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -21,6 +22,8 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 
+import promolo.wicket.account.domain.AccountCreated;
+import promolo.wicket.account.domain.AccountPersonChanged;
 import promolo.wicket.account.ui.editor.AccountEditModel;
 import promolo.wicket.account.ui.editor.AccountEditModelBinding;
 import promolo.wicket.account.ui.editor.AccountEditorPresenter;
@@ -110,9 +113,26 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> implement
     }
 
     @Override
-    public void showEditor(@Nonnull AccountEditModel accountEditModel) {
+    public void onEvent(IEvent<?> event) {
+        super.onEvent(event);
+        if (event.getPayload() instanceof AccountCreated) {
+            success("Добавлена новая учетная запись.");
+        }
+        if (event.getPayload() instanceof AccountPersonChanged) {
+            success("Персональные данные успешно изменены.");
+        }
+    }
+
+    @Override
+    public void openEditor() {
+        setModelObject(presenter().getAccountEditModel());
+        ajaxRefreshEditor();
+    }
+
+    @Override
+    public void updateEditor() {
+        setModelObject(presenter().getAccountEditModel());
         clearForm();
-        setModelObject(accountEditModel);
         ajaxRefreshEditor();
     }
 
