@@ -1,4 +1,4 @@
-package promolo.wicket.account.ui.editor;
+package promolo.wicket.account.ui.toolbar;
 
 /**
  * TODO javadoc

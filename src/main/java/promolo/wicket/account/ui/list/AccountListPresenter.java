@@ -10,6 +10,8 @@ import javax.inject.Inject;
 
 import org.apache.wicket.cdi.NonContextual;
 
+import promolo.wicket.account.ui.toolbar.RemoveAccount;
+
 /**
  * TODO javadoc
  *

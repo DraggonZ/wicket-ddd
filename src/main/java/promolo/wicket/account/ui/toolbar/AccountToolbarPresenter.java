@@ -1,4 +1,4 @@
-package promolo.wicket.account.ui.list;
+package promolo.wicket.account.ui.toolbar;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -11,6 +11,8 @@ import org.apache.wicket.cdi.NonContextual;
 
 import promolo.wicket.account.application.RemoveAccountCommand;
 import promolo.wicket.account.domain.AccountRemoved;
+import promolo.wicket.account.ui.list.AccountRow;
+import promolo.wicket.account.ui.list.SelectAccount;
 import promolo.wicket.core.application.ApplicationCommandExecutor;
 import promolo.wicket.core.domain.DomainEventPublisher;
 import promolo.wicket.core.domain.EventCatcher;

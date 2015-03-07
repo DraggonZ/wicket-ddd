@@ -9,11 +9,11 @@ import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 
-import promolo.wicket.account.ui.editor.AddAccount;
 import promolo.wicket.account.ui.list.AccountRow;
-import promolo.wicket.account.ui.list.AccountToolbarPresenter;
-import promolo.wicket.account.ui.list.AccountToolbarView;
-import promolo.wicket.account.ui.list.RemoveAccount;
+import promolo.wicket.account.ui.toolbar.AccountToolbarPresenter;
+import promolo.wicket.account.ui.toolbar.AccountToolbarView;
+import promolo.wicket.account.ui.toolbar.AddAccount;
+import promolo.wicket.account.ui.toolbar.RemoveAccount;
 import promolo.wicket.core.ui.component.DisableEmptyComponent;
 import promolo.wicket.core.ui.component.ViewEventForwardingBehavior;
 

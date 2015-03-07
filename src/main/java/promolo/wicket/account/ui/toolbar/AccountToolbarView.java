@@ -1,8 +1,10 @@
-package promolo.wicket.account.ui.list;
+package promolo.wicket.account.ui.toolbar;
 
 import java.io.Serializable;
 
 import javax.annotation.Nonnull;
+
+import promolo.wicket.account.ui.list.AccountRow;
 
 /**
  * TODO javadoc

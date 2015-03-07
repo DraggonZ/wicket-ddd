@@ -1,4 +1,4 @@
-package promolo.wicket.account.ui.list;
+package promolo.wicket.account.ui.toolbar;
 
 import javax.annotation.Nonnull;
 
