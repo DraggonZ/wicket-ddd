@@ -27,7 +27,7 @@ import promolo.wicket.account.ui.editor.AccountEditorPresenter;
 import promolo.wicket.account.ui.editor.AccountEditorView;
 import promolo.wicket.account.ui.editor.SaveAccount;
 import promolo.wicket.core.ui.component.HideEmptyComponent;
-import promolo.wicket.core.ui.component.ViewEventForwardingBehavior;
+import promolo.wicket.core.ui.component.ViewEventListener;
 import promolo.wicket.core.ui.model.Bindgen;
 
 /**
@@ -47,7 +47,7 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> implement
         setVersioned(false);
         setOutputMarkupId(true);
 
-        add(new ViewEventForwardingBehavior(presenter()));
+        add(new ViewEventListener(presenter()));
 
         WebMarkupContainer panelTitleWrapper = new WebMarkupContainer("panelTitleWrapper");
         panelTitleWrapper.setOutputMarkupId(true);

@@ -16,20 +16,20 @@ import org.apache.wicket.event.IEvent;
  *
  * @author Александр
  */
-public class ViewEventForwardingBehavior extends Behavior {
+public class ViewEventListener extends Behavior {
 
-    private final Serializable eventSink;
+    private final Serializable presenter;
 
-    public ViewEventForwardingBehavior(@Nonnull Serializable eventSink) {
+    public ViewEventListener(@Nonnull Serializable presenter) {
         super();
-        this.eventSink = eventSink;
+        this.presenter = presenter;
     }
 
     @Override
     public final void onEvent(Component component, IEvent<?> event) {
         super.onEvent(component, event);
         if (canBeForwarded(event)) {
-            forwardTo(this.eventSink, event.getPayload());
+            forwardTo(this.presenter, event.getPayload());
         }
     }
 

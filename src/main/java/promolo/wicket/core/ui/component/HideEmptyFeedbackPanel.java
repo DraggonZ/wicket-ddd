@@ -9,9 +9,9 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
  *
  * @author Александр
  */
-public class HideEmptyFeedbackPanelBehavior extends Behavior {
+public class HideEmptyFeedbackPanel extends Behavior {
 
-    public HideEmptyFeedbackPanelBehavior() {
+    public HideEmptyFeedbackPanel() {
         super();
     }
 

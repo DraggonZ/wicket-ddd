@@ -19,11 +19,14 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
 
+import promolo.wicket.account.domain.AccountCreated;
+import promolo.wicket.account.domain.AccountRemoved;
 import promolo.wicket.account.ui.list.AccountListPresenter;
 import promolo.wicket.account.ui.list.AccountListView;
 import promolo.wicket.account.ui.list.AccountRow;
 import promolo.wicket.account.ui.list.SelectAccount;
-import promolo.wicket.core.ui.component.ViewEventForwardingBehavior;
+import promolo.wicket.core.ui.component.AjaxRefreshOnDomainEvent;
+import promolo.wicket.core.ui.component.ViewEventListener;
 
 /**
  * TODO javadoc
@@ -38,10 +41,11 @@ public class AccountListPanel extends Panel implements AccountListView {
 
     public AccountListPanel(String id) {
         super(id);
-        add(new ViewEventForwardingBehavior(presenter()));
+        add(new ViewEventListener(presenter()));
 
         WebMarkupContainer tableWrapper = new WebMarkupContainer("tableWrapper");
-        tableWrapper.setOutputMarkupId(true);
+        tableWrapper.add(AjaxRefreshOnDomainEvent.of(AccountCreated.class));
+        tableWrapper.add(AjaxRefreshOnDomainEvent.of(AccountRemoved.class));
 
         RadioGroup<AccountRow> radioGroup = new RadioGroup<>("selectionGroup", new SelectedAccountRecordModel());
         radioGroup.add(new AjaxFormChoiceComponentUpdatingBehavior() {
@@ -71,7 +75,6 @@ public class AccountListPanel extends Panel implements AccountListView {
             }
 
         };
-        // listView.setReuseItems(true);
         radioGroup.add(listView);
 
         add(tableWrapper);
