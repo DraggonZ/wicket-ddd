@@ -14,9 +14,9 @@ import promolo.wicket.core.application.stereotype.HonorApplicationException;
  *
  * @author Александр
  */
-@HonorApplicationException
 @Interceptor
 @Priority(Interceptor.Priority.PLATFORM_BEFORE + 100)
+@HonorApplicationException
 public class ApplicationExceptionMapperInterceptor {
 
     @AroundInvoke
