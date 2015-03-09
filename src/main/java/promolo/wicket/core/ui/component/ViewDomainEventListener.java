@@ -1,6 +1,7 @@
 package promolo.wicket.core.ui.component;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
@@ -8,13 +9,16 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.event.Broadcast;
 
 import promolo.wicket.core.domain.DomainEvent;
-import promolo.wicket.core.domain.DomainEventPublisher;
-import promolo.wicket.core.domain.DomainEventSubscriber;
+import promolo.wicket.core.ui.notification.DomainEventNotificationListener;
+import promolo.wicket.core.ui.notification.DomainEventNotificationListenerCollection;
 
 /**
  * @author lexx
  */
-public class ViewDomainEventListener extends Behavior implements DomainEventSubscriber<DomainEvent> {
+public class ViewDomainEventListener extends Behavior implements DomainEventNotificationListener {
+
+    @Inject
+    private DomainEventNotificationListenerCollection domainEventNotificationListenerCollection;
 
     private Page page;
 
@@ -26,17 +30,18 @@ public class ViewDomainEventListener extends Behavior implements DomainEventSubs
     public void bind(Component component) {
         super.bind(component);
         if (component instanceof Page) {
-            this.page = (Page) component;
+            setPage((Page) component);
         } else {
             throw new IllegalStateException("компонента может быть добавлена только на страницу (Page)");
         }
-        DomainEventPublisher.instance().subscribe(this);
+        domainEventNotificationRequestScopedProxy().addListener(this);
     }
 
     @Override
     public void unbind(Component component) {
         super.unbind(component);
-        this.page = null;
+        setPage(null);
+        domainEventNotificationRequestScopedProxy().removeListener(this);
     }
 
     @Override
@@ -45,16 +50,23 @@ public class ViewDomainEventListener extends Behavior implements DomainEventSubs
     }
 
     @Override
-    public void handleEvent(@Nonnull DomainEvent domainEvent) {
-        if (this.page != null) {
-            this.page.send(this.page, Broadcast.BREADTH, domainEvent);
+    public void notify(@Nonnull DomainEvent domainEvent) {
+        if (page() != null) {
+            page().send(page(), Broadcast.BREADTH, domainEvent);
         }
     }
 
     @Nonnull
-    @Override
-    public Class<DomainEvent> subscribedToEventType() {
-        return DomainEvent.class;
+    private DomainEventNotificationListenerCollection domainEventNotificationRequestScopedProxy() {
+        return this.domainEventNotificationListenerCollection;
+    }
+
+    private void setPage(Page page) {
+        this.page = page;
+    }
+
+    private Page page() {
+        return this.page;
     }
 
 }
