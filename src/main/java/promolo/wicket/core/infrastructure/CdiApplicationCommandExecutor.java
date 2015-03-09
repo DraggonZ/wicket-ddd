@@ -9,12 +9,14 @@ import javax.annotation.Nonnull;
 import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.TransactionPhase;
+import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
+import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Inject;
 
 import promolo.wicket.core.application.ApplicationCommand;
 import promolo.wicket.core.application.ApplicationCommandExecutor;
-import promolo.wicket.core.application.ApplicationCommandHandlerRegistry;
+import promolo.wicket.core.application.ApplicationCommandHandler;
 import promolo.wicket.core.application.Handles;
 import promolo.wicket.core.application.stereotype.ApplicationComponent;
 import promolo.wicket.core.domain.DomainEvent;
@@ -33,27 +35,25 @@ import com.google.common.collect.Lists;
 public class CdiApplicationCommandExecutor implements ApplicationCommandExecutor {
 
     @Inject
-    @Handles
-    private Event<ApplicationCommand> applicationCommandEvent;
+    @Any
+    private Instance<ApplicationCommandHandler<? extends ApplicationCommand>> applicationCommandHandlers;
 
     @Inject
     private Event<ProcessingResult> processingResultEvent;
 
     @Inject
-    private ApplicationCommandHandlerRegistry applicationCommandHandlerRegistry;
-
-    @Inject
     private Instance<DomainEventNotificationListener> domainEventNotificationListeners;
 
     @Override
-    public void execute(@Nonnull ApplicationCommand command) {
+    @SuppressWarnings("unchecked")
+    public <T extends ApplicationCommand> void execute(@Nonnull T command) {
         command.validate();
-        if (!this.applicationCommandHandlerRegistry.isApplicationCommandHandlerExists(command)) {
-            throw new IllegalStateException("не найден обработчик для команды " + command);
-        }
+        ApplicationCommandHandlerLiteral<T> literal = new ApplicationCommandHandlerLiteral<T>((Class<T>) command.getClass());
+        ApplicationCommandHandler<T> applicationCommandHandler =
+                (ApplicationCommandHandler<T>) this.applicationCommandHandlers.select(literal).get();
         DomainEventCollector domainEventCollector = new DomainEventCollector();
         DomainEventPublisher.instance().subscribe(domainEventCollector);
-        this.applicationCommandEvent.fire(command);
+        applicationCommandHandler.handle(command);
         this.processingResultEvent.fire(new ProcessingResult(command, domainEventCollector.getDomainEvents()));
     }
 
@@ -121,6 +121,22 @@ public class CdiApplicationCommandExecutor implements ApplicationCommandExecutor
         @Nonnull
         public List<DomainEvent> getDomainEvents() {
             return this.domainEvents;
+        }
+
+    }
+
+    private static final class ApplicationCommandHandlerLiteral<T extends ApplicationCommand> extends AnnotationLiteral<Handles>
+            implements Handles {
+
+        private final Class<T> applicationCommandType;
+
+        public ApplicationCommandHandlerLiteral(@Nonnull Class<T> applicationCommandType) {
+            this.applicationCommandType = applicationCommandType;
+        }
+
+        @Override
+        public Class<? extends ApplicationCommand> value() {
+            return this.applicationCommandType;
         }
 
     }

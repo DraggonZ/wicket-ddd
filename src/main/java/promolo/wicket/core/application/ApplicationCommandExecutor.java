@@ -6,10 +6,10 @@ import javax.annotation.Nonnull;
  * TODO javadoc
  *
  * @author Александр
- * @see Handles
+ * @see promolo.wicket.core.application.ApplicationCommandHandler
  */
 public interface ApplicationCommandExecutor {
 
-    public void execute(@Nonnull ApplicationCommand command);
+    public <T extends ApplicationCommand>void execute(@Nonnull T command);
 
 }

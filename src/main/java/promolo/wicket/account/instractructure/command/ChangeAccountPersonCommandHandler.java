@@ -1,14 +1,14 @@
 package promolo.wicket.account.instractructure.command;
 
+import javax.annotation.Nonnull;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 
 import promolo.wicket.account.application.ChangeAccountPersonCommand;
 import promolo.wicket.account.domain.Account;
 import promolo.wicket.account.domain.AccountRepository;
 import promolo.wicket.account.domain.Person;
+import promolo.wicket.core.application.ApplicationCommandHandler;
 import promolo.wicket.core.application.Handles;
 
 /**
@@ -17,13 +17,14 @@ import promolo.wicket.core.application.Handles;
  * @author Александр
  */
 @ApplicationScoped
-@Transactional(Transactional.TxType.MANDATORY)
-public class ChangeAccountPersonCommandHandler {
+@Handles(ChangeAccountPersonCommand.class)
+public class ChangeAccountPersonCommandHandler implements ApplicationCommandHandler<ChangeAccountPersonCommand> {
 
     @Inject
     private AccountRepository accountRepository;
 
-    public void handle(@Observes @Handles ChangeAccountPersonCommand command) {
+    @Override
+    public void handle(@Nonnull ChangeAccountPersonCommand command) {
         Account account = this.accountRepository.findById(command.getId());
         if (account == null) {
             throw new IllegalStateException("не найдена учетная запись " + command.getId());
