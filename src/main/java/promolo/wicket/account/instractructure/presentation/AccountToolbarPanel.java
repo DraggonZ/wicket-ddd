@@ -11,7 +11,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 
 import promolo.wicket.account.domain.AccountRemoved;
-import promolo.wicket.account.ui.list.AccountRow;
 import promolo.wicket.account.ui.toolbar.AccountToolbarPresenter;
 import promolo.wicket.account.ui.toolbar.AccountToolbarView;
 import promolo.wicket.account.ui.toolbar.AddAccount;
@@ -42,11 +41,11 @@ public class AccountToolbarPanel extends Panel implements AccountToolbarView {
         };
         add(addLink);
 
-        AjaxLink<AccountRow> removeLink = new AjaxLink<AccountRow>("remove", new SelectedItemModel()) {
+        AjaxLink<String> removeLink = new AjaxLink<String>("remove", new SelectedAccountIdModel()) {
 
             @Override
             public void onClick(AjaxRequestTarget target) {
-                send(getPage(), Broadcast.BREADTH, new RemoveAccount(getModelObject().getId()));
+                send(getPage(), Broadcast.BREADTH, new RemoveAccount(getModelObject()));
             }
 
         };
@@ -77,15 +76,15 @@ public class AccountToolbarPanel extends Panel implements AccountToolbarView {
         return this.presenter;
     }
 
-    private final class SelectedItemModel extends AbstractReadOnlyModel<AccountRow> {
+    private final class SelectedAccountIdModel extends AbstractReadOnlyModel<String> {
 
-        public SelectedItemModel() {
+        public SelectedAccountIdModel() {
             super();
         }
 
         @Override
-        public AccountRow getObject() {
-            return presenter().getSelectedItem();
+        public String getObject() {
+            return presenter().getSelectedAccountId();
         }
 
     }

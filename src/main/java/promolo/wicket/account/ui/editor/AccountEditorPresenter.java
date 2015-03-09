@@ -56,7 +56,7 @@ public class AccountEditorPresenter implements Serializable {
 
     public void onSelectAccount(@Nonnull SelectAccount event) {
         inject();
-        updateAccountEditModel(event.accountRowItem().getId());
+        updateAccountEditModel(event.id());
         if (getAccountEditModel() != null) {
             view().openEditor();
         }

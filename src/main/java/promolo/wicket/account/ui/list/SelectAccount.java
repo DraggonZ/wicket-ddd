@@ -9,15 +9,15 @@ import javax.annotation.Nonnull;
  */
 public final class SelectAccount {
 
-    private final AccountRow accountRow;
+    private final String id;
 
-    public SelectAccount(@Nonnull AccountRow accountRow) {
-        this.accountRow = accountRow;
+    public SelectAccount(@Nonnull String id) {
+        this.id = id;
     }
 
     @Nonnull
-    public AccountRow accountRowItem() {
-        return this.accountRow;
+    public String id() {
+        return this.id;
     }
 
 }

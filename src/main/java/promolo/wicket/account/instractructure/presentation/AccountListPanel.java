@@ -63,7 +63,7 @@ public class AccountListPanel extends Panel implements AccountListView {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 AccountRow accountRow = (AccountRow) getComponent().getDefaultModelObject();
-                send(getPage(), Broadcast.BREADTH, new SelectAccount(accountRow));
+                send(getPage(), Broadcast.BREADTH, new SelectAccount(accountRow.getId()));
             }
 
         });

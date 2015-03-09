@@ -3,6 +3,7 @@ package promolo.wicket.account.ui.list;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
@@ -29,6 +30,12 @@ public class AccountListDataProvider {
             records.add(new AccountRow(account));
         }
         return records;
+    }
+
+    @CheckForNull
+    public AccountRow findById(@Nonnull String selectedAccountId) {
+        Account account = this.accountRepository.findById(selectedAccountId);
+        return (account == null ? null : new AccountRow(account));
     }
 
 }

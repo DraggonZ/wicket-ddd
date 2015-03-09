@@ -19,7 +19,7 @@ public class AccountListPresenter implements Serializable {
 
     private final AccountListView accountListView;
 
-    private AccountRow selectedAccountRow;
+    private String selectedAccountId;
 
     @Inject
     private transient AccountListDataProvider accountListDataProvider;
@@ -29,8 +29,8 @@ public class AccountListPresenter implements Serializable {
     }
 
     public void onSelectAccount(@Nonnull SelectAccount event) {
-        if (!Objects.equals(getSelectedRowItem(), event.accountRowItem())) {
-            setSelectedAccountRow(event.accountRowItem());
+        if (!Objects.equals(getSelectedAccountId(), event.id())) {
+            setSelectedAccountId(event.id());
             view().updateAccountList();
         }
     }
@@ -43,11 +43,16 @@ public class AccountListPresenter implements Serializable {
 
     @CheckForNull
     public AccountRow getSelectedRowItem() {
-        return this.selectedAccountRow;
+        inject();
+        return (getSelectedAccountId() == null ? null : this.accountListDataProvider.findById(getSelectedAccountId()));
     }
 
-    private void setSelectedAccountRow(AccountRow selectedAccountRow) {
-        this.selectedAccountRow = selectedAccountRow;
+    private String getSelectedAccountId() {
+        return this.selectedAccountId;
+    }
+
+    private void setSelectedAccountId(String selectedAccountId) {
+        this.selectedAccountId = selectedAccountId;
     }
 
     @Nonnull
