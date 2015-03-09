@@ -12,8 +12,8 @@ import javax.enterprise.inject.spi.ProcessObserverMethod;
 import javax.enterprise.util.AnnotationLiteral;
 
 import promolo.wicket.core.application.ApplicationCommand;
-import promolo.wicket.core.application.ApplicationCommandHandler;
 import promolo.wicket.core.application.ApplicationCommandHandlerRegistry;
+import promolo.wicket.core.application.Handles;
 
 /**
  * TODO javadoc
@@ -25,11 +25,11 @@ public class CdiApplicationCommandHandlerRegistry implements Extension, Applicat
     private final Set<Type> allApplicationCommandTypes = new HashSet<>();
 
     public void registerApplicationCommandHandlerQualifier(@Observes BeforeBeanDiscovery event) {
-        event.addQualifier(ApplicationCommandHandler.class);
+        event.addQualifier(Handles.class);
     }
 
     public void registerApplicationCommandObserver(@Observes ProcessObserverMethod<? extends ApplicationCommand, ?> event) {
-        if (event.getObserverMethod().getObservedQualifiers().contains(ApplicationCommandHandlerLiteral.INSTANCE)) {
+        if (event.getObserverMethod().getObservedQualifiers().contains(HandlesLiteral.INSTANCE)) {
             this.allApplicationCommandTypes.add(event.getObserverMethod().getObservedType());
         }
     }
@@ -39,12 +39,11 @@ public class CdiApplicationCommandHandlerRegistry implements Extension, Applicat
         return this.allApplicationCommandTypes.contains(command.getClass());
     }
 
-    private static final class ApplicationCommandHandlerLiteral extends AnnotationLiteral<ApplicationCommandHandler>
-            implements ApplicationCommandHandler {
+    private static final class HandlesLiteral extends AnnotationLiteral<Handles> implements Handles {
 
-        public static final ApplicationCommandHandlerLiteral INSTANCE = new ApplicationCommandHandlerLiteral();
+        public static final HandlesLiteral INSTANCE = new HandlesLiteral();
 
-        private ApplicationCommandHandlerLiteral() {
+        private HandlesLiteral() {
             super();
         }
 

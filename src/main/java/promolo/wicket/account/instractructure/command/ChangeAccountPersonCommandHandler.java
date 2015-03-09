@@ -9,7 +9,7 @@ import promolo.wicket.account.application.ChangeAccountPersonCommand;
 import promolo.wicket.account.domain.Account;
 import promolo.wicket.account.domain.AccountRepository;
 import promolo.wicket.account.domain.Person;
-import promolo.wicket.core.application.ApplicationCommandHandler;
+import promolo.wicket.core.application.Handles;
 
 /**
  * TODO javadoc
@@ -23,7 +23,7 @@ public class ChangeAccountPersonCommandHandler {
     @Inject
     private AccountRepository accountRepository;
 
-    public void handle(@Observes @ApplicationCommandHandler ChangeAccountPersonCommand command) {
+    public void handle(@Observes @Handles ChangeAccountPersonCommand command) {
         Account account = this.accountRepository.findById(command.getId());
         if (account == null) {
             throw new IllegalStateException("не найдена учетная запись " + command.getId());

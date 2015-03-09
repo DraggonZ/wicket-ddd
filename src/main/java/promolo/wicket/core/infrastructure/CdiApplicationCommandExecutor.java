@@ -14,8 +14,8 @@ import javax.inject.Inject;
 
 import promolo.wicket.core.application.ApplicationCommand;
 import promolo.wicket.core.application.ApplicationCommandExecutor;
-import promolo.wicket.core.application.ApplicationCommandHandler;
 import promolo.wicket.core.application.ApplicationCommandHandlerRegistry;
+import promolo.wicket.core.application.Handles;
 import promolo.wicket.core.application.stereotype.ApplicationComponent;
 import promolo.wicket.core.domain.DomainEvent;
 import promolo.wicket.core.domain.DomainEventPublisher;
@@ -33,7 +33,7 @@ import com.google.common.collect.Lists;
 public class CdiApplicationCommandExecutor implements ApplicationCommandExecutor {
 
     @Inject
-    @ApplicationCommandHandler
+    @Handles
     private Event<ApplicationCommand> applicationCommandEvent;
 
     @Inject

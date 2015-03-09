@@ -14,6 +14,6 @@ import java.lang.annotation.Target;
 @Target({ ElementType.PARAMETER, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface ApplicationCommandHandler {
+public @interface Handles {
 
 }

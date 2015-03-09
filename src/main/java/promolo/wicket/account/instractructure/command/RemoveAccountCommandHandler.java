@@ -9,7 +9,7 @@ import promolo.wicket.account.application.RemoveAccountCommand;
 import promolo.wicket.account.domain.Account;
 import promolo.wicket.account.domain.AccountRemoved;
 import promolo.wicket.account.domain.AccountRepository;
-import promolo.wicket.core.application.ApplicationCommandHandler;
+import promolo.wicket.core.application.Handles;
 import promolo.wicket.core.domain.DomainEventPublisher;
 
 /**
@@ -24,7 +24,7 @@ public class RemoveAccountCommandHandler {
     @Inject
     private AccountRepository accountRepository;
 
-    public void handle(@Observes @ApplicationCommandHandler RemoveAccountCommand command) {
+    public void handle(@Observes @Handles RemoveAccountCommand command) {
         Account account = this.accountRepository.findById(command.getId());
         if (account != null) {
             this.accountRepository.remove(account);

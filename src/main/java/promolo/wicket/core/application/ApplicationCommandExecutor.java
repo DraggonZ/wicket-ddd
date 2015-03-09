@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
  * TODO javadoc
  *
  * @author Александр
- * @see promolo.wicket.core.application.ApplicationCommandHandler
+ * @see Handles
  */
 public interface ApplicationCommandExecutor {
 
