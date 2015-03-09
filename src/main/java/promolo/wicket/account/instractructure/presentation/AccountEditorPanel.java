@@ -124,21 +124,24 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> implement
     }
 
     @Override
-    public void openEditor() {
-        setModelObject(presenter().getAccountEditModel());
-        ajaxRefreshEditor();
+    public void openEditor(@Nonnull AccountEditModel accountEditModel) {
+        internalUpdateEditor(accountEditModel);
     }
 
     @Override
-    public void updateEditor() {
-        setModelObject(presenter().getAccountEditModel());
-        clearForm();
-        ajaxRefreshEditor();
+    public void updateEditor(@Nonnull AccountEditModel accountEditModel) {
+        internalUpdateEditor(accountEditModel);
     }
 
     @Override
     public void closeEditor() {
         setModelObject(null);
+        ajaxRefreshEditor();
+    }
+
+    private void internalUpdateEditor(@Nonnull AccountEditModel accountEditModel) {
+        clearForm(); // обеспечивает повторное открытие компоненты редактирования
+        setModelObject(accountEditModel);
         ajaxRefreshEditor();
     }
 

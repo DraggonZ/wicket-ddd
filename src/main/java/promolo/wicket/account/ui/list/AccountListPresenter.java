@@ -42,12 +42,7 @@ public class AccountListPresenter implements Serializable {
     }
 
     @CheckForNull
-    public AccountRow getSelectedRowItem() {
-        inject();
-        return (getSelectedAccountId() == null ? null : this.accountListDataProvider.findById(getSelectedAccountId()));
-    }
-
-    private String getSelectedAccountId() {
+    public String getSelectedAccountId() {
         return this.selectedAccountId;
     }
 

@@ -38,13 +38,17 @@ public class AccountEditorPresenter implements Serializable {
         this.accountEditorView = accountEditorView;
     }
 
-    public AccountEditModel getAccountEditModel() {
-        return this.accountEditModel;
+    public void onSelectAccount(@Nonnull SelectAccount event) {
+        inject();
+        updateAccountEditModel(event.id());
+        if (getAccountEditModel() != null) {
+            view().openEditor(getAccountEditModel());
+        }
     }
 
     public void onAddAccount(@Nonnull AddAccount event) {
         setAccountEditModel(new AccountEditModel());
-        view().openEditor();
+        view().openEditor(getAccountEditModel());
     }
 
     public void onRemoveAccount(@Nonnull RemoveAccount event) {
@@ -54,17 +58,9 @@ public class AccountEditorPresenter implements Serializable {
         }
     }
 
-    public void onSelectAccount(@Nonnull SelectAccount event) {
-        inject();
-        updateAccountEditModel(event.id());
-        if (getAccountEditModel() != null) {
-            view().openEditor();
-        }
-    }
-
     public void onSaveAccount(@Nonnull SaveAccount event) {
+        inject();
         if (getAccountEditModel() != null) {
-            inject();
             AccountEditModel model = getAccountEditModel();
             if (model.getVersion() == null) {
                 CreateAccountCommand command = new CreateAccountCommand(model.getId());
@@ -83,13 +79,17 @@ public class AccountEditorPresenter implements Serializable {
                 this.applicationCommandExecutor.execute(command);
             }
             updateAccountEditModel(model.getId());
-            view().updateEditor();
+            view().updateEditor(getAccountEditModel());
         }
     }
 
     private void updateAccountEditModel(String id) {
         Account account = this.accountApplicationService.findAccountById(id);
         setAccountEditModel(account == null ? null : new AccountEditModel(account));
+    }
+
+    private AccountEditModel getAccountEditModel() {
+        return this.accountEditModel;
     }
 
     private void setAccountEditModel(AccountEditModel accountEditModel) {

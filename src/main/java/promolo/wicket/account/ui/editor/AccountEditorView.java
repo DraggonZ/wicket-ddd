@@ -2,6 +2,8 @@ package promolo.wicket.account.ui.editor;
 
 import java.io.Serializable;
 
+import javax.annotation.Nonnull;
+
 /**
  * TODO javadoc
  *
@@ -9,9 +11,9 @@ import java.io.Serializable;
  */
 public interface AccountEditorView extends Serializable {
 
-    public void openEditor();
+    public void openEditor(@Nonnull AccountEditModel accountEditModel);
 
-    public void updateEditor();
+    public void updateEditor(@Nonnull AccountEditModel accountEditModel);
 
     public void closeEditor();
 
