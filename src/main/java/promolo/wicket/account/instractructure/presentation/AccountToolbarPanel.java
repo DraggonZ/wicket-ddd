@@ -16,7 +16,7 @@ import promolo.wicket.account.ui.toolbar.AccountToolbarView;
 import promolo.wicket.account.ui.toolbar.AddAccount;
 import promolo.wicket.account.ui.toolbar.RemoveAccount;
 import promolo.wicket.core.ui.component.DisableEmptyComponent;
-import promolo.wicket.core.ui.component.ViewEventListener;
+import promolo.wicket.core.ui.notification.ViewEventListener;
 
 /**
  * TODO javadoc

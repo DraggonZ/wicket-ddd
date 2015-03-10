@@ -3,7 +3,8 @@ package promolo.wicket.core.ui.application;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.application.IComponentInstantiationListener;
-import promolo.wicket.core.ui.component.ViewDomainEventListener;
+
+import promolo.wicket.core.ui.notification.ViewDomainEventListener;
 
 /**
  * @author lexx

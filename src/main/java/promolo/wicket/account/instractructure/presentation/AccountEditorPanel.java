@@ -30,8 +30,8 @@ import promolo.wicket.account.ui.editor.AccountEditorPresenter;
 import promolo.wicket.account.ui.editor.AccountEditorView;
 import promolo.wicket.account.ui.editor.SaveAccount;
 import promolo.wicket.core.ui.component.HideEmptyComponent;
-import promolo.wicket.core.ui.component.ViewEventListener;
 import promolo.wicket.core.ui.model.Bindgen;
+import promolo.wicket.core.ui.notification.ViewEventListener;
 
 /**
  * TODO javadoc

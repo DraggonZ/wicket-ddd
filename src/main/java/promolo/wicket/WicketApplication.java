@@ -16,7 +16,7 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import promolo.wicket.account.instractructure.presentation.AccountLayout;
 import promolo.wicket.core.ui.application.BootstrapHeadContributor;
 import promolo.wicket.core.ui.application.ConcurrencyViolationPostProcessor;
-import promolo.wicket.core.ui.component.ViewDomainEventListener;
+import promolo.wicket.core.ui.notification.ViewDomainEventListener;
 
 /**
  * Application object for your web application.

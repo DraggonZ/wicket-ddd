@@ -1,4 +1,4 @@
-package promolo.wicket.core.ui.component;
+package promolo.wicket.core.ui.notification;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;

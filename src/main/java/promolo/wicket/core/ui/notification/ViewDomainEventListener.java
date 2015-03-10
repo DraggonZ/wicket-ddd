@@ -1,4 +1,4 @@
-package promolo.wicket.core.ui.component;
+package promolo.wicket.core.ui.notification;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -9,8 +9,6 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.event.Broadcast;
 
 import promolo.wicket.core.domain.DomainEvent;
-import promolo.wicket.core.ui.notification.DomainEventNotificationListener;
-import promolo.wicket.core.ui.notification.DomainEventNotificationListenerCollection;
 
 /**
  * @author lexx

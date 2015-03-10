@@ -29,8 +29,8 @@ import promolo.wicket.account.ui.list.AccountListPresenter;
 import promolo.wicket.account.ui.list.AccountListView;
 import promolo.wicket.account.ui.list.AccountRow;
 import promolo.wicket.account.ui.list.SelectAccount;
-import promolo.wicket.core.ui.component.AjaxRefreshOnDomainEvent;
-import promolo.wicket.core.ui.component.ViewEventListener;
+import promolo.wicket.core.ui.notification.AjaxRefreshOnDomainEvent;
+import promolo.wicket.core.ui.notification.ViewEventListener;
 
 /**
  * TODO javadoc
