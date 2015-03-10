@@ -1,4 +1,4 @@
-package promolo.wicket.core.ui.application;
+package promolo.wicket.core.ui.notification;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -17,7 +17,6 @@ import org.apache.wicket.application.IComponentInitializationListener;
 import org.apache.wicket.util.collections.ClassMetaCache;
 
 import promolo.wicket.core.stereotype.PresenterInstance;
-import promolo.wicket.core.ui.notification.ViewUserEventListener;
 
 /**
  * TODO javadoc

@@ -12,8 +12,8 @@ import org.apache.wicket.request.cycle.PageRequestHandlerTracker;
 import promolo.wicket.account.instractructure.presentation.AccountLayout;
 import promolo.wicket.core.ui.application.BootstrapHeadContributor;
 import promolo.wicket.core.ui.application.ConcurrencyViolationPostProcessor;
-import promolo.wicket.core.ui.application.PresenterInstancePostProcessor;
 import promolo.wicket.core.ui.notification.DomainEventNotificationListenerCollection;
+import promolo.wicket.core.ui.notification.PresenterInstancePostProcessor;
 import promolo.wicket.core.ui.notification.ViewDomainEventListenerProcessor;
 
 /**

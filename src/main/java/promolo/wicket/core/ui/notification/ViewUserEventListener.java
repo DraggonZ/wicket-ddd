@@ -34,13 +34,9 @@ public class ViewUserEventListener extends Behavior {
         }
     }
 
-    @SuppressWarnings("SimplifiableIfStatement")
     protected boolean canBeForwarded(@Nonnull IEvent<?> event) {
-        if (event.getSource() instanceof Component) {
-            return (event.getPayload() != null && !(event.getPayload() instanceof AjaxRequestHandler));
-        } else {
-            return false;
-        }
+        return (event.getSource() instanceof Component && (event.getPayload() != null && !(event
+                .getPayload() instanceof AjaxRequestHandler)));
     }
 
     // TODO реализация - не оптимальная, нужно использовать кэш методов-обработчиков
