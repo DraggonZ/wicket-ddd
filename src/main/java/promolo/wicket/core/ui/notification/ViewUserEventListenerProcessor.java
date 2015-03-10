@@ -23,7 +23,7 @@ import promolo.wicket.core.stereotype.PresenterInstance;
  *
  * @author lexx
  */
-public final class PresenterInstancePostProcessor implements IComponentInitializationListener {
+public final class ViewUserEventListenerProcessor implements IComponentInitializationListener {
 
     private static final String PACKAGE_DELIMITER = ".";
 
@@ -31,7 +31,7 @@ public final class PresenterInstancePostProcessor implements IComponentInitializ
 
     private final Set<String> excludePackagePrefixes = new HashSet<>();
 
-    public PresenterInstancePostProcessor() {
+    public ViewUserEventListenerProcessor() {
         addExcludePackage("org.apache.wicket.");
     }
 
