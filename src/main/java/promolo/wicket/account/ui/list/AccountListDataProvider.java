@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import promolo.wicket.account.domain.Account;
 import promolo.wicket.account.domain.AccountRepository;
-import promolo.wicket.core.ui.stereotype.PresentationComponent;
+import promolo.wicket.core.stereotype.PresentationComponent;
 
 /**
  * TODO javadoc

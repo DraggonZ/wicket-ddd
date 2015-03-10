@@ -1,11 +1,11 @@
-package promolo.wicket.core.ui.stereotype;
+package promolo.wicket.core.stereotype;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Stereotype;
 import javax.transaction.Transactional;
 
@@ -15,10 +15,11 @@ import javax.transaction.Transactional;
  * @author Александр
  */
 @Stereotype
-@RequestScoped
+@ApplicationScoped
+@HonorApplicationException
 @Transactional
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PresentationComponent {
+public @interface ApplicationComponent {
 
 }

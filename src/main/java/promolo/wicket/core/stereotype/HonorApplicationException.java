@@ -1,4 +1,4 @@
-package promolo.wicket.core.application.stereotype;
+package promolo.wicket.core.stereotype;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

@@ -18,10 +18,10 @@ import promolo.wicket.core.application.ApplicationCommand;
 import promolo.wicket.core.application.ApplicationCommandExecutor;
 import promolo.wicket.core.application.ApplicationCommandHandler;
 import promolo.wicket.core.application.Handles;
-import promolo.wicket.core.application.stereotype.ApplicationComponent;
 import promolo.wicket.core.domain.DomainEvent;
 import promolo.wicket.core.domain.DomainEventPublisher;
 import promolo.wicket.core.domain.DomainEventSubscriber;
+import promolo.wicket.core.stereotype.ApplicationComponent;
 import promolo.wicket.core.ui.notification.DomainEventNotificationListener;
 
 import com.google.common.collect.Lists;

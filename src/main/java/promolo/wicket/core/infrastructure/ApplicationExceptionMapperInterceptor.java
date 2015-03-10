@@ -7,7 +7,7 @@ import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 import javax.transaction.RollbackException;
 
-import promolo.wicket.core.application.stereotype.HonorApplicationException;
+import promolo.wicket.core.stereotype.HonorApplicationException;
 
 /**
  * TODO javadoc
