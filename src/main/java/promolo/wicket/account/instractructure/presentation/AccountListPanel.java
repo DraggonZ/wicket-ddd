@@ -30,7 +30,7 @@ import promolo.wicket.account.ui.list.AccountListView;
 import promolo.wicket.account.ui.list.AccountRow;
 import promolo.wicket.account.ui.list.SelectAccount;
 import promolo.wicket.core.ui.notification.AjaxRefreshOnDomainEvent;
-import promolo.wicket.core.ui.notification.ViewEventListener;
+import promolo.wicket.core.ui.notification.ViewUserEventListener;
 
 /**
  * TODO javadoc
@@ -46,7 +46,7 @@ public class AccountListPanel extends Panel implements AccountListView {
     public AccountListPanel(String id) {
         super(id);
 
-        add(new ViewEventListener(presenter()));
+        add(new ViewUserEventListener(presenter()));
 
         WebMarkupContainer tableWrapper = new WebMarkupContainer("tableWrapper");
         tableWrapper.add(AjaxRefreshOnDomainEvent.of(AccountCreated.class));

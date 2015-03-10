@@ -16,7 +16,7 @@ import promolo.wicket.account.ui.toolbar.AccountToolbarView;
 import promolo.wicket.account.ui.toolbar.AddAccount;
 import promolo.wicket.account.ui.toolbar.RemoveAccount;
 import promolo.wicket.core.ui.component.DisableEmptyComponent;
-import promolo.wicket.core.ui.notification.ViewEventListener;
+import promolo.wicket.core.ui.notification.ViewUserEventListener;
 
 /**
  * TODO javadoc
@@ -30,7 +30,7 @@ public class AccountToolbarPanel extends Panel implements AccountToolbarView {
     public AccountToolbarPanel(String id) {
         super(id);
         setOutputMarkupId(true);
-        add(new ViewEventListener(presenter()));
+        add(new ViewUserEventListener(presenter()));
         AjaxLink<Void> addLink = new AjaxLink<Void>("add") {
 
             @Override

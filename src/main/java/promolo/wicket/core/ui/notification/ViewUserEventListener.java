@@ -15,12 +15,13 @@ import org.apache.wicket.event.IEvent;
  * TODO javadoc
  *
  * @author Александр
+ * @see promolo.wicket.core.stereotype.PresenterInstance
  */
-public class ViewEventListener extends Behavior {
+public class ViewUserEventListener extends Behavior {
 
     private final Serializable presenter;
 
-    public ViewEventListener(@Nonnull Serializable presenter) {
+    public ViewUserEventListener(@Nonnull Serializable presenter) {
         super();
         this.presenter = presenter;
     }

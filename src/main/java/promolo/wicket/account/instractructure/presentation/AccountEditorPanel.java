@@ -31,7 +31,7 @@ import promolo.wicket.account.ui.editor.AccountEditorView;
 import promolo.wicket.account.ui.editor.SaveAccount;
 import promolo.wicket.core.ui.component.HideEmptyComponent;
 import promolo.wicket.core.ui.model.Bindgen;
-import promolo.wicket.core.ui.notification.ViewEventListener;
+import promolo.wicket.core.ui.notification.ViewUserEventListener;
 
 /**
  * TODO javadoc
@@ -50,7 +50,7 @@ public class AccountEditorPanel extends GenericPanel<AccountEditModel> implement
         setVersioned(false);
         setOutputMarkupId(true);
 
-        add(new ViewEventListener(presenter()));
+        add(new ViewUserEventListener(presenter()));
 
         WebMarkupContainer panelTitleWrapper = new WebMarkupContainer("panelTitleWrapper");
         panelTitleWrapper.setOutputMarkupId(true);
