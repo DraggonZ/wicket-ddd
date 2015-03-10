@@ -1,10 +1,8 @@
 package promolo.wicket.core.ui.notification;
 
 import javax.annotation.Nonnull;
-import javax.inject.Inject;
 
 import org.apache.wicket.Page;
-import org.apache.wicket.cdi.NonContextual;
 import org.apache.wicket.core.request.handler.IComponentRequestHandler;
 import org.apache.wicket.core.request.handler.IPageRequestHandler;
 import org.apache.wicket.request.IRequestHandler;
@@ -19,11 +17,10 @@ import org.apache.wicket.request.cycle.RequestCycle;
  */
 public class ViewDomainEventListenerProcessor extends AbstractRequestCycleListener {
 
-    @Inject
-    private DomainEventNotificationListenerCollection domainEventNotificationListenerCollection;
+    private final DomainEventNotificationListenerCollection domainEventNotificationListenerCollection;
 
-    public ViewDomainEventListenerProcessor() {
-        NonContextual.of(ViewDomainEventListenerProcessor.class).inject(this);
+    public ViewDomainEventListenerProcessor(@Nonnull DomainEventNotificationListenerCollection domainEventNotificationListenerCollection) {
+        this.domainEventNotificationListenerCollection = domainEventNotificationListenerCollection;
     }
 
     @Override
