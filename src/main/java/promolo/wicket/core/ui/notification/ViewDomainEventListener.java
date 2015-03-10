@@ -1,7 +1,6 @@
 package promolo.wicket.core.ui.notification;
 
 import javax.annotation.Nonnull;
-import javax.inject.Inject;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
@@ -11,17 +10,20 @@ import org.apache.wicket.event.Broadcast;
 import promolo.wicket.core.domain.DomainEvent;
 
 /**
+ * TODO javadoc
+ *
  * @author lexx
+ * @see promolo.wicket.core.ui.notification.DomainEventNotificationListenerCollection
  */
 public class ViewDomainEventListener extends Behavior implements DomainEventNotificationListener {
 
-    @Inject
-    private DomainEventNotificationListenerCollection domainEventNotificationListenerCollection;
+    private final DomainEventNotificationListenerCollection domainEventNotificationListenerCollection;
 
-    private Page page;
+    private transient Page page; // behavior - временный (RequestScoped)
 
-    public ViewDomainEventListener() {
+    public ViewDomainEventListener(@Nonnull DomainEventNotificationListenerCollection domainEventNotificationListenerCollection) {
         super();
+        this.domainEventNotificationListenerCollection = domainEventNotificationListenerCollection;
     }
 
     @Override
@@ -32,14 +34,14 @@ public class ViewDomainEventListener extends Behavior implements DomainEventNoti
         } else {
             throw new IllegalStateException("компонента может быть добавлена только на страницу (Page)");
         }
-        domainEventNotificationRequestScopedProxy().addListener(this);
+        domainEventNotificationListenerCollection().addListener(this);
     }
 
     @Override
     public void unbind(Component component) {
         super.unbind(component);
         setPage(null);
-        domainEventNotificationRequestScopedProxy().removeListener(this);
+        domainEventNotificationListenerCollection().removeListener(this);
     }
 
     @Override
@@ -55,7 +57,7 @@ public class ViewDomainEventListener extends Behavior implements DomainEventNoti
     }
 
     @Nonnull
-    private DomainEventNotificationListenerCollection domainEventNotificationRequestScopedProxy() {
+    private DomainEventNotificationListenerCollection domainEventNotificationListenerCollection() {
         return this.domainEventNotificationListenerCollection;
     }
 
