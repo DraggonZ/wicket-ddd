@@ -16,6 +16,7 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import promolo.wicket.account.instractructure.presentation.AccountLayout;
 import promolo.wicket.core.ui.application.BootstrapHeadContributor;
 import promolo.wicket.core.ui.application.ConcurrencyViolationPostProcessor;
+import promolo.wicket.core.ui.application.PresenterInstancePostProcessor;
 import promolo.wicket.core.ui.notification.ViewDomainEventListener;
 
 /**
@@ -42,6 +43,7 @@ public class WicketApplication extends WebApplication {
         new CdiConfiguration().setPropagation(ConversationPropagation.NONE).configure(this);
         getResourceSettings().setResourcePollFrequency(null); // TODO на WildFly под Windows зависает время от времени
         getMarkupSettings().setStripWicketTags(true);
+        getComponentInitializationListeners().add(new PresenterInstancePostProcessor());
         getRequestCycleListeners().add(new PageRequestHandlerTracker());
         getRequestCycleListeners().add(new ConcurrencyViolationPostProcessor());
         getRequestCycleListeners().add(new AbstractRequestCycleListener() { // TODO должен быть последним?

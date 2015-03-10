@@ -29,8 +29,8 @@ import promolo.wicket.account.ui.list.AccountListPresenter;
 import promolo.wicket.account.ui.list.AccountListView;
 import promolo.wicket.account.ui.list.AccountRow;
 import promolo.wicket.account.ui.list.SelectAccount;
+import promolo.wicket.core.stereotype.PresenterInstance;
 import promolo.wicket.core.ui.notification.AjaxRefreshOnDomainEvent;
-import promolo.wicket.core.ui.notification.ViewUserEventListener;
 
 /**
  * TODO javadoc
@@ -41,12 +41,11 @@ public class AccountListPanel extends Panel implements AccountListView {
 
     private static final AjaxChannel ACCOUNT_SELECTION_AJAX_CHANNEL = new AjaxChannel("AccountSelectionGroup", AjaxChannel.Type.DROP);
 
+    @PresenterInstance
     private final AccountListPresenter presenter = new AccountListPresenter(this);
 
     public AccountListPanel(String id) {
         super(id);
-
-        add(new ViewUserEventListener(presenter()));
 
         WebMarkupContainer tableWrapper = new WebMarkupContainer("tableWrapper");
         tableWrapper.add(AjaxRefreshOnDomainEvent.of(AccountCreated.class));

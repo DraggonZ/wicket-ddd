@@ -15,8 +15,8 @@ import promolo.wicket.account.ui.toolbar.AccountToolbarPresenter;
 import promolo.wicket.account.ui.toolbar.AccountToolbarView;
 import promolo.wicket.account.ui.toolbar.AddAccount;
 import promolo.wicket.account.ui.toolbar.RemoveAccount;
+import promolo.wicket.core.stereotype.PresenterInstance;
 import promolo.wicket.core.ui.component.DisableEmptyComponent;
-import promolo.wicket.core.ui.notification.ViewUserEventListener;
 
 /**
  * TODO javadoc
@@ -25,12 +25,13 @@ import promolo.wicket.core.ui.notification.ViewUserEventListener;
  */
 public class AccountToolbarPanel extends Panel implements AccountToolbarView {
 
+    @PresenterInstance
     private final AccountToolbarPresenter presenter = new AccountToolbarPresenter(this);
 
     public AccountToolbarPanel(String id) {
         super(id);
         setOutputMarkupId(true);
-        add(new ViewUserEventListener(presenter()));
+
         AjaxLink<Void> addLink = new AjaxLink<Void>("add") {
 
             @Override
