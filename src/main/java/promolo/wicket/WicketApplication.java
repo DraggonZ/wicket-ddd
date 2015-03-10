@@ -41,10 +41,9 @@ public class WicketApplication extends WebApplication {
         super.init();
         new BeanValidationConfiguration().configure(this);
         new CdiConfiguration().setPropagation(ConversationPropagation.NONE).configure(this);
-        getResourceSettings().setResourcePollFrequency(null); // TODO на WildFly под Windows зависает время от времени
         getMarkupSettings().setStripWicketTags(true);
         getComponentInitializationListeners().add(new PresenterInstancePostProcessor());
-        getRequestCycleListeners().add(new PageRequestHandlerTracker());
+        getRequestCycleListeners().add(new PageRequestHandlerTracker()); // должен быть первым
         getRequestCycleListeners().add(new ConcurrencyViolationPostProcessor());
         getRequestCycleListeners().add(new AbstractRequestCycleListener() { // TODO должен быть последним?
 
