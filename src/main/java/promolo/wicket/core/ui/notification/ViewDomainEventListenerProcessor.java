@@ -27,19 +27,19 @@ public class ViewDomainEventListenerProcessor extends AbstractRequestCycleListen
     public void onRequestHandlerScheduled(RequestCycle cycle, IRequestHandler handler) {
         super.onRequestHandlerScheduled(cycle, handler);
         if (handler instanceof IComponentRequestHandler) {
-            handleComponentRequest(cycle, (IComponentRequestHandler) handler);
+            handleComponentRequest((IComponentRequestHandler) handler);
         }
         if (handler instanceof IPageRequestHandler) {
-            handlePageRequest(cycle, (IPageRequestHandler) handler);
+            handlePageRequest((IPageRequestHandler) handler);
         }
     }
 
-    private void handleComponentRequest(@Nonnull RequestCycle cycle, @Nonnull IComponentRequestHandler handler) {
+    private void handleComponentRequest(@Nonnull IComponentRequestHandler handler) {
         Page page = (Page) handler.getComponent().getPage();
         page.add(new ViewDomainEventListener(domainEventNotificationListenerCollection()));
     }
 
-    private void handlePageRequest(@Nonnull RequestCycle cycle, @Nonnull IPageRequestHandler handler) {
+    private void handlePageRequest(@Nonnull IPageRequestHandler handler) {
         Page page = (Page) handler.getPage();
         page.add(new ViewDomainEventListener(domainEventNotificationListenerCollection()));
     }
