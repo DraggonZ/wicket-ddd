@@ -8,8 +8,6 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
-import org.apache.wicket.cdi.NonContextual;
-
 /**
  * TODO javadoc
  *
@@ -22,7 +20,7 @@ public class AccountListPresenter implements Serializable {
     private String selectedAccountId;
 
     @Inject
-    private transient AccountListDataProvider accountListDataProvider;
+    private AccountListDataProvider accountListDataProvider;
 
     public AccountListPresenter(@Nonnull AccountListView accountListView) {
         this.accountListView = accountListView;
@@ -37,7 +35,6 @@ public class AccountListPresenter implements Serializable {
 
     @Nonnull
     public List<AccountRow> getAccountListModel() {
-        inject();
         return this.accountListDataProvider.listAllAccounts();
     }
 
@@ -55,7 +52,4 @@ public class AccountListPresenter implements Serializable {
         return this.accountListView;
     }
 
-    private void inject() {
-        NonContextual.of(getClass()).inject(this);
-    }
 }

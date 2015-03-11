@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestHandler;
 import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.cdi.NonContextual;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.util.collections.ClassMetaCache;
 
@@ -20,6 +21,7 @@ import org.apache.wicket.util.collections.ClassMetaCache;
  *
  * @author Александр
  * @see promolo.wicket.core.stereotype.PresenterInstance
+ * @see org.apache.wicket.cdi.NonContextual#inject(Object)
  */
 public class ViewUserEventListener extends Behavior {
 
@@ -35,16 +37,27 @@ public class ViewUserEventListener extends Behavior {
     }
 
     @Override
+    public void bind(Component component) {
+        super.bind(component);
+        NonContextual.of(presenter().getClass()).inject(presenter());
+    }
+
+    @Override
     public final void onEvent(Component component, IEvent<?> event) {
         super.onEvent(component, event);
         if (canBeForwarded(event)) {
-            forwardTo(this.presenter, event.getPayload());
+            forwardTo(presenter(), event.getPayload());
         }
     }
 
     protected boolean canBeForwarded(@Nonnull IEvent<?> event) {
         return (event.getSource() instanceof Component && (event.getPayload() != null && !(event
                 .getPayload() instanceof AjaxRequestHandler)));
+    }
+
+    @Nonnull
+    private Object presenter() {
+        return this.presenter;
     }
 
     private static void forwardTo(@Nonnull Object eventSink, @Nonnull Object event) {

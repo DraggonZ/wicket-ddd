@@ -22,6 +22,8 @@ import promolo.wicket.core.stereotype.PresenterInstance;
  * TODO javadoc
  *
  * @author lexx
+ * @see promolo.wicket.core.stereotype.PresenterInstance
+ * @see promolo.wicket.core.ui.notification.ViewUserEventListener
  */
 public final class ViewUserEventListenerProcessor implements IComponentInitializationListener {
 

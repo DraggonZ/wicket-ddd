@@ -7,8 +7,6 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
-import org.apache.wicket.cdi.NonContextual;
-
 import promolo.wicket.account.application.RemoveAccountCommand;
 import promolo.wicket.account.ui.list.SelectAccount;
 import promolo.wicket.core.application.ApplicationCommandExecutor;
@@ -21,7 +19,7 @@ import promolo.wicket.core.application.ApplicationCommandExecutor;
 public class AccountToolbarPresenter implements Serializable {
 
     @Inject
-    private transient ApplicationCommandExecutor applicationCommandExecutor;
+    private ApplicationCommandExecutor applicationCommandExecutor;
 
     private final AccountToolbarView accountToolbarView;
 
@@ -39,7 +37,6 @@ public class AccountToolbarPresenter implements Serializable {
     }
 
     public void onRemoveAccount(@Nonnull RemoveAccount event) {
-        inject();
         if (Objects.equals(getSelectedAccountId(), event.id())) {
             this.applicationCommandExecutor.execute(new RemoveAccountCommand(getSelectedAccountId()));
             setSelectedAccountId(null);
@@ -58,10 +55,6 @@ public class AccountToolbarPresenter implements Serializable {
     @Nonnull
     private AccountToolbarView view() {
         return this.accountToolbarView;
-    }
-
-    private void inject() {
-        NonContextual.of(getClass()).inject(this);
     }
 
 }

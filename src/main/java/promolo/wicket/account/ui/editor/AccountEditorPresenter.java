@@ -6,8 +6,6 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
-import org.apache.wicket.cdi.NonContextual;
-
 import promolo.wicket.account.application.AccountApplicationService;
 import promolo.wicket.account.application.ChangeAccountPersonCommand;
 import promolo.wicket.account.application.CreateAccountCommand;
@@ -29,17 +27,16 @@ public class AccountEditorPresenter implements Serializable {
     private AccountEditModel accountEditModel = new AccountEditModel();
 
     @Inject
-    private transient AccountApplicationService accountApplicationService;
+    private AccountApplicationService accountApplicationService;
 
     @Inject
-    private transient ApplicationCommandExecutor applicationCommandExecutor;
+    private ApplicationCommandExecutor applicationCommandExecutor;
 
     public AccountEditorPresenter(@Nonnull AccountEditorView accountEditorView) {
         this.accountEditorView = accountEditorView;
     }
 
     public void onSelectAccount(@Nonnull SelectAccount event) {
-        inject();
         updateAccountEditModel(event.id());
         if (getAccountEditModel() != null) {
             view().openEditor(getAccountEditModel());
@@ -59,7 +56,6 @@ public class AccountEditorPresenter implements Serializable {
     }
 
     public void onSaveAccount(@Nonnull SaveAccount event) {
-        inject();
         if (getAccountEditModel() != null) {
             AccountEditModel model = getAccountEditModel();
             if (model.getVersion() == null) {
@@ -99,10 +95,6 @@ public class AccountEditorPresenter implements Serializable {
     @Nonnull
     private AccountEditorView view() {
         return this.accountEditorView;
-    }
-
-    private void inject() {
-        NonContextual.of(getClass()).inject(this);
     }
 
 }
