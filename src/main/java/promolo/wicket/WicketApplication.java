@@ -1,5 +1,6 @@
 package promolo.wicket;
 
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
 import org.apache.wicket.bean.validation.BeanValidationConfiguration;
@@ -46,9 +47,14 @@ public class WicketApplication extends WebApplication {
         getRequestCycleListeners().add(new PageRequestHandlerTracker()); // должен быть первым
         getRequestCycleListeners().add(new ConcurrencyViolationPostProcessor());
         getRequestCycleListeners()
-                .add(new ViewDomainEventListenerProcessor(this.domainEventNotificationListenerCollection)); // должен быть последним
+                .add(new ViewDomainEventListenerProcessor(domainEventNotificationListenerCollection())); // должен быть последним
         getHeaderContributorListenerCollection().add(new BootstrapHeadContributor(this));
         mountPage("account-layout.view", AccountLayout.class);
+    }
+
+    @Nonnull
+    private DomainEventNotificationListenerCollection domainEventNotificationListenerCollection() {
+        return this.domainEventNotificationListenerCollection;
     }
 
 }
