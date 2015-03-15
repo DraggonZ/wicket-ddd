@@ -1,6 +1,7 @@
 package promolo.wicket.core.ui.notification;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
@@ -13,17 +14,17 @@ import promolo.wicket.core.domain.DomainEvent;
  * TODO javadoc
  *
  * @author lexx
- * @see promolo.wicket.core.ui.notification.DomainEventNotificationListenerCollection
+ * @see DomainEventNotificationManager
  */
 public class ViewDomainEventListener extends Behavior implements DomainEventNotificationListener {
 
-    private final DomainEventNotificationListenerCollection domainEventNotificationListenerCollection;
+    @Inject
+    private DomainEventNotificationManager domainEventNotificationManager;
 
-    private transient Page page; // behavior - временный (RequestScoped)
+    private transient Page page; // behavior - временный (существует в пределах одного запроса)
 
-    public ViewDomainEventListener(@Nonnull DomainEventNotificationListenerCollection domainEventNotificationListenerCollection) {
+    public ViewDomainEventListener() {
         super();
-        this.domainEventNotificationListenerCollection = domainEventNotificationListenerCollection;
     }
 
     @Override
@@ -34,14 +35,14 @@ public class ViewDomainEventListener extends Behavior implements DomainEventNoti
         } else {
             throw new IllegalStateException("компонента может быть добавлена только на страницу (Page)");
         }
-        domainEventNotificationListenerCollection().addListener(this);
+        domainEventNotificationManager().addListener(this);
     }
 
     @Override
     public void unbind(Component component) {
         super.unbind(component);
         setPage(null);
-        domainEventNotificationListenerCollection().removeListener(this);
+        domainEventNotificationManager().removeListener(this);
     }
 
     @Override
@@ -56,17 +57,17 @@ public class ViewDomainEventListener extends Behavior implements DomainEventNoti
         }
     }
 
-    @Nonnull
-    private DomainEventNotificationListenerCollection domainEventNotificationListenerCollection() {
-        return this.domainEventNotificationListenerCollection;
-    }
-
     private void setPage(Page page) {
         this.page = page;
     }
 
     private Page page() {
         return this.page;
+    }
+
+    @Nonnull
+    private DomainEventNotificationManager domainEventNotificationManager() {
+        return this.domainEventNotificationManager;
     }
 
 }

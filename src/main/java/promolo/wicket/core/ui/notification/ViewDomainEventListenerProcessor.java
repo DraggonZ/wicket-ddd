@@ -17,12 +17,6 @@ import org.apache.wicket.request.cycle.RequestCycle;
  */
 public class ViewDomainEventListenerProcessor extends AbstractRequestCycleListener {
 
-    private final DomainEventNotificationListenerCollection domainEventNotificationListenerCollection;
-
-    public ViewDomainEventListenerProcessor(@Nonnull DomainEventNotificationListenerCollection domainEventNotificationListenerCollection) {
-        this.domainEventNotificationListenerCollection = domainEventNotificationListenerCollection;
-    }
-
     @Override
     public void onRequestHandlerScheduled(RequestCycle cycle, IRequestHandler handler) {
         super.onRequestHandlerScheduled(cycle, handler);
@@ -36,17 +30,12 @@ public class ViewDomainEventListenerProcessor extends AbstractRequestCycleListen
 
     private void handleComponentRequest(@Nonnull IComponentRequestHandler handler) {
         Page page = (Page) handler.getComponent().getPage();
-        page.add(new ViewDomainEventListener(domainEventNotificationListenerCollection()));
+        page.add(new ViewDomainEventListener());
     }
 
     private void handlePageRequest(@Nonnull IPageRequestHandler handler) {
         Page page = (Page) handler.getPage();
-        page.add(new ViewDomainEventListener(domainEventNotificationListenerCollection()));
-    }
-
-    @Nonnull
-    private DomainEventNotificationListenerCollection domainEventNotificationListenerCollection() {
-        return this.domainEventNotificationListenerCollection;
+        page.add(new ViewDomainEventListener());
     }
 
 }

@@ -13,9 +13,18 @@ import com.google.common.collect.Lists;
  *
  * @author lexx
  */
-public class DomainEventNotificationListenerCollection implements DomainEventNotificationListener {
+public class DomainEventNotificationManager implements DomainEventNotificationListener {
 
     private List<DomainEventNotificationListener> domainEventNotificationListeners;
+
+    @Override
+    public void notify(@Nonnull DomainEvent domainEvent) {
+        if (this.domainEventNotificationListeners != null) {
+            for (DomainEventNotificationListener domainEventNotificationListener : this.domainEventNotificationListeners) {
+                domainEventNotificationListener.notify(domainEvent);
+            }
+        }
+    }
 
     public void addListener(@Nonnull DomainEventNotificationListener listener) {
         if (this.domainEventNotificationListeners == null) {
@@ -27,15 +36,6 @@ public class DomainEventNotificationListenerCollection implements DomainEventNot
     public void removeListener(@Nonnull DomainEventNotificationListener listener) {
         if (this.domainEventNotificationListeners != null) {
             this.domainEventNotificationListeners.remove(listener);
-        }
-    }
-
-    @Override
-    public void notify(@Nonnull DomainEvent domainEvent) {
-        if (this.domainEventNotificationListeners != null) {
-            for (DomainEventNotificationListener domainEventNotificationListener : this.domainEventNotificationListeners) {
-                domainEventNotificationListener.notify(domainEvent);
-            }
         }
     }
 
