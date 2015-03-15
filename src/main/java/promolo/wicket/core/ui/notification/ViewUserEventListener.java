@@ -74,14 +74,6 @@ public class ViewUserEventListener extends Behavior {
         }
     }
 
-    private static void storeEventHandlers(@Nonnull Class<?> eventSinkType, @Nonnull Map<String, Method> eventHandlerMap) {
-        if (eventHandlerMap.isEmpty()) {
-            EVENT_HANDLER_MAP_CACHE.put(eventSinkType, Collections.<String, Method>emptyMap());
-        } else {
-            EVENT_HANDLER_MAP_CACHE.put(eventSinkType, eventHandlerMap);
-        }
-    }
-
     @Nonnull
     private static Map<String, Method> mapEventHandlers(@Nonnull Class<?> eventSinkType) {
         Map<String, Method> eventHandlerMap = new HashMap<>();
@@ -92,6 +84,14 @@ public class ViewUserEventListener extends Behavior {
             }
         }
         return eventHandlerMap;
+    }
+
+    private static void storeEventHandlers(@Nonnull Class<?> eventSinkType, @Nonnull Map<String, Method> eventHandlerMap) {
+        if (eventHandlerMap.isEmpty()) {
+            EVENT_HANDLER_MAP_CACHE.put(eventSinkType, Collections.<String, Method>emptyMap());
+        } else {
+            EVENT_HANDLER_MAP_CACHE.put(eventSinkType, eventHandlerMap);
+        }
     }
 
     @Nonnull
