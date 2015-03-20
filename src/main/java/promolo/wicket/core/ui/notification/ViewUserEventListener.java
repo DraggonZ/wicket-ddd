@@ -79,7 +79,7 @@ public class ViewUserEventListener extends Behavior {
         Map<String, Method> eventHandlerMap = new HashMap<>();
         for (Method method : eventSinkType.getMethods()) {
             if (method.getName().startsWith(EVENT_HANDLER_PREFIX) && method.getReturnType().equals(Void.TYPE)
-                    && method.getParameterCount() == 1) {
+                    && method.getParameterTypes().length == 1) {
                 eventHandlerMap.put(method.getName(), method);
             }
         }
